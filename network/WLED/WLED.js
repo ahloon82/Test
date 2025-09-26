@@ -28,10 +28,6 @@ export function ControllableParameters() {
 		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
 		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
 		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art"], "default": "Components" },
-        { "property": "overlay_enabled", "label": "叠加模式", "type": "boolean", "default": false },
-        { "property": "overlay_time_color", "label": "Time颜色", "type": "color", "default": "#000000" },
-        { "property": "overlay_text_color", "label": "Text颜色", "type": "color", "default": "#000000" },
-        { "property": "overlay_pixelart_color", "label": "PixelArt颜色", "type": "color", "default": "#000000" },
 		{ "property": "fontSize", "label": "字体大小", "type": "combobox", description: "The mode used when 'Display Mode' is set to 'Time' or 'Custom Text'", "values": ["Small", "Medium"], "default": "Medium" },
 		{ "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
@@ -40,11 +36,6 @@ export function ControllableParameters() {
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-	
-		{ "property": "overlay_enabled", "label": "叠加SignalRGB背景", "type": "boolean", "description": "在非 Components 模式时叠加 SignalRGB 背景，前景固定为白色或半透明白", "default": "false" },
-		{ "property": "overlay_time_color", "label": "Time颜色", "type": "color", "default": "#000000" },
-        { "property": "overlay_text_color", "label": "Text颜色", "type": "color", "default": "#000000" },
-        { "property": "overlay_pixelart_color", "label": "PixelArt颜色", "type": "color", "default": "#000000" },
 	];
 }
 
@@ -2403,102 +2394,39 @@ class WLEDDevice {
 		if (display_mode != 'Components') {
 			if (display != undefined) {
 				displayClock();
-				Snake_display = rearrangeDisplayForSnakeLayout(display) || [];
+				let Snake_display = rearrangeDisplayForSnakeLayout(display);
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-							// transparent pixel: if overlay enabled, keep background; else turn off
-							if (!overlay_enabled) {
-								RGBData[led_index * 3] = 0;
-								RGBData[led_index * 3 + 1] = 0;
-								RGBData[led_index * 3 + 2] = 0;
-							}
+							RGBData[led_index * 3] = 0;
+							RGBData[led_index * 3 + 1] = 0;
+							RGBData[led_index * 3 + 2] = 0;
 							break;
 						case 0.3:
-							// forced color or overlay white
-							if (!overlay_enabled) {
-								let fcRGB = hexToRgb(forcedColor);
-								RGBData[led_index * 3] = fcRGB.r;
-								RGBData[led_index * 3 + 1] = fcRGB.g;
-								RGBData[led_index * 3 + 2] = fcRGB.b;
-							} else {
-								RGBData[led_index * 3] = 255;
-								RGBData[led_index * 3 + 1] = 255;
-								RGBData[led_index * 3 + 2] = 255;
-							}
+							let fcRGB = hexToRgb(forcedColor);
+							RGBData[led_index * 3] = fcRGB.r;
+							RGBData[led_index * 3 + 1] = fcRGB.g;
+							RGBData[led_index * 3 + 2] = fcRGB.b;
 							break;
 						case 0.5:
-							// translucent1: darken background if not overlay; otherwise white with translucency
-							if (!overlay_enabled) {
-								let scaleFactor = translucent1 / 100;
-								let darken = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor);
-								RGBData[led_index * 3] = darken[0];
-								RGBData[led_index * 3 + 1] = darken[1];
-								RGBData[led_index * 3 + 2] = darken[2];
-							} else {
-								let scaleFactor = translucent1 / 100;
-								let v = Math.round(255 * scaleFactor);
-								RGBData[led_index * 3] = v;
-								RGBData[led_index * 3 + 1] = v;
-								RGBData[led_index * 3 + 2] = v;
-							}
+							let scaleFactor = translucent1 / 100;
+							let darken = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor);
+							RGBData[led_index * 3] = darken[0];
+							RGBData[led_index * 3 + 1] = darken[1];
+							RGBData[led_index * 3 + 2] = darken[2];
 							break;
 						case 0.7:
-							// translucent2
-							if (!overlay_enabled) {
-								let scaleFactor2 = translucent2 / 100;
-								let darken2 = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor2);
-								RGBData[led_index * 3] = darken2[0];
-								RGBData[led_index * 3 + 1] = darken2[1];
-								RGBData[led_index * 3 + 2] = darken2[2];
-							} else {
-								let scaleFactor2 = translucent2 / 100;
-								let v2 = Math.round(255 * scaleFactor2);
-								RGBData[led_index * 3] = v2;
-								RGBData[led_index * 3 + 1] = v2;
-								RGBData[led_index * 3 + 2] = v2;
-							}
+							let scaleFactor2 = translucent2 / 100;
+							let darken2 = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor2);
+							RGBData[led_index * 3] = darken2[0];
+							RGBData[led_index * 3 + 1] = darken2[1];
+							RGBData[led_index * 3 + 2] = darken2[2];
 							break;
 					}
 				}
 			}
 		}
 
-
-    // === Overlay Post-Processing ===
-if (overlay_enabled) {
-    // 如果没有 Snake_display（或为空），安全跳过，不抛错
-    if (typeof Snake_display === 'undefined' || !Snake_display || !Snake_display.length) {
-        // no overlay map available - skip overlay processing
-    } else {
-        // 选择对应模式的 overlay 颜色
-        let overlayColorHex = "#000000";
-        if (display_mode == 'Time') overlayColorHex = overlay_time_color;
-        else if (display_mode == 'Custom Text') overlayColorHex = overlay_text_color;
-        else if (display_mode == 'Pixel Art') overlayColorHex = overlay_pixelart_color;
-
-        // 兼容 hexToRgb 返回 array 或 object 的情况
-        let ocRaw = null;
-        try { ocRaw = hexToRgb(overlayColorHex); } catch(e) { ocRaw = null; }
-        let oc = [0,0,0];
-        if (Array.isArray(ocRaw)) {
-            oc = ocRaw;
-        } else if (ocRaw && typeof ocRaw === 'object') {
-            oc = [ocRaw.r || ocRaw[0] || 0, ocRaw.g || ocRaw[1] || 0, ocRaw.b || ocRaw[2] || 0];
-        }
-
-        // 只在 Snake_display 标记的位置替换颜色，不会触碰其他像素
-        for (let i2 = 0; i2 < RGBData.length; i2 += 3) {
-            let ledIndex = Math.floor(i2 / 3);
-            if (Snake_display[ledIndex] !== 0) {
-                RGBData[i2]     = oc[0];
-                RGBData[i2 + 1] = oc[1];
-                RGBData[i2 + 2] = oc[2];
-            }
-        }
-    }
-}
-// === End Overlay Post-Processing ===
 		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
 			const startIdx = CurrPacket * MaxLedsInPacket;
 			const highByte = ((startIdx >> 8) & 0xFF);
