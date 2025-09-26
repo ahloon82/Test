@@ -2403,7 +2403,7 @@ class WLEDDevice {
 		if (display_mode != 'Components') {
 			if (display != undefined) {
 				displayClock();
-				let Snake_display = rearrangeDisplayForSnakeLayout(display);
+				Snake_display = rearrangeDisplayForSnakeLayout(display) || [];
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
@@ -2466,21 +2466,39 @@ class WLEDDevice {
 
 
     // === Overlay Post-Processing ===
-    if (overlay_enabled) {
+if (overlay_enabled) {
+    // 如果没有 Snake_display（或为空），安全跳过，不抛错
+    if (typeof Snake_display === 'undefined' || !Snake_display || !Snake_display.length) {
+        // no overlay map available - skip overlay processing
+    } else {
+        // 选择对应模式的 overlay 颜色
         let overlayColorHex = "#000000";
         if (display_mode == 'Time') overlayColorHex = overlay_time_color;
         else if (display_mode == 'Custom Text') overlayColorHex = overlay_text_color;
         else if (display_mode == 'Pixel Art') overlayColorHex = overlay_pixelart_color;
-        let oc = hexToRgb(overlayColorHex);
+
+        // 兼容 hexToRgb 返回 array 或 object 的情况
+        let ocRaw = null;
+        try { ocRaw = hexToRgb(overlayColorHex); } catch(e) { ocRaw = null; }
+        let oc = [0,0,0];
+        if (Array.isArray(ocRaw)) {
+            oc = ocRaw;
+        } else if (ocRaw && typeof ocRaw === 'object') {
+            oc = [ocRaw.r || ocRaw[0] || 0, ocRaw.g || ocRaw[1] || 0, ocRaw.b || ocRaw[2] || 0];
+        }
+
+        // 只在 Snake_display 标记的位置替换颜色，不会触碰其他像素
         for (let i2 = 0; i2 < RGBData.length; i2 += 3) {
-            if (Snake_display[Math.floor(i2/3)] !== 0) {
-                RGBData[i2] = oc[0];
-                RGBData[i2+1] = oc[1];
-                RGBData[i2+2] = oc[2];
+            let ledIndex = Math.floor(i2 / 3);
+            if (Snake_display[ledIndex] !== 0) {
+                RGBData[i2]     = oc[0];
+                RGBData[i2 + 1] = oc[1];
+                RGBData[i2 + 2] = oc[2];
             }
         }
     }
-    // === End Overlay Post-Processing ===
+}
+// === End Overlay Post-Processing ===
 		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
 			const startIdx = CurrPacket * MaxLedsInPacket;
 			const highByte = ((startIdx >> 8) & 0xFF);
