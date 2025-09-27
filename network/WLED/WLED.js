@@ -2418,10 +2418,13 @@ class WLEDDevice {
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-							RGBData[led_index * 3] = 0;
-							RGBData[led_index * 3 + 1] = 0;
-							RGBData[led_index * 3 + 2] = 0;
-							break;
+                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                                RGBData[led_index * 3] = 0;
+                                RGBData[led_index * 3 + 1] = 0;
+                                RGBData[led_index * 3 + 2] = 0;
+                            }
+                            break;
 						case 0.3:
 							let fcRGB = hexToRgb(forcedColor);
 							RGBData[led_index * 3] = fcRGB.r;
