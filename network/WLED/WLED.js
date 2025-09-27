@@ -37,7 +37,7 @@ export function ControllableParameters() {
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+	{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
 
 ];
 }
@@ -2401,10 +2401,14 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = [255, 0, 0]; // 固定白色
-						RGBData[led_index * 3] = contrast[0];
-						RGBData[led_index * 3 + 1] = contrast[1];
-						RGBData[led_index * 3 + 2] = contrast[2];
+                        // 用 device.createColorArray 把 UI 颜色转成 [R,G,B]
+let overlayColor = controller.parameters.overlayColor || "#FFFFFF";
+let contrast = device.createColorArray(overlayColor, 1, "Inline"); // 生成一个像素的 RGB
+
+RGBData[led_index * 3]     = contrast[0];
+RGBData[led_index * 3 + 1] = contrast[1];
+RGBData[led_index * 3 + 2] = contrast[2];
+
 					}
 				}
 			}
