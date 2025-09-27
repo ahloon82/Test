@@ -54,20 +54,6 @@ let jobRunning = false;
 let rowOffset = 0
 let colOffset = 0
 
-function hexToRgb(hex) {
-    if (!hex || typeof hex !== "string") return null;
-    hex = hex.replace("#", "");
-    if (hex.length === 3) {
-        hex = hex.split("").map(c => c + c).join("");
-    }
-    if (hex.length !== 6) return null;
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    return [r, g, b];
-}
-
-
 const SMALL_LETTERS = {
 	'A': [
 		[0, 1, 0],
@@ -2406,24 +2392,42 @@ class WLEDDevice {
 			RGBData = componentChannel.getColors("Inline");
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
-			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
-					let val = Snake_display_local[led_index];
-					// treat val as foreground if it's not one of the special control values
-					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-						let r = RGBData[led_index * 3];
-						let g = RGBData[led_index * 3 + 1];
-						let b = RGBData[led_index * 3 + 2];
-                  let contrast = hexToRgb(controller.overlayColor || "#FFFFFF");  // 从UI拿颜色，没有就用白色兜底
-if (contrast) {
-    RGBData[led_index * 3] = contrast[0];
-    RGBData[led_index * 3 + 1] = contrast[1];
-    RGBData[led_index * 3 + 2] = contrast[2];
+			
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+    for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+        let val = Snake_display_local[led_index];
+        // treat val as foreground if it's not one of the special control values
+        if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
+            let r = RGBData[led_index * 3];
+            let g = RGBData[led_index * 3 + 1];
+            let b = RGBData[led_index * 3 + 2];
+
+            // ✅ 修改点：使用 UI 设置的 overlayColor，而不是写死白色
+            let contrastRgb = hexToRgb(controller.overlayColor || "#FFFFFF");
+            RGBData[led_index * 3]     = contrastRgb.r;
+            RGBData[led_index * 3 + 1] = contrastRgb.g;
+            RGBData[led_index * 3 + 2] = contrastRgb.b;
+        }
+    }
 }
+
+// 辅助函数，如果文件里没有就加上：
+function hexToRgb(hex) {
+    if (!hex) return { r: 255, g: 255, b: 255 }; // 默认白色
+    hex = hex.replace("#", "");
+    if (hex.length === 3) {
+        hex = hex.split("").map(c => c + c).join("");
+    }
+    if (hex.length !== 6) return { r: 255, g: 255, b: 255 };
+    return {
+        r: parseInt(hex.substr(0, 2), 16),
+        g: parseInt(hex.substr(2, 2), 16),
+        b: parseInt(hex.substr(4, 2), 16)
+    };
 }
-				}
-			}
+
+
 			
 		}
 
