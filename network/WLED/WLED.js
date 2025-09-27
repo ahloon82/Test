@@ -36,8 +36,8 @@ export function ControllableParameters() {
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": false },
-	];
+	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
+		];
 }
 
 let WLED;
@@ -2388,6 +2388,25 @@ class WLEDDevice {
 			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
 		} else {
 			RGBData = componentChannel.getColors("Inline");
+			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
+			// and force foreground pixels (display) to use contrasting colors so they remain visible.
+			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+					let val = Snake_display_local[led_index];
+					// treat val as foreground if it's not one of the special control values
+					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
+						let r = RGBData[led_index * 3];
+						let g = RGBData[led_index * 3 + 1];
+						let b = RGBData[led_index * 3 + 2];
+						let contrast = pickContrastColor([r, g, b]);
+						RGBData[led_index * 3] = contrast[0];
+						RGBData[led_index * 3 + 1] = contrast[1];
+						RGBData[led_index * 3 + 2] = contrast[2];
+					}
+				}
+			}
+			
 		}
 
 		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
@@ -2895,37 +2914,13 @@ class DeviceState {
 			async);
 	}
 }
-
-// === Overlay 渲染逻辑开始 ===
-function renderFrame(ctx, params) {
-    if (params.overlayEnabled) {
-        // 渲染 SignalRGB 背景
-        renderSignalRGB(ctx, params);
-        // 再渲染前景（时间 / 文本 / 像素图），自动换对比色
-        renderDisplayWithOverlay(ctx, params);
-    } else {
-        renderDisplayNormal(ctx, params);
-    }
+// === pickContrastColor: 返回与背景对比明显的颜色（黑或者白） ===
+function pickContrastColor(rgbArr) {
+	let r = rgbArr[0] || 0;
+	let g = rgbArr[1] || 0;
+	let b = rgbArr[2] || 0;
+	const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+	// 如果背景偏亮 -> 用黑色；否则用白色
+	if (brightness > 130) return [0, 0, 0];
+	return [255, 255, 255];
 }
-
-function renderDisplayWithOverlay(ctx, params) {
-    const items = getDisplayItems(params); // 获取前景像素点数据
-    items.forEach(({x, y, originalColor}) => {
-        const bgColor = getSignalRGBColorAt(x, y) || [0,0,0];
-        const newColor = pickContrastColor(bgColor);
-        drawPixel(ctx, x, y, newColor);
-    });
-}
-
-function renderDisplayNormal(ctx, params) {
-    const items = getDisplayItems(params);
-    items.forEach(({x, y, originalColor}) => {
-        drawPixel(ctx, x, y, originalColor);
-    });
-}
-
-function pickContrastColor([r, g, b]) {
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 128 ? [0, 0, 0] : [255, 255, 255];
-}
-// === Overlay 渲染逻辑结束 ===
