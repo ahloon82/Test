@@ -34,10 +34,12 @@ export function ControllableParameters() {
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-		{ "property": "overlayEnabled", "label": "启用 Overlay", "type": "boolean", "description": "开启后 Pixel/Text/Time 渲染反色显示", "default": false },
-        { "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
+		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-	];
+	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
+		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+
+];
 }
 
 let WLED;
@@ -2388,6 +2390,25 @@ class WLEDDevice {
 			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
 		} else {
 			RGBData = componentChannel.getColors("Inline");
+			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
+			// and force foreground pixels (display) to use contrasting colors so they remain visible.
+			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+					let val = Snake_display_local[led_index];
+					// treat val as foreground if it's not one of the special control values
+					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
+						let r = RGBData[led_index * 3];
+						let g = RGBData[led_index * 3 + 1];
+						let b = RGBData[led_index * 3 + 2];
+                        let contrast = [255, 0, 0]; // 固定白色
+						RGBData[led_index * 3] = contrast[0];
+						RGBData[led_index * 3 + 1] = contrast[1];
+						RGBData[led_index * 3 + 2] = contrast[2];
+					}
+				}
+			}
+			
 		}
 
 		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
@@ -2399,10 +2420,13 @@ class WLEDDevice {
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-							RGBData[led_index * 3] = 0;
-							RGBData[led_index * 3 + 1] = 0;
-							RGBData[led_index * 3 + 2] = 0;
-							break;
+                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                                RGBData[led_index * 3] = 0;
+                                RGBData[led_index * 3 + 1] = 0;
+                                RGBData[led_index * 3 + 2] = 0;
+                            }
+                            break;
 						case 0.3:
 							let fcRGB = hexToRgb(forcedColor);
 							RGBData[led_index * 3] = fcRGB.r;
@@ -2428,20 +2452,7 @@ class WLEDDevice {
 			}
 		}
 
-		
-        // === Overlay Invert Logic ===
-        if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-            let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-            for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
-                let val = Snake_display_local[led_index];
-                if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-                    RGBData[led_index * 3]     = 255 - (RGBData[led_index * 3] || 0);
-                    RGBData[led_index * 3 + 1] = 255 - (RGBData[led_index * 3 + 1] || 0);
-                    RGBData[led_index * 3 + 2] = 255 - (RGBData[led_index * 3 + 2] || 0);
-                }
-            }
-        }
-for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
+		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
 			const startIdx = CurrPacket * MaxLedsInPacket;
 			const highByte = ((startIdx >> 8) & 0xFF);
 			const lowByte = (startIdx & 0xFF);
@@ -2907,4 +2918,28 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
+}
+
+
+// === Transparent Overlay Merge ===
+// 有像素显示Overlay，没有像素透出SignalRGB
+function applyOverlay(signalRgbColors, overlayColors) {
+    let out = new Array(signalRgbColors.length);
+    for (let i = 0; i < signalRgbColors.length; i++) {
+        let o = overlayColors[i];
+        if (!o || (o.r === 0 && o.g === 0 && o.b === 0)) {
+            out[i] = signalRgbColors[i]; // 空像素 → 背景
+        } else {
+            out[i] = o; // 有像素 → 前景
+        }
+    }
+    return out;
+}
+
+
+
+// === Final LED Render ===
+// 将 SignalRGB 背景层 和 Overlay 前景层 合成后输出到 leds[]
+if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
+    leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
