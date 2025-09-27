@@ -2421,7 +2421,7 @@ if (contrast) {
     RGBData[led_index * 3 + 1] = contrast[1];
     RGBData[led_index * 3 + 2] = contrast[2];
 }
-
+}
 				}
 			}
 			
