@@ -1,4 +1,19 @@
-export function Name() { return "WLED"; }
+export 
+// === Overlay handling injected ===
+function applyOverlay(baseColor, overlayPixel) {
+    if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+        if (overlayPixel !== 0) {
+            // Foreground pixel -> static white
+            return [255, 255, 255];
+        } else {
+            // Background pixel -> keep base color (SignalRGB)
+            return baseColor;
+        }
+    }
+    return baseColor;
+}
+
+function Name() { return "WLED"; }
 export function Version() { return "0.15.0"; }
 export function Type() { return "network"; }
 export function Publisher() { return "FeuerSturm"; }
@@ -2418,11 +2433,10 @@ class WLEDDevice {
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-                            if (!(overlayEnabled && display != undefined && display_mode != 'Components')) {
-                                RGBData[led_index * 3] = 0;
-                                RGBData[led_index * 3 + 1] = 0;
-                                RGBData[led_index * 3 + 2] = 0;
-                            }
+                            let applied0 = applyOverlay([0,0,0], 0);
+                            RGBData[led_index * 3] = applied0[0];
+                            RGBData[led_index * 3 + 1] = applied0[1];
+                            RGBData[led_index * 3 + 2] = applied0[2];
                             break;
 						case 0.3:
 							let fcRGB = hexToRgb(forcedColor);
