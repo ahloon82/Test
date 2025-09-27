@@ -34,6 +34,7 @@ export function ControllableParameters() {
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
+		{ "property": "enableOverlay", : "overlay", "label": "启用 Overlay 反色", "type": "boolean", "description": "开启后 Pixel / Text / Time 渲染将使用 Overlay 反色版本", "default": false },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	];
@@ -2893,4 +2894,32 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
+}
+
+
+// ===== Overlay Support =====
+function invertDisplay(ctx, width, height) {
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        data[i]     = 255 - data[i];     // R
+        data[i + 1] = 255 - data[i + 1]; // G
+        data[i + 2] = 255 - data[i + 2]; // B
+    }
+    ctx.putImageData(imageData, 0, 0);
+}
+
+function renderPixelOverlay(ctx, width, height, pixelData) {
+    renderPixel(ctx, width, height, pixelData);
+    invertDisplay(ctx, width, height);
+}
+
+function renderTextOverlay(ctx, width, height, text, color) {
+    renderText(ctx, width, height, text, color);
+    invertDisplay(ctx, width, height);
+}
+
+function renderTimeOverlay(ctx, width, height, timeStr, color) {
+    renderTime(ctx, width, height, timeStr, color);
+    invertDisplay(ctx, width, height);
 }
