@@ -2390,8 +2390,7 @@ class WLEDDevice {
 			RGBData = componentChannel.getColors("Inline");
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
-			
-if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
     let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
     for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
         RGBData[led_index * 3]     = 0;
@@ -2399,7 +2398,6 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
         RGBData[led_index * 3 + 2] = 0;
     }
 }
-
 				}
 			}
 			
