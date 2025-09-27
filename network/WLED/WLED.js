@@ -54,6 +54,20 @@ let jobRunning = false;
 let rowOffset = 0
 let colOffset = 0
 
+function hexToRgb(hex) {
+    if (!hex || typeof hex !== "string") return null;
+    hex = hex.replace("#", "");
+    if (hex.length === 3) {
+        hex = hex.split("").map(c => c + c).join("");
+    }
+    if (hex.length !== 6) return null;
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    return [r, g, b];
+}
+
+
 const SMALL_LETTERS = {
 	'A': [
 		[0, 1, 0],
@@ -2401,11 +2415,13 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = hexToRgb(controller.overlayColor);
-						RGBData[led_index * 3] = contrast[0];
-						RGBData[led_index * 3 + 1] = contrast[1];
-						RGBData[led_index * 3 + 2] = contrast[2];
-					}
+                  let contrast = hexToRgb(controller.overlayColor || "#FFFFFF");  // 从UI拿颜色，没有就用白色兜底
+if (contrast) {
+    RGBData[led_index * 3] = contrast[0];
+    RGBData[led_index * 3 + 1] = contrast[1];
+    RGBData[led_index * 3 + 2] = contrast[2];
+}
+
 				}
 			}
 			
