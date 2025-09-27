@@ -2392,19 +2392,43 @@ class WLEDDevice {
 			RGBData = componentChannel.getColors("Inline");
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
-			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
-					let val = Snake_display_local[led_index];
-					// treat val as foreground if it's not one of the special control values
-					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-						let r = RGBData[led_index * 3];
-						let g = RGBData[led_index * 3 + 1];
-						let b = RGBData[led_index * 3 + 2];
-                        let contrast = [255, 255, 255]; // 固定白色
-						RGBData[led_index * 3] = contrast[0];
-						RGBData[led_index * 3 + 1] = contrast[1];
-						RGBData[led_index * 3 + 2] = contrast[2];
+			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+
+    // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
+    // 回退到 overlayColor（全局变量风格），最终兜底 "#FFFFFF"
+    let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
+        ? controller.overlayColor
+        : (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
+
+    // 使用已有的 hexToRgb 函数（如果存在），否则本地解析
+    let overlayRgb;
+    if (typeof hexToRgb === 'function') {
+        overlayRgb = hexToRgb(overlayHex);
+    } else {
+        // 简单安全解析：支持 #RGB / #RRGGBB / RGB / RRGGBB
+        let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
+        if (h.length === 3) h = h.split('').map(function(c){ return c + c; }).join('');
+        if (h.length !== 6) {
+            overlayRgb = { r: 255, g: 255, b: 255 };
+        } else {
+            overlayRgb = {
+                r: parseInt(h.substr(0,2), 16) || 0,
+                g: parseInt(h.substr(2,2), 16) || 0,
+                b: parseInt(h.substr(4,2), 16) || 0
+            };
+        }
+    }
+
+    for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+        let val = Snake_display_local[led_index];
+        // treat val as foreground if it's not one of the special control values
+        if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
+            // 应用 overlay RGB（不再写死白色）
+            RGBData[led_index * 3]     = overlayRgb.r;
+            RGBData[led_index * 3 + 1] = overlayRgb.g;
+            RGBData[led_index * 3 + 2] = overlayRgb.b;
 					}
 				}
 			}
