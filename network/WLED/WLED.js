@@ -3,7 +3,8 @@ export function Version() { return "0.15.0"; }
 export function Type() { return "network"; }
 export function Publisher() { return "FeuerSturm"; }
 export function Documentation() { return "gettingstarted/srgbmods-net-info"; }
-export function Size() { return [1, 1]; }
+export function Size() { return [
+        { "property": "overlayPixelColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },1, 1]; }
 export function DefaultPosition() { return [0, 0]; }
 export function DefaultScale() { return 1.0; }
 export function SubdeviceController() { return true; }
@@ -2399,7 +2400,7 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = [255, 255, 255]; // 固定白色
+                        let contrast = hexToRgb(controller.parameters.overlayPixelColor || "#FFFFFF"); // 使用 UI 自定义颜色，默认白色
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
