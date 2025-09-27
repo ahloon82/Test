@@ -2400,7 +2400,15 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = hexToRgb(controller.parameters.overlayPixelColor || "#FFFFFF"); // 使用 UI 自定义颜色，默认白色
+                        let contrast = [255, 255, 255]; // 默认白色
+    let uiColor = controller.parameters.overlayPixelColor;
+    if (typeof uiColor === "string") {
+        contrast = hexToRgb(uiColor);
+    } else if (Array.isArray(uiColor)) {
+        contrast = uiColor;
+    } else if (uiColor && typeof uiColor === "object" && "r" in uiColor) {
+        contrast = [uiColor.r, uiColor.g, uiColor.b];
+    }
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
@@ -2917,6 +2925,16 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
+}
+// === pickContrastColor: 返回与背景对比明显的颜色（黑或者白） ===
+function pickContrastColor(rgbArr) {
+	let r = rgbArr[0] || 0;
+	let g = rgbArr[1] || 0;
+	let b = rgbArr[2] || 0;
+	const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+	// 如果背景偏亮 -> 用黑色；否则用白色
+	if (brightness > 130) return [0, 0, 0];
+	return [255, 255, 255];
 }
 
 
