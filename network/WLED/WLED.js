@@ -2484,7 +2484,16 @@ export function Initialize() {
 }
 
 export function Render() {
-	WLED.SendColorPackets();
+	WLED.if (overlayEnabled && display_mode != "Components") {
+        for (let led_index = 0; led_index < Snake_display.length; led_index++) {
+            if (Snake_display[led_index] != 0) {
+                RGBData[led_index * 3] = 0;
+                RGBData[led_index * 3 + 1] = 0;
+                RGBData[led_index * 3 + 2] = 0;
+            }
+        }
+    }
+SendColorPackets();
 }
 
 export function Shutdown(suspend) {
