@@ -34,8 +34,7 @@ export function ControllableParameters() {
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-		{ "property": "overlayEnabled", "label": "启用 Overlay", "type": "boolean", "description": "开启后 Pixel / Text / Time 渲染将反色显示", "default": false },
-        { "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
+		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	];
 }
@@ -2424,19 +2423,9 @@ class WLEDDevice {
 							RGBData[led_index * 3 + 2] = darken2[2];
 							break;
 					}
-				
-					// Overlay invert: if enabled and this led is part of the display (non-zero), invert its color
-					if (typeof overlayEnabled !== "undefined" && overlayEnabled) {
-				let val_for_overlay = Snake_display[led_index];
-				if (val_for_overlay !== 0 && val_for_overlay !== 0.3 && val_for_overlay !== 0.5 && val_for_overlay !== 0.7) {
-						RGBData[led_index * 3]     = 255 - (RGBData[led_index * 3] || 0);
-						RGBData[led_index * 3 + 1] = 255 - (RGBData[led_index * 3 + 1] || 0);
-						RGBData[led_index * 3 + 2] = 255 - (RGBData[led_index * 3 + 2] || 0);
-					}
-}
+				}
 			}
-			}
-
+		}
 
 		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
 			const startIdx = CurrPacket * MaxLedsInPacket;
@@ -2904,32 +2893,4 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
-}
-
-
-// ===== Overlay Invert Support =====
-function invertDisplay(ctx, width, height) {
-    let imageData = ctx.getImageData(0, 0, width, height);
-    let data = imageData.data;
-    for (let i = 0; i < data.length; i += 4) {
-        data[i]     = 255 - data[i];     // R
-        data[i + 1] = 255 - data[i + 1]; // G
-        data[i + 2] = 255 - data[i + 2]; // B
-    }
-    ctx.putImageData(imageData, 0, 0);
-}
-
-function renderPixelOverlay(ctx, width, height, pixelData) {
-    renderPixel(ctx, width, height, pixelData);
-    invertDisplay(ctx, width, height);
-}
-
-function renderTextOverlay(ctx, width, height, text, color) {
-    renderText(ctx, width, height, text, color);
-    invertDisplay(ctx, width, height);
-}
-
-function renderTimeOverlay(ctx, width, height, timeStr, color) {
-    renderTime(ctx, width, height, timeStr, color);
-    invertDisplay(ctx, width, height);
 }
