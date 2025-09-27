@@ -2390,20 +2390,16 @@ class WLEDDevice {
 			RGBData = componentChannel.getColors("Inline");
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
-			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
-					let val = Snake_display_local[led_index];
-					// treat val as foreground if it's not one of the special control values
-					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-						let r = RGBData[led_index * 3];
-						let g = RGBData[led_index * 3 + 1];
-						let b = RGBData[led_index * 3 + 2];
-						let contrast = pickContrastColor([r, g, b]);
-						RGBData[led_index * 3] = contrast[0];
-						RGBData[led_index * 3 + 1] = contrast[1];
-						RGBData[led_index * 3 + 2] = contrast[2];
-					}
+			
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+    for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+        RGBData[led_index * 3]     = 0;
+        RGBData[led_index * 3 + 1] = 0;
+        RGBData[led_index * 3 + 2] = 0;
+    }
+}
+
 				}
 			}
 			
@@ -2416,14 +2412,6 @@ class WLEDDevice {
 				displayClock();
 				let Snake_display = rearrangeDisplayForSnakeLayout(display);
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
-                    if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-                        // Overlay 强制全黑（测试用）
-                        RGBData[led_index * 3]     = 0;
-                        RGBData[led_index * 3 + 1] = 0;
-                        RGBData[led_index * 3 + 2] = 0;
-                        continue;
-                    }
-
 					switch (Snake_display[led_index]) {
 						case 0:
                             // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
