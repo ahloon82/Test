@@ -37,7 +37,9 @@ export function ControllableParameters() {
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-		];
+		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+
+];
 }
 
 let WLED;
@@ -2399,7 +2401,7 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-						let contrast = pickContrastColor([r, g, b]);
+                        let contrast = [255, 0, 0]; // 固定白色
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
@@ -2916,16 +2918,6 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
-}
-// === pickContrastColor: 返回与背景对比明显的颜色（黑或者白） ===
-function pickContrastColor(rgbArr) {
-	let r = rgbArr[0] || 0;
-	let g = rgbArr[1] || 0;
-	let b = rgbArr[2] || 0;
-	const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-	// 如果背景偏亮 -> 用黑色；否则用白色
-	if (brightness > 130) return [0, 0, 0];
-	return [255, 255, 255];
 }
 
 
