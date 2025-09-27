@@ -2401,10 +2401,28 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = [255, 0, 0]; // 固定白色
-						RGBData[led_index * 3] = contrast[0];
-						RGBData[led_index * 3 + 1] = contrast[1];
-						RGBData[led_index * 3 + 2] = contrast[2];
+                        // 从 UI 获取 overlayColor，兼容 [R,G,B] 数组 和 "#RRGGBB" 字符串
+let val = controller && controller.parameters ? controller.parameters.overlayColor : undefined;
+let contrast;
+
+if (Array.isArray(val)) {
+    // UI 给的是 [R,G,B]
+    contrast = val;
+} else if (typeof val === "string" && val.startsWith("#") && val.length === 7) {
+    // UI 给的是 "#RRGGBB"
+    contrast = [
+        parseInt(val.slice(1, 3), 16),
+        parseInt(val.slice(3, 5), 16),
+        parseInt(val.slice(5, 7), 16)
+    ];
+} else {
+    // 默认白色
+    contrast = [255, 255, 255];
+}
+
+RGBData[led_index * 3]     = contrast[0];
+RGBData[led_index * 3 + 1] = contrast[1];
+RGBData[led_index * 3 + 2] = contrast[2];
 					}
 				}
 			}
