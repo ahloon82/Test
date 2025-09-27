@@ -2401,7 +2401,7 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = hexToRgb(overlayPixelColor); // 使用自定义颜色
+                        let contrast = hexToRgb(overlayPixelColor || "#FFFFFF"); // 使用自定义颜色，默认白色
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
