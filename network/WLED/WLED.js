@@ -37,7 +37,11 @@ export function ControllableParameters() {
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-		];
+	{ "property": "overlayR", "label": "Overlay 红", "type": "number", "min": 0, "max": 255, "default": 255 },
+{ "property": "overlayG", "label": "Overlay 绿", "type": "number", "min": 0, "max": 255, "default": 255 },
+{ "property": "overlayB", "label": "Overlay 蓝", "type": "number", "min": 0, "max": 255, "default": 255 },
+
+];
 }
 
 let WLED;
@@ -2399,7 +2403,12 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = [255, 0, 0]; // 固定白色
+                   // 👇 用 UI 参数控制颜色
+            let contrast = [
+                controller.parameters.overlayR,
+                controller.parameters.overlayG,
+                controller.parameters.overlayB
+            ];
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
