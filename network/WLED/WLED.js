@@ -2926,9 +2926,8 @@ function pickContrastColor(rgbArr) {
 }
 
 
-
 // === Transparent Overlay Merge ===
-// 逐像素透明优先覆盖：有像素显示Overlay，没有像素透出SignalRGB
+// 有像素显示Overlay，没有像素透出SignalRGB
 function applyOverlay(signalRgbColors, overlayColors) {
     let out = new Array(signalRgbColors.length);
     for (let i = 0; i < signalRgbColors.length; i++) {
@@ -2936,12 +2935,16 @@ function applyOverlay(signalRgbColors, overlayColors) {
         if (!o || (o.r === 0 && o.g === 0 && o.b === 0)) {
             out[i] = signalRgbColors[i]; // 空像素 → 背景
         } else {
-            out[i] = o; // 有像素 → 覆盖
+            out[i] = o; // 有像素 → 前景
         }
     }
     return out;
 }
 
 
-// 最终渲染输出
-leds = applyOverlay(signalrgbLayer, overlayLayer);
+
+// === Final LED Render ===
+// 将 SignalRGB 背景层 和 Overlay 前景层 合成后输出到 leds[]
+if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
+    leds = applyOverlay(signalrgbLayer, overlayLayer);
+}
