@@ -42,6 +42,21 @@ export function ControllableParameters() {
 
 let WLED;
 let display;
+
+// === Added for static overlay support ===
+let overlayLayer = [];
+
+// Compose overlay (PixelArt/Text/Time) and background (SignalRGB)
+function composeWithBackground(signalrgbLayer, leds) {
+    for (let i = 0; i < leds.length; i++) {
+        if (overlayLayer[i] && overlayLayer[i] !== 0 && overlayLayer[i] !== "#000000") {
+            leds[i] = overlayLayer[i]; // static overlay pixel
+        } else {
+            leds[i] = signalrgbLayer[i]; // background
+        }
+    }
+}
+
 let displaySize = { width: 0, height: 0 };
 const MaxLedsInPacket = 485;
 const BIG_ENDIAN = 1;
@@ -2418,12 +2433,8 @@ class WLEDDevice {
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
-                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
-                                RGBData[led_index * 3] = 0;
-                                RGBData[led_index * 3 + 1] = 0;
-                                RGBData[led_index * 3 + 2] = 0;
-                            }
+                            // empty pixel -> leave as transparent (overlayLayer stays black)
+                            overlayLayer[led_index] = 0;
                             break;
 						case 0.3:
 							let fcRGB = hexToRgb(forcedColor);
@@ -2484,7 +2495,9 @@ export function Initialize() {
 }
 
 export function Render() {
-	WLED.SendColorPackets();
+	WLED.// Compose final output
+    composeWithBackground(signalrgbLayer, leds);
+    SendColorPackets();
 }
 
 export function Shutdown(suspend) {
