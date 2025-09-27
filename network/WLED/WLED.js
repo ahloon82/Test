@@ -36,6 +36,7 @@ export function ControllableParameters() {
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
+{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": false },
 	];
 }
 
@@ -2894,3 +2895,37 @@ class DeviceState {
 			async);
 	}
 }
+
+// === Overlay 渲染逻辑开始 ===
+function renderFrame(ctx, params) {
+    if (params.overlayEnabled) {
+        // 渲染 SignalRGB 背景
+        renderSignalRGB(ctx, params);
+        // 再渲染前景（时间 / 文本 / 像素图），自动换对比色
+        renderDisplayWithOverlay(ctx, params);
+    } else {
+        renderDisplayNormal(ctx, params);
+    }
+}
+
+function renderDisplayWithOverlay(ctx, params) {
+    const items = getDisplayItems(params); // 获取前景像素点数据
+    items.forEach(({x, y, originalColor}) => {
+        const bgColor = getSignalRGBColorAt(x, y) || [0,0,0];
+        const newColor = pickContrastColor(bgColor);
+        drawPixel(ctx, x, y, newColor);
+    });
+}
+
+function renderDisplayNormal(ctx, params) {
+    const items = getDisplayItems(params);
+    items.forEach(({x, y, originalColor}) => {
+        drawPixel(ctx, x, y, originalColor);
+    });
+}
+
+function pickContrastColor([r, g, b]) {
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 128 ? [0, 0, 0] : [255, 255, 255];
+}
+// === Overlay 渲染逻辑结束 ===
