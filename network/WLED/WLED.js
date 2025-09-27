@@ -43,16 +43,16 @@ export function ControllableParameters() {
 let WLED;
 let display;
 
-// === Added for static overlay support ===
+// === Added for static foreground overlay support ===
 let overlayLayer = [];
 
-// Compose overlay (PixelArt/Text/Time) and background (SignalRGB)
+// Compose static overlay (PixelArt/Text/Time) and dynamic background (SignalRGB)
 function composeWithBackground(signalrgbLayer, leds) {
     for (let i = 0; i < leds.length; i++) {
         if (overlayLayer[i] && overlayLayer[i] !== 0 && overlayLayer[i] !== "#000000") {
-            leds[i] = overlayLayer[i]; // static overlay pixel
+            leds[i] = overlayLayer[i]; // static overlay pixel (white text, pixelart, etc.)
         } else {
-            leds[i] = signalrgbLayer[i]; // background
+            leds[i] = signalrgbLayer[i]; // background from Components
         }
     }
 }
@@ -2433,7 +2433,7 @@ class WLEDDevice {
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-                            // empty pixel -> leave as transparent (overlayLayer stays black)
+                            // empty pixel -> leave transparent, overlayLayer stays black
                             overlayLayer[led_index] = 0;
                             break;
 						case 0.3:
@@ -2495,7 +2495,7 @@ export function Initialize() {
 }
 
 export function Render() {
-	WLED.// Compose final output
+	WLED.// Compose final output combining static overlay and background
     composeWithBackground(signalrgbLayer, leds);
     SendColorPackets();
 }
