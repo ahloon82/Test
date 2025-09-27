@@ -3,8 +3,7 @@ export function Version() { return "0.15.0"; }
 export function Type() { return "network"; }
 export function Publisher() { return "FeuerSturm"; }
 export function Documentation() { return "gettingstarted/srgbmods-net-info"; }
-export function Size() { return [
-        { "property": "overlayPixelColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },1, 1]; }
+export function Size() { return [1, 1]; }
 export function DefaultPosition() { return [0, 0]; }
 export function DefaultScale() { return 1.0; }
 export function SubdeviceController() { return true; }
@@ -2400,7 +2399,7 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = hexToRgb(controller.parameters.overlayPixelColor || "#FFFFFF"); // 使用 UI 自定义颜色，默认白色
+                        let contrast = [255, 255, 255]; // 固定白色
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
@@ -2917,16 +2916,6 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
-}
-// === pickContrastColor: 返回与背景对比明显的颜色（黑或者白） ===
-function pickContrastColor(rgbArr) {
-	let r = rgbArr[0] || 0;
-	let g = rgbArr[1] || 0;
-	let b = rgbArr[2] || 0;
-	const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-	// 如果背景偏亮 -> 用黑色；否则用白色
-	if (brightness > 130) return [0, 0, 0];
-	return [255, 255, 255];
 }
 
 
