@@ -3,7 +3,8 @@ export function Version() { return "0.15.0"; }
 export function Type() { return "network"; }
 export function Publisher() { return "FeuerSturm"; }
 export function Documentation() { return "gettingstarted/srgbmods-net-info"; }
-export function Size() { return [1, 1]; }
+export function Size() { return [
+        { "property": "overlayPixelColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },1, 1]; }
 export function DefaultPosition() { return [0, 0]; }
 export function DefaultScale() { return 1.0; }
 export function SubdeviceController() { return true; }
@@ -25,7 +26,6 @@ overlayPixelColor:readonly
 */
 export function ControllableParameters() {
 	return [
-        { "property": "overlayPixelColor", "label": "Overlay 像素颜色", "type": "color", "default": "#FFFFFF" },
 		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
 		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
 		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
@@ -2401,10 +2401,13 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = hexToRgb(overlayPixelColor || "#FFFFFF");
-// Fallback: 如果转换失败或无效，就强制白色
-if (!contrast || contrast.length !== 3 || contrast.some(isNaN)) {
-    contrast = [255, 255, 255];
+                        let contrast;
+if (typeof overlayPixelColor === "string") {
+    contrast = hexToRgb(overlayPixelColor);
+} else if (Array.isArray(overlayPixelColor)) {
+    contrast = overlayPixelColor;
+} else if (typeof overlayPixelColor === "object" && overlayPixelColor !== null && "r" in overlayPixelColor) {
+    contrast = [overlayPixelColor.r, overlayPixelColor.g, overlayPixelColor.b];
 }
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
