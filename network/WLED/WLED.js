@@ -37,9 +37,7 @@ export function ControllableParameters() {
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-	{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-
-];
+		];
 }
 
 let WLED;
@@ -2401,13 +2399,10 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let color = controller.parameters.overlayColor || "#FFFFFF";
-let contrast = [
-    parseInt(color.slice(1, 3), 16),
-    parseInt(color.slice(3, 5), 16),
-    parseInt(color.slice(5, 7), 16)
-];
-
+                        let contrast = [255, 0, 0]; // 固定白色
+						RGBData[led_index * 3] = contrast[0];
+						RGBData[led_index * 3 + 1] = contrast[1];
+						RGBData[led_index * 3 + 2] = contrast[2];
 					}
 				}
 			}
