@@ -2394,21 +2394,25 @@ class WLEDDevice {
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
 			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
 				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+			
+				// 从 UI 参数里取 overlayColor，如果没设置就用白色
+				const useHex = (controller && controller.parameters && controller.parameters.overlayColor) 
+					? controller.parameters.overlayColor 
+					: "#FFFFFF";
+			
+				// 用 device.createColorArray 把颜色转成 RGB 数组
+				let contrastArr = device.createColorArray(useHex, 1, "Inline");
+				let cR = contrastArr[0] || 255;
+				let cG = contrastArr[1] || 255;
+				let cB = contrastArr[2] || 255;
+			
+				const maxPixels = Math.min(Snake_display_local.length, Math.floor(RGBData.length / 3));
+				for (let led_index = 0, idx3 = 0; led_index < maxPixels; led_index++, idx3 += 3) {
 					let val = Snake_display_local[led_index];
-					// treat val as foreground if it's not one of the special control values
 					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-						let r = RGBData[led_index * 3];
-						let g = RGBData[led_index * 3 + 1];
-						let b = RGBData[led_index * 3 + 2];
-                        // 用 device.createColorArray 把 UI 颜色转成 [R,G,B]
-let overlayColor = controller.parameters.overlayColor || "#FFFFFF";
-let contrast = device.createColorArray(overlayColor, 1, "Inline"); // 生成一个像素的 RGB
-
-RGBData[led_index * 3]     = contrast[0];
-RGBData[led_index * 3 + 1] = contrast[1];
-RGBData[led_index * 3 + 2] = contrast[2];
-
+						RGBData[idx3    ] = cR;
+						RGBData[idx3 + 1] = cG;
+						RGBData[idx3 + 2] = cB;
 					}
 				}
 			}
