@@ -2924,3 +2924,18 @@ function pickContrastColor(rgbArr) {
 	if (brightness > 130) return [0, 0, 0];
 	return [255, 255, 255];
 }
+
+// === Transparent Overlay Merge ===
+// overlay 有像素 → 覆盖，空白 → 背景透出
+function applyOverlay(baseLayer, overlayLayer) {
+    let out = new Array(baseLayer.length);
+    for (let i = 0; i < baseLayer.length; i++) {
+        let o = overlayLayer[i];
+        if (!o || (o.r === 0 && o.g === 0 && o.b === 0)) {
+            out[i] = baseLayer[i];   // 空像素 → 背景
+        } else {
+            out[i] = o;              // 有像素 → 覆盖
+        }
+    }
+    return out;
+}
