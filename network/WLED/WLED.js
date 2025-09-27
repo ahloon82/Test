@@ -36,7 +36,9 @@ export function ControllableParameters() {
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-	];
+	    { "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
+    { "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+];
 }
 
 let WLED;
@@ -2896,7 +2898,6 @@ class DeviceState {
 			async);
 	}
 }
-
 
 function RenderOverlay() {
     if (!controller.parameters.overlayEnabled) return;
