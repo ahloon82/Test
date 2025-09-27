@@ -2484,7 +2484,18 @@ export function Initialize() {
 }
 
 export function Render() {
-	WLED.SendColorPackets();
+	WLED.if (overlayEnabled && display_mode != "Components") {
+        for (let led_index = 0; led_index < Snake_display.length; led_index++) {
+            if (Snake_display[led_index] !== 0) {
+                // Foreground pixels forced to static white
+                RGBData[led_index * 3] = 255;
+                RGBData[led_index * 3 + 1] = 255;
+                RGBData[led_index * 3 + 2] = 255;
+            }
+            // else: background remains untouched
+        }
+    }
+SendColorPackets();
 }
 
 export function Shutdown(suspend) {
