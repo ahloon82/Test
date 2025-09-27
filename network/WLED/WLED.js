@@ -2421,7 +2421,13 @@ class WLEDDevice {
                             if (overlayEnabled) {
                                 leds[led_index] = signalrgbLayer[led_index];
                             } else {
-                                leds[led_index] = "#000000";
+                                // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                                RGBData[led_index * 3] = 0;
+                                RGBData[led_index * 3 + 1] = 0;
+                                RGBData[led_index * 3 + 2] = 0;
+                            }
+                            
                             }
                             break;
 						case 0.3:
