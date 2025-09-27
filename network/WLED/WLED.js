@@ -37,7 +37,7 @@ export function ControllableParameters() {
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-	{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
 
 ];
 }
@@ -2394,25 +2394,27 @@ class WLEDDevice {
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
 			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
 				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-			
-				// 从 UI 参数里取 overlayColor，如果没设置就用白色
-				const useHex = (controller && controller.parameters && controller.parameters.overlayColor) 
-					? controller.parameters.overlayColor 
-					: "#FFFFFF";
-			
-				// 用 device.createColorArray 把颜色转成 RGB 数组
-				let contrastArr = device.createColorArray(useHex, 1, "Inline");
-				let cR = contrastArr[0] || 255;
-				let cG = contrastArr[1] || 255;
-				let cB = contrastArr[2] || 255;
-			
-				const maxPixels = Math.min(Snake_display_local.length, Math.floor(RGBData.length / 3));
-				for (let led_index = 0, idx3 = 0; led_index < maxPixels; led_index++, idx3 += 3) {
+				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
 					let val = Snake_display_local[led_index];
+					// treat val as foreground if it's not one of the special control values
 					if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-						RGBData[idx3    ] = cR;
-						RGBData[idx3 + 1] = cG;
-						RGBData[idx3 + 2] = cB;
+						let r = RGBData[led_index * 3];
+						let g = RGBData[led_index * 3 + 1];
+						let b = RGBData[led_index * 3 + 2];
+                        // 读取 UI 参数中的 overlayColor
+const useHex = (controller && controller.parameters && controller.parameters.overlayColor)
+    ? controller.parameters.overlayColor
+    : "#FFFFFF";
+
+// 转换为 RGB 数组
+let contrastArr = device.createColorArray(useHex, 1, "Inline");
+let cR = contrastArr[0] || 255;
+let cG = contrastArr[1] || 255;
+let cB = contrastArr[2] || 255;
+
+RGBData[led_index * 3]     = cR;
+RGBData[led_index * 3 + 1] = cG;
+RGBData[led_index * 3 + 2] = cB;
 					}
 				}
 			}
