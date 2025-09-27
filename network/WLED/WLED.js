@@ -21,6 +21,7 @@ fontSize:readonly
 custom_text:readonly
 time_format:readonly
 pixel_art:readonly
+overlayPixelColor:readonly
 */
 export function ControllableParameters() {
 	return [
