@@ -36,8 +36,8 @@ export function ControllableParameters() {
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+	{ "property": "invert", "label": "Invert 模式", "type": "boolean", "default": "false" },
+		{ "property": "invertTextColor", "label": "Invert 字体颜色", "type": "color", "default": "#FFFFFF" },
 
 ];
 }
@@ -2390,9 +2390,9 @@ class WLEDDevice {
 			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
 		} else {
 			RGBData = componentChannel.getColors("Inline");
-			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
+			// === overlay handling: when invert is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
-			if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+			if (typeof invert !== 'undefined' && invert && display != undefined && display_mode != 'Components') {
 				let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
 				for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
 					let val = Snake_display_local[led_index];
@@ -2401,7 +2401,8 @@ class WLEDDevice {
 						let r = RGBData[led_index * 3];
 						let g = RGBData[led_index * 3 + 1];
 						let b = RGBData[led_index * 3 + 2];
-                        let contrast = [255, 255, 255]; // 固定白色
+                        let invColor = hexToRgb(controller.parameters.invertTextColor || "#FFFFFF");
+                        let contrast = [invColor.r, invColor.g, invColor.b];
 						RGBData[led_index * 3] = contrast[0];
 						RGBData[led_index * 3 + 1] = contrast[1];
 						RGBData[led_index * 3 + 2] = contrast[2];
@@ -2420,8 +2421,8 @@ class WLEDDevice {
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
-                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                            // empty pixel: when invert is ON, keep SignalRGB background; otherwise set black
+                            if (typeof invert !== 'undefined' && invert && display != undefined && display_mode != 'Components') {
                                 RGBData[led_index * 3] = 0;
                                 RGBData[led_index * 3 + 1] = 0;
                                 RGBData[led_index * 3 + 2] = 0;
