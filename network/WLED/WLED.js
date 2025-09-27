@@ -2941,7 +2941,3 @@ function applyOverlay(signalRgbColors, overlayColors) {
     }
     return out;
 }
-
-
-// 最终渲染输出
-leds = applyOverlay(signalrgbLayer, overlayLayer);
