@@ -41,7 +41,6 @@ export function ControllableParameters() {
 }
 
 let WLED;
-let overlayLayer;
 let display;
 let displaySize = { width: 0, height: 0 };
 const MaxLedsInPacket = 485;
@@ -2416,31 +2415,19 @@ class WLEDDevice {
 			if (display != undefined) {
 				displayClock();
 				let Snake_display = rearrangeDisplayForSnakeLayout(display);
-                // Build overlayLayer only when overlayEnabled is true (non-destructive)
-                if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-                    overlayLayer = new Array(Snake_display.length);
-                    for (let led_index_overlay = 0; led_index_overlay < Snake_display.length; led_index_overlay++) {
-                        if (Snake_display[led_index_overlay] === 0) {
-                            // empty -> transparent overlay (background will show)
-                            overlayLayer[led_index_overlay] = {r:0, g:0, b:0};
-                        } else {
-                            // non-empty -> white static foreground
-                            overlayLayer[led_index_overlay] = {r:255, g:255, b:255};
-                        }
-                    }
-                } else {
-                    // no overlay -> ensure overlayLayer is undefined so applyOverlay is not used
-                    overlayLayer = undefined;
-                }
-
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
+                            if (overlayEnabled) {
+                                leds[led_index] = signalrgbLayer[led_index];
+                            } else {
+                                // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
                             if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
                                 RGBData[led_index * 3] = 0;
                                 RGBData[led_index * 3 + 1] = 0;
                                 RGBData[led_index * 3 + 2] = 0;
+                            }
+                            
                             }
                             break;
 						case 0.3:
