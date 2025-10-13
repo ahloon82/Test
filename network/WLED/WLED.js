@@ -2080,7 +2080,6 @@ export function ondisplay_modeChanged() {
                 const art = JSON.parse(multi_pixel_art);
                 const rows = art.length;
                 const cols = art[0].length;
-
                 for (let y = 0; y < rows; y++) {
                     for (let x = 0; x < cols; x++) {
                         const color = art[y][x];
@@ -2421,32 +2420,9 @@ class WLEDDevice {
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
 			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
-if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-
-    // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
-    // 回退到 overlayColor（全局变量风格），最终兜底 "#FFFFFF"
-    let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
-        ? controller.overlayColor
-        : (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
-
-    // 使用已有的 hexToRgb 函数（如果存在），否则本地解析
-    let overlayRgb;
-    if (typeof hexToRgb === 'function') {
-        overlayRgb = hexToRgb(overlayHex);
-    } else {
-        // 简单安全解析：支持 #RGB / #RRGGBB / RGB / RRGGBB
-        let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
-        if (h.length === 3) h = h.split('').map(function(c){ return c + c; }).join('');
-        if (h.length !== 6) {
-            overlayRgb = { r: 255, g: 255, b: 255 };
-        } else {
-            overlayRgb = {
-                r: parseInt(h.substr(0,2), 16) || 0,
-                g: parseInt(h.substr(2,2), 16) || 0,
-                b: parseInt(h.substr(4,2), 16) || 0
-            };
-        }
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display_mode !== 'MultiPixelArt') {
+    // overlay logic skipped for MultiPixelArt
+}
     }
 
     for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
