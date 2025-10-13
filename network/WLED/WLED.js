@@ -33,7 +33,10 @@ export function ControllableParameters() {
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
 {
-  "property": "multi_pixel_art",
+  {
+		"property": "multi_pixel_art_preset", "label": "预设图案", "type": "combobox", "description": "选择一个预设图案或自定义输入。", "values": ["Heart", "Rainbow", "Custom"], "default": "Heart"
+	},
+		"property": "multi_pixel_art",
   "label": "显示模式：多色像素图案",
   "type": "textfield",
   "description": "与普通像素图不同，每个像素点都可以自定义颜色。",
@@ -2077,14 +2080,39 @@ export function ondisplay_modeChanged() {
 
                 case 'MultiPixelArt':
                     try {
-                        // Independent MultiPixelArt rendering: parse 2D color array and set pixels directly.
-                        const art = JSON.parse(multi_pixel_art);
-                        const rows = art.length || 0;
-                        const cols = (rows>0 && art[0]) ? art[0].length : 0;
-                        for (let y = 0; y < rows; y++) {
-                            for (let x = 0; x < cols; x++) {
-                                const color = art[y][x];
-                                // use existing setPixel/drawPixel/setLED helpers if available, otherwise write into display array
+                        // MultiPixelArt preset handling
+                        var artPreset = (typeof multi_pixel_art_preset !== 'undefined') ? multi_pixel_art_preset : "Custom";
+                        var artData = null;
+                        if (artPreset === "Heart") {
+                            artData = [
+                              ["#000000","#FF0000","#000000","#FF0000","#000000"],
+                              ["#FF0000","#FF0000","#FF0000","#FF0000","#FF0000"],
+                              ["#FF0000","#FF0000","#FF0000","#FF0000","#FF0000"],
+                              ["#000000","#FF0000","#FF0000","#FF0000","#000000"],
+                              ["#000000","#000000","#FF0000","#000000","#000000"]
+                            ];
+                        } else if (artPreset === "Rainbow") {
+                            artData = [
+                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"],
+                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"],
+                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"],
+                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"]
+                            ];
+                        } else {
+                            try {
+                                artData = JSON.parse(multi_pixel_art);
+                            } catch(e) {
+                                artData = [];
+                                device.log("MultiPixelArt JSON parse error: " + e);
+                            }
+                        }
+
+                        var rows = artData.length || 0;
+                        var cols = (rows>0 && artData[0]) ? artData[0].length : 0;
+
+                        for (var y = 0; y < rows; y++) {
+                            for (var x = 0; x < cols; x++) {
+                                var color = artData[y][x];
                                 if (typeof setPixel === 'function') {
                                     if (color && color !== "#000000") setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
                                     else setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
@@ -2092,15 +2120,17 @@ export function ondisplay_modeChanged() {
                                     if (color && color !== "#000000") drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
                                     else drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
                                 } else {
-                                    // fallback: write into display[] using same index calc as insertPixelArtIntoDisplay
-                                    let index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
+                                    var index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
                                     if (index < displaySize.height * displaySize.width && index >= 0) {
                                         display[index] = color && color !== "#000000" ? color : 0;
                                     }
                                 }
                             }
                         }
-                    } catch (err) {
+
+                        device.log("MultiPixelArt (" + artPreset + ") rendered");
+                        return;
+                    } catch(err) {
                         device.log("MultiPixelArt render failed: " + err);
                     }
                     break;
