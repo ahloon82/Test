@@ -27,18 +27,11 @@ export function ControllableParameters() {
 		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
 		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
 		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
-		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art", "MultiPixelArt"], "default": "Components" },
+		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art"], "default": "Components" },
 		{ "property": "fontSize", "label": "字体大小", "type": "combobox", description: "The mode used when 'Display Mode' is set to 'Time' or 'Custom Text'", "values": ["Small", "Medium"], "default": "Medium" },
 		{ "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
-{
-  "property": "multi_pixel_art",
-  "label": "显示模式：多色像素图案",
-  "type": "textfield",
-  "description": "与普通像素图不同，每个像素点都可以自定义颜色。",
-  "default": "[[\"#000000\", \"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#000000\"], [\"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#FF00FF\", \"#FF0000\"], [\"#FF7F00\", \"#FFFF00\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\", \"#FF7F00\"], [\"#FFFF00\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFF00\"], [\"#00FF00\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\"], [\"#0000FF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#0000FF\"], [\"#8B00FF\", \"#FF00FF\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#8B00FF\"], [\"#000000\", \"#8B00FF\", \"#0000FF\", \"#00FF00\", \"#FFFF00\", \"#FF7F00\", \"#FF0000\", \"#000000\"]]"
-},
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
@@ -54,7 +47,7 @@ let display;
 let displaySize = { width: 0, height: 0 };
 const MaxLedsInPacket = 485;
 const BIG_ENDIAN = 1;
-const WLEDicon = "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";
+const WLEDicon = "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";
 const colorBlack = "#000000";
 let lastForcedUpdate = 0;
 let jobRunning = false;
@@ -375,9 +368,9 @@ const SMALL_LETTERS = {
 		[0, 0, 0]
 	],
 	't': [
+		[0, 0, 0],
 		[0, 1, 0],
 		[1, 1, 1],
-		[0, 1, 0],
 		[0, 1, 0],
 		[0, 1, 1],
 		[0, 0, 0]
@@ -387,7 +380,7 @@ const SMALL_LETTERS = {
 		[1, 0, 1],
 		[1, 0, 1],
 		[1, 0, 1],
-		[0, 1, 0],
+		[1, 1, 1],
 		[0, 0, 0]
 	],
 	'u': [
@@ -395,14 +388,14 @@ const SMALL_LETTERS = {
 		[0, 0, 0],
 		[1, 0, 1],
 		[1, 0, 1],
-		[0, 1, 0],
+		[1, 1, 1],
 		[0, 0, 0]
 	],
 	'V': [
 		[1, 0, 1],
 		[1, 0, 1],
 		[1, 0, 1],
-		[0, 1, 0],
+		[1, 0, 1],
 		[0, 1, 0],
 		[0, 0, 0]
 	],
@@ -427,7 +420,7 @@ const SMALL_LETTERS = {
 		[0, 0, 0],
 		[1, 0, 1],
 		[1, 1, 1],
-		[0, 1, 0],
+		[1, 1, 1],
 		[0, 0, 0]
 	],
 	'X': [
@@ -458,7 +451,7 @@ const SMALL_LETTERS = {
 		[0, 0, 0],
 		[0, 0, 0],
 		[1, 0, 1],
-		[0, 1, 0],
+		[1, 0, 1],
 		[0, 1, 0],
 		[1, 0, 0]
 	],
@@ -478,117 +471,21 @@ const SMALL_LETTERS = {
 		[0, 1, 1],
 		[0, 0, 0]
 	],
-	'0': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
+	'`': [
+		[1, 1],
+		[0, 1],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0]
 	],
-	'1': [
-		[0, 1, 0],
-		[1, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'2': [
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'3': [
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 1, 1],
-		[0, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'4': [
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'5': [
-		[1, 1, 1],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'6': [
-		[1, 1, 1],
-		[1, 0, 0],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'7': [
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'8': [
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'9': [
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	':': [
-		[0],
-		[1],
-		[0],
-		[1],
-		[0],
-		[0]
-	],
-	'.': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[1],
-		[0]
-	],
-	',': [
-		[0],
-		[0],
-		[0],
-		[1],
-		[1],
-		[0]
-	],
-	'?': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
+	'~': [
+		[0, 1, 0, 1],
+		[1, 0, 1, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0]
 	],
 	'!': [
 		[1],
@@ -598,20 +495,332 @@ const SMALL_LETTERS = {
 		[1],
 		[0]
 	],
-	' ': [
-		[0, 0, 0],
-		[0, 0, 0],
+	'@': [
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'#': [
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'$': [
+		[0, 1, 0],
+		[0, 1, 1],
+		[1, 1, 0],
+		[0, 1,],
+		[1, 1, 0],
+		[0, 1, 0]
+	],
+	'%': [
+		[1, 0, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'^': [
+		[0, 1, 0],
+		[1, 0, 1],
 		[0, 0, 0],
 		[0, 0, 0],
 		[0, 0, 0],
 		[0, 0, 0]
+	],
+	'&': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'*': [
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'(': [
+		[0, 1],
+		[1, 0],
+		[1, 0],
+		[1, 0],
+		[0, 1],
+		[0, 0]
+	],
+	')': [
+		[1, 0],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[1, 0],
+		[0, 0]
+	],
+	'-': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'_': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1]
+	],
+	'=': [
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'+': [
+		[0, 0, 0],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'[': [
+		[1, 1],
+		[1, 0],
+		[1, 0],
+		[1, 0],
+		[1, 1],
+		[0, 0]
+	],
+	'{': [
+		[0, 1, 1],
+		[0, 1, 0],
+		[1, 1, 0],
+		[0, 1, 0],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	']': [
+		[1, 1],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[1, 1],
+		[0, 0]
+	],
+	'}': [
+		[1, 1, 0],
+		[0, 1, 0],
+		[0, 1, 1],
+		[0, 1, 0],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'\\': [
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'|': [
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[0]
+	],
+	';': [
+		[0, 0],
+		[0, 0],
+		[0, 1],
+		[0, 0],
+		[1, 1],
+		[1, 0]
+	],
+	':': [
+		[0],
+		[0],
+		[1],
+		[0],
+		[1],
+		[0]
+	],
+	"'": [
+		[1, 1],
+		[1, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0]
+	],
+	'"': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	',': [
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[1, 1],
+		[1, 0]
+	],
+	'<': [
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'.': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[1],
+		[0]
+	],
+	'>': [
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'/': [
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'?': [
+		[1, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'1': [
+		[0, 1],
+		[1, 1],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[0, 0]
+	],
+	'2': [
+		[1, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'3': [
+		[1, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'4': [
+		[0, 0, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'5': [
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 0],
+		[0, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'6': [
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'7': [
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'8': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'9': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'0': [
+		[0, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	' ': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0]
 	]
-};
+}
 
-const MEDIUM_LETTERS = {
+const LETTERS = {
 	'A': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 1, 1, 1],
 		[1, 0, 0, 1],
@@ -619,17 +828,17 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'a': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 0],
+		[0, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[0, 0, 0]
 	],
 	'B': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 1, 1, 0],
 		[1, 0, 0, 1],
@@ -646,8 +855,8 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'C': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 1],
-		[1, 0, 0, 0],
 		[1, 0, 0, 0],
 		[1, 0, 0, 0],
 		[1, 0, 0, 0],
@@ -655,17 +864,17 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'c': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[0, 1, 1, 1],
-		[0, 0, 0, 0]
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 1],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 1, 1],
+		[0, 0, 0]
 	],
 	'D': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
@@ -673,7 +882,7 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'd': [
-		[0, 0, 0, 1],
+		[0, 0, 0, 0],
 		[0, 0, 0, 1],
 		[0, 1, 1, 1],
 		[1, 0, 0, 1],
@@ -682,8 +891,8 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'E': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 1],
-		[1, 0, 0, 0],
 		[1, 0, 0, 0],
 		[1, 1, 1, 0],
 		[1, 0, 0, 0],
@@ -693,15 +902,15 @@ const MEDIUM_LETTERS = {
 	'e': [
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
+		[0, 1, 1, 0],
+		[1, 1, 1, 1],
+		[1, 0, 0, 0],
 		[0, 1, 1, 1],
 		[0, 0, 0, 0]
 	],
 	'F': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 1],
-		[1, 0, 0, 0],
 		[1, 0, 0, 0],
 		[1, 1, 1, 0],
 		[1, 0, 0, 0],
@@ -709,8 +918,8 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'f': [
-		[0, 0, 1, 0],
-		[0, 1, 0, 1],
+		[0, 0, 0, 0],
+		[0, 0, 1, 1],
 		[0, 1, 0, 0],
 		[1, 1, 1, 0],
 		[0, 1, 0, 0],
@@ -718,10 +927,10 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'G': [
-		[0, 1, 1, 1],
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
 		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 1, 1],
 		[1, 0, 0, 1],
 		[0, 1, 1, 1],
 		[0, 0, 0, 0]
@@ -731,12 +940,12 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0],
 		[0, 1, 1, 1],
 		[1, 0, 0, 1],
-		[1, 0, 0, 1],
 		[0, 1, 1, 1],
-		[0, 0, 0, 1]
+		[0, 0, 0, 1],
+		[0, 1, 1, 0]
 	],
 	'H': [
-		[1, 0, 0, 1],
+		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 1, 1, 1],
@@ -745,7 +954,7 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'h': [
-		[1, 0, 0, 0],
+		[0, 0, 0, 0],
 		[1, 0, 0, 0],
 		[1, 1, 1, 0],
 		[1, 0, 0, 1],
@@ -754,8 +963,8 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'I': [
+		[0, 0, 0],
 		[1, 1, 1],
-		[0, 1, 0],
 		[0, 1, 0],
 		[0, 1, 0],
 		[0, 1, 0],
@@ -763,43 +972,43 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0]
 	],
 	'i': [
-		[1],
-		[0],
-		[1],
-		[1],
-		[1],
-		[1],
-		[0]
+		[0, 1, 0],
+		[0, 0, 0],
+		[1, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 0, 0]
 	],
 	'J': [
+		[0, 0, 0, 0],
 		[0, 0, 0, 1],
 		[0, 0, 0, 1],
-		[0, 0, 0, 1],
-		[0, 0, 0, 1],
+		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 1, 1, 0],
 		[0, 0, 0, 0]
 	],
 	'j': [
-		[0, 1],
-		[0, 0],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[1, 1]
+		[0, 0, 1],
+		[0, 0, 0],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[1, 1, 0]
 	],
 	'K': [
+		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 0, 1, 0],
 		[1, 1, 0, 0],
-		[1, 0, 1, 0],
 		[1, 0, 1, 0],
 		[1, 0, 0, 1],
 		[0, 0, 0, 0]
 	],
 	'k': [
-		[1, 0, 0, 0],
+		[0, 0, 0, 0],
 		[1, 0, 0, 0],
 		[1, 0, 1, 0],
 		[1, 1, 0, 0],
@@ -808,28 +1017,28 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'L': [
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
+		[0, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
 	],
 	'l': [
-		[1],
-		[1],
-		[1],
-		[1],
-		[1],
-		[1],
-		[0]
+		[1, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 0, 0]
 	],
 	'M': [
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
 		[1, 1, 1, 1],
 		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 0, 0, 0]
@@ -837,17 +1046,17 @@ const MEDIUM_LETTERS = {
 	'm': [
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
-		[1, 1, 1, 1],
 		[1, 0, 0, 1],
+		[1, 1, 1, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 0, 0, 0]
 	],
 	'N': [
+		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 1, 0, 1],
 		[1, 0, 1, 1],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 0, 0, 0]
@@ -862,8 +1071,8 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'O': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
@@ -880,8 +1089,8 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'P': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 1, 1, 0],
 		[1, 0, 0, 0],
@@ -898,13 +1107,13 @@ const MEDIUM_LETTERS = {
 		[1, 0, 0, 0]
 	],
 	'Q': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
-		[1, 0, 1, 0],
-		[0, 1, 0, 1],
-		[0, 0, 0, 0]
+		[0, 1, 1, 0],
+		[0, 0, 0, 1]
 	],
 	'q': [
 		[0, 0, 0, 0],
@@ -916,26 +1125,26 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 1]
 	],
 	'R': [
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
 		[1, 1, 1, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[1, 0, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
+		[0, 0, 0, 0],
 	],
 	'r': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 0, 0],
-		[1, 0, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 0],
-		[0, 0, 0, 0]
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
 	],
 	'S': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 1],
-		[1, 0, 0, 0],
 		[1, 0, 0, 0],
 		[0, 1, 1, 0],
 		[0, 0, 0, 1],
@@ -945,32 +1154,32 @@ const MEDIUM_LETTERS = {
 	's': [
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0]
-	],
-	'T': [
-		[1, 1, 1, 1],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
+		[0, 1, 1, 1],
+		[1, 1, 0, 0],
+		[0, 0, 1, 1],
+		[1, 1, 1, 0],
 		[0, 0, 0, 0]
 	],
+	'T': [
+		[0, 0, 0, 0, 0],
+		[1, 1, 1, 1, 1],
+		[0, 0, 1, 0, 0],
+		[0, 0, 1, 0, 0],
+		[0, 0, 1, 0, 0],
+		[0, 0, 1, 0, 0],
+		[0, 0, 0, 0, 0]
+	],
 	't': [
-		[0, 0, 1, 0],
+		[0, 0, 0, 0],
+		[0, 1, 0, 0],
 		[1, 1, 1, 1],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[0, 1, 0, 0],
 		[0, 0, 1, 1],
 		[0, 0, 0, 0]
 	],
 	'U': [
-		[1, 0, 0, 1],
+		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
@@ -984,11 +1193,11 @@ const MEDIUM_LETTERS = {
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
-		[0, 1, 1, 0],
+		[0, 1, 1, 1],
 		[0, 0, 0, 0]
 	],
 	'V': [
-		[1, 0, 0, 1],
+		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
@@ -1006,13 +1215,13 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'W': [
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 1, 1, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
+		[0, 0, 0, 0, 0],
+		[1, 0, 0, 0, 1],
+		[1, 0, 1, 0, 1],
+		[1, 0, 1, 0, 1],
+		[0, 1, 0, 1, 0],
+		[0, 1, 0, 1, 0],
+		[0, 0, 0, 0, 0]
 	],
 	'w': [
 		[0, 0, 0, 0],
@@ -1020,15 +1229,15 @@ const MEDIUM_LETTERS = {
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 1, 1, 1],
-		[0, 1, 1, 0],
+		[1, 0, 0, 1],
 		[0, 0, 0, 0]
 	],
 	'X': [
+		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 1, 1, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
+		[0, 1, 0, 1],
 		[1, 0, 0, 1],
 		[0, 0, 0, 0]
 	],
@@ -1042,26 +1251,26 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'Y': [
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 0, 0]
+		[0, 0, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
 	],
 	'y': [
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 0]
+		[0, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 1, 1, 0]
 	],
 	'Z': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 1],
-		[0, 0, 0, 1],
 		[0, 0, 1, 0],
 		[0, 1, 0, 0],
 		[1, 0, 0, 0],
@@ -1071,15 +1280,303 @@ const MEDIUM_LETTERS = {
 	'z': [
 		[0, 0, 0, 0],
 		[0, 0, 0, 0],
-		[1, 1, 1, 0],
+		[1, 1, 1, 1],
 		[0, 0, 1, 0],
 		[0, 1, 0, 0],
-		[1, 1, 1, 0],
+		[1, 1, 1, 1],
 		[0, 0, 0, 0]
 	],
+	'`': [
+		[0, 0],
+		[1, 0],
+		[0, 1],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0]
+	],
+	'~': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 0, 1],
+		[1, 0, 1, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'!': [
+		[0],
+		[1],
+		[1],
+		[1],
+		[0],
+		[1],
+		[0]
+	],
+	'@': [
+		[0, 0, 0, 0, 0],
+		[0, 1, 1, 1, 0],
+		[1, 0, 0, 0, 1],
+		[1, 0, 1, 1, 0],
+		[1, 0, 0, 0, 0],
+		[0, 1, 1, 1, 0],
+		[0, 0, 0, 0, 0]
+	],
+	'#': [
+		[0, 0, 0, 0, 0],
+		[0, 1, 0, 1, 0],
+		[1, 1, 1, 1, 1],
+		[0, 1, 0, 1, 0],
+		[1, 1, 1, 1, 1],
+		[0, 1, 0, 1, 0],
+		[0, 0, 0, 0, 0]
+	],
+	'$': [
+		[0, 0, 0],
+		[0, 1, 0],
+		[0, 1, 1],
+		[1, 0, 0],
+		[0, 1, 1],
+		[1, 1, 0],
+		[0, 1, 0]
+	],
+	'%': [
+		[0, 1, 0, 0, 0],
+		[1, 0, 1, 0, 1],
+		[0, 1, 0, 1, 0],
+		[0, 0, 1, 0, 0],
+		[0, 1, 0, 1, 0],
+		[1, 0, 1, 0, 1],
+		[0, 0, 0, 1, 0]
+	],
+	'^': [
+		[0, 0, 0],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'&': [
+		[0, 0, 0, 0, 0],
+		[0, 0, 1, 1, 0],
+		[0, 1, 0, 0, 0],
+		[0, 1, 1, 0, 1],
+		[1, 0, 0, 1, 0],
+		[0, 1, 1, 0, 1],
+		[0, 0, 0, 0, 0]
+	],
+	'*': [
+		[0, 0, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'(': [
+		[0, 0],
+		[0, 1],
+		[1, 0],
+		[1, 0],
+		[1, 0],
+		[0, 1],
+		[0, 0]
+	],
+	')': [
+		[0, 0],
+		[1, 0],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[1, 0],
+		[0, 0]
+	],
+	'-': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'_': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 1, 1]
+	],
+	'=': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'+': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'[': [
+		[0, 0],
+		[1, 1],
+		[1, 0],
+		[1, 0],
+		[1, 0],
+		[1, 1],
+		[0, 0]
+	],
+	'{': [
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	']': [
+		[0, 0],
+		[1, 1],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[1, 1],
+		[0, 0]
+	],
+	'}': [
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'\\': [
+		[0, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'|': [
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[0]
+	],
+	';': [
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 1],
+		[0, 0],
+		[0, 1],
+		[1, 0]
+	],
+	':': [
+		[0],
+		[0],
+		[0],
+		[1],
+		[0],
+		[1],
+		[0]
+	],
+	"'": [
+		[1],
+		[1],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0]
+	],
+	'"': [
+		[0, 0, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	',': [
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 1],
+		[1, 0]
+	],
+	'<': [
+		[0, 0, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'.': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[1],
+		[0]
+	],
+	'>': [
+		[0, 0, 0],
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'/': [
+		[0, 0, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'?': [
+		[0, 0, 0],
+		[1, 1, 0],
+		[0, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
 	'0': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[1, 0, 0, 1],
@@ -1087,85 +1584,178 @@ const MEDIUM_LETTERS = {
 		[0, 0, 0, 0]
 	],
 	'1': [
-		[0, 0, 1, 0],
-		[0, 1, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[0, 0, 1, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
+		[0, 0],
+		[0, 1],
+		[1, 1],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[0, 0]
 	],
 	'2': [
-		[1, 1, 1, 1],
-		[0, 0, 0, 1],
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
 		[0, 0, 1, 0],
 		[0, 1, 0, 0],
-		[1, 0, 0, 0],
 		[1, 1, 1, 1],
 		[0, 0, 0, 0]
 	],
 	'3': [
-		[1, 1, 1, 1],
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
 		[0, 0, 0, 1],
-		[0, 0, 1, 0],
-		[0, 0, 0, 1],
-		[1, 0, 0, 1],
 		[0, 1, 1, 0],
+		[0, 0, 0, 1],
+		[1, 1, 1, 0],
 		[0, 0, 0, 0]
 	],
 	'4': [
-		[1, 0, 0, 0],
-		[1, 0, 1, 0],
-		[1, 0, 1, 0],
-		[1, 1, 1, 1],
+		[0, 0, 0, 0],
 		[0, 0, 0, 1],
+		[0, 0, 1, 1],
+		[0, 1, 0, 1],
+		[1, 1, 1, 1],
 		[0, 0, 0, 1],
 		[0, 0, 0, 0]
 	],
 	'5': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 1],
 		[1, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 1],
+		[1, 1, 1, 0],
 		[0, 0, 0, 1],
 		[1, 1, 1, 0],
 		[0, 0, 0, 0]
 	],
 	'6': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
-		[1, 0, 0, 1],
+		[1, 0, 0, 0],
 		[1, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 1, 1, 0],
 		[0, 0, 0, 0]
 	],
 	'7': [
+		[0, 0, 0, 0],
 		[1, 1, 1, 1],
 		[0, 0, 0, 1],
 		[0, 0, 1, 0],
 		[0, 1, 0, 0],
 		[0, 1, 0, 0],
-		[0, 1, 0, 0],
 		[0, 0, 0, 0]
 	],
 	'8': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
 		[1, 0, 0, 1],
 		[0, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 1, 1, 0],
 		[0, 0, 0, 0]
 	],
 	'9': [
+		[0, 0, 0, 0],
 		[0, 1, 1, 0],
-		[1, 0, 0, 1],
 		[1, 0, 0, 1],
 		[0, 1, 1, 1],
 		[0, 0, 0, 1],
-		[0, 0, 0, 1],
+		[0, 1, 1, 0],
 		[0, 0, 0, 0]
+	],
+	' ': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0]
+	]
+}
+
+const SMALL_DIGITS =
+{
+	'1': [
+		[0, 0, 1],
+		[0, 1, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'2': [
+		[1, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'3': [
+		[1, 1, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'4': [
+		[0, 0, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'5': [
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 0],
+		[0, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'6': [
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'7': [
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'8': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'9': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'0': [
+		[0, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
 	],
 	':': [
 		[0],
@@ -1173,8 +1763,262 @@ const MEDIUM_LETTERS = {
 		[1],
 		[0],
 		[1],
+		[0]
+	],
+	';': [
+		[0],
+		[0],
+		[0],
+		[0],
 		[0],
 		[0]
+	],
+	'a': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'p': [
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'm': [
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	' ': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0]
+	],
+	'/': [
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'-': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'_': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1]
+	],
+	'.': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[1],
+		[0]
+	],
+	',': [
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[1, 1],
+		[1, 0]
+	],
+};
+
+const DIGITS =
+{
+	'0': [
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'1': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 1],
+		[0, 0, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'2': [
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'3': [
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
+		[0, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'4': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 1],
+		[0, 0, 1, 1],
+		[0, 1, 0, 1],
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'5': [
+		[0, 0, 0, 0],
+		[1, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 1, 1, 0],
+		[0, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'6': [
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'7': [
+		[0, 0, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[0, 1, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'8': [
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'9': [
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	':': [
+		[0],
+		[0],
+		[0],
+		[1],
+		[0],
+		[1],
+		[0]
+	],
+	';': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0]
+	],
+	'a': [
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'p': [
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'm': [
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	' ': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[0]
+	],
+	'/': [
+		[0, 0, 0],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'-': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
+	],
+	'_': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 1, 1]
 	],
 	'.': [
 		[0],
@@ -1186,366 +2030,878 @@ const MEDIUM_LETTERS = {
 		[0]
 	],
 	',': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[1],
-		[1],
-		[0]
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 1],
+		[1, 0]
 	],
-	'?': [
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 0, 0]
-	],
-	'!': [
-		[1],
-		[1],
-		[1],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	' ': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0]
-	]
 };
 
-function GetSize(text) {
-	if (fontSize === "Small") {
-		return SMALL_LETTERS;
-	} else if (fontSize === "Medium") {
-		return MEDIUM_LETTERS;
+var PIXELART = [];
+
+var COMPONENT_MAPPING = [];
+
+export function onpixel_artChanged() {
+	if (display_mode == 'Pixel Art') {
+		try {
+			PIXELART = JSON.parse(pixel_art)
+			device.log('Pixel Art Updated!');
+		}
+		catch (ex) {
+			device.log(ex.message);
+		}
 	}
 }
 
-function UpdateSize(matrix) {
-	displaySize.height = matrix[Object.keys(matrix)[0]].length;
-	let width = 0;
-	for (let key in matrix) {
-		width += matrix[key][0].length + 1;
+export function ondisplay_modeChanged() {
+	switch (display_mode) {
+		case 'Pixel Art':
+			try {
+				PIXELART = JSON.parse(pixel_art)
+				device.log('Pixel Art Updated!');
+			}
+			catch (ex) {
+				device.log(ex.message);
+			}
+			break;
+		default:
+			break;
 	}
-	displaySize.width = width;
 }
 
-function SetWLED(ip) {
-	WLED = new WLEDApi(ip);
-	display = new MatrixDisplay(WLED, displaySize);
-}
+function insertDigitIntoDisplay(display, digit, startCol) {
+	let newLineCh = digit.length;
+	let digitWidth = digit[0].length - 1;
+	let nLine = Math.floor((startCol + digitWidth) / displaySize.width);
+	rowOffset = nLine * newLineCh;
 
-function SetComponent(ip) {
-	WLED.setComponent(ip, "SignalRGB");
-}
+	for (let row = 0; row < digit.length; row++) {
+		for (let col = 0; col < digit[row].length; col++) {
+			let index = (rowOffset * displaySize.width + row * displaySize.width + (displaySize.width * paddingY)) + startCol + col + parseInt(paddingX);
 
-function Init() {
-	if (typeof discovery.config.controller !== 'undefined' && discovery.config.controller !== "") {
-		SetWLED(discovery.config.controller);
-		SetComponent(discovery.config.controller);
+			if (index < displaySize.height * displaySize.width) {
+				display[index] = digit[row][col];
+			}
+		}
 	}
-	UpdateSize(GetSize(custom_text));
+	//rowOffset = 0;
 }
 
-function RenderPixelArt(pixelArt) {
-	const pixelMatrix = JSON.parse(pixelArt);
-	for (let y = 0; y < pixelMatrix.length; y++) {
-		const row = pixelMatrix[y];
-		if (!row) continue;
-		for (let x = 0; x < row.length; x++) {
-			const pixelValue = row[x];
-			if (pixelValue === 1) {
-				display.setPixel(x, y, forcedColor);
-			} else if (pixelValue > 0 && pixelValue < 1) {
-				const translucentColor = WLED.calculateTranslucentColor(forcedColor, pixelValue, translucent1, translucent2);
-				display.setPixel(x, y, translucentColor);
+function insertPixelArtIntoDisplay(display, art) {
+	for (let row = 0; row < art.length; row++) {
+		for (let col = 0; col < art[row].length; col++) {
+			let index = (row * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + col + parseInt(paddingX);
+
+			if (index < displaySize.height * displaySize.width) {
+				display[index] = art[row][col];
 			}
 		}
 	}
 }
 
-function RenderTime() {
-	const now = new Date();
-	const hours = now.getHours();
-	const minutes = now.getMinutes();
-	const ampm = hours >= 12 ? 'PM' : 'AM';
-	const timeString = time_format
-		.replace('hh', hours % 12 === 0 ? 12 : hours % 12)
-		.replace('HH', String(hours).padStart(2, '0'))
-		.replace('mm', String(minutes).padStart(2, '0'))
-		.replace('tt', ampm);
+function rearrangeDisplayForSnakeLayout(display) {
+	const snakeDisplay = new Array(display.length);
 
-	RenderCustomText(timeString);
+	for (let i = 0; i < display.length; i++) {
+		if (COMPONENT_MAPPING.length == 0) { if (!jobRunning) { detect2DMapping(); } } else { snakeDisplay[COMPONENT_MAPPING[i]] = display[i]; }
+	}
+
+	return snakeDisplay;
 }
 
-function RenderCustomText(text) {
-	const charMatrix = GetSize(text);
-	let x = 0;
-	let y = 0;
-	let charWidth = 0;
-	let charHeight = 0;
-
-	for (let i = 0; i < text.length; i++) {
-		const char = text[i];
-		const charData = charMatrix[char];
-		if (!charData) continue;
-		charHeight = charData.length;
-
-		for (let row = 0; row < charHeight; row++) {
-			const pixelRow = charData[row];
-			charWidth = pixelRow.length;
-
-			for (let col = 0; col < charWidth; col++) {
-				if (pixelRow[col] === 1) {
-					display.setPixel(x + col + parseInt(paddingX), y + row + parseInt(paddingY), forcedColor);
-				}
-			}
-		}
-
-		x += charWidth + 1;
-	}
+function hexToRgb(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
 }
 
-function RenderComponents(leds) {
-	for (let i = 0; i < leds.length; i++) {
-		const led = leds[i];
-		display.setLED(i, led);
-	}
-}
+function detect2DMapping() {
+	let instance = WLED;
+	jobRunning = true;
 
-function Render() {
-	if (typeof WLED === 'undefined' || typeof display === 'undefined') {
-		Init();
-	}
+	device.log(`Requesting 2D Mapping from http://${instance.ip}:${instance.port}/json/state/`);
+	XmlHttp.Get(`http://${instance.ip}:${instance.port}/json/state/`, (xhr) => {
+		if (xhr.readyState === 4) {
+			if (xhr.status === 200) {
+				let devicedata;
 
-	WLED.updateLiveMode(LightingMode === "Canvas");
+				try {
+					devicedata = JSON.parse(xhr.response);
 
-	if (LightingMode === "Forced") {
-		WLED.setColor(forcedColor);
-		WLED.update(true); // Forced color is a full update
-		return;
-	}
-
-	let leds = controller.getColors(display.size());
-	if (display_mode === "Components") {
-		RenderComponents(leds);
-	} else if (display_mode === "Pixel Art") {
-		const pixelArt = pixel_art || "[[]]";
-		RenderPixelArt(pixelArt);
-		leds = display.getColors();
-	} else if (display_mode === "Time") {
-		RenderTime();
-		leds = display.getColors();
-	} else if (display_mode === "Custom Text") {
-		RenderCustomText(custom_text);
-		leds = display.getColors();
-	} else if (display_mode === "MultiPixelArt") {
-		// 这里是 MultiPixelArt 的主要渲染调用点
-		if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
-			globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
-				display.setPixel(x, y, color);
-			}, multi_pixel_art, displaySize.width, displaySize.height, forcedColor);
-		}
-		leds = display.getColors();
-	}
-
-	if (overlayEnabled) {
-		const overlayColors = WLED.renderOverlay(overlayColor);
-		leds = applyOverlay(leds, overlayColors);
-	}
-
-	WLED.update(false, leds);
-}
-
-// === WLED API Classes ===
-
-class WLEDApi {
-	constructor(ip) {
-		this.ip = ip;
-		this.liveMode = false;
-		this.data = {
-			live: false,
-			seg: [{
-				id: 0,
-				i: [],
-				col: [
-					[0, 0, 0]
-				]
-			}]
-		};
-	}
-
-	// Helper to convert hex to RGB array
-	static hexToRgb(hex) {
-		const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-		hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result ? [
-			parseInt(result[1], 16),
-			parseInt(result[2], 16),
-			parseInt(result[3], 16)
-		] : [0, 0, 0];
-	}
-
-	// Helper to convert SignalRGB Color object to RGB array
-	static colorToRgb(color) {
-		return [color.r, color.g, color.b];
-	}
-
-	// WLED uses (0-255) for R, G, B
-	// Translucent is a percent (1-100)
-	// Output is (0-255) for R, G, B
-	calculateTranslucentColor(baseColorHex, translucentValue, t1, t2) {
-		const baseRgb = WLEDApi.hexToRgb(baseColorHex);
-		let finalRgb = [0, 0, 0];
-
-		// Normalize translucentValue from 0 to 1
-		let normalizedValue = translucentValue;
-
-		// The provided code snippet for pixel_art uses 1 and 0 for fully on/off, and values like 0.3 or 0.8 for transparency.
-		// The original logic seems to use t1/t2 for a specific effect not clearly defined here, but a common approach
-		// is to blend the base color with black/background based on the value.
-		// Since we don't have the full context of how t1 and t2 were intended to be used with the value,
-		// the safest is to blend with black based on the normalized value (opacity).
-		// We'll treat the pixelValue as the opacity, where 1.0 is full color, and 0.0 is black.
-		// The custom parameters translucent1/2 seem to be for a more complex effect which I will simplify to just opacity.
-		// If pixelValue is 1, return base color. If 0, return black.
-		if (normalizedValue === 1) return baseColorHex;
-		if (normalizedValue === 0) return colorBlack;
-
-		// Simple opacity blend with black background
-		const opacity = normalizedValue;
-		for (let i = 0; i < 3; i++) {
-			finalRgb[i] = Math.round(baseRgb[i] * opacity);
-		}
-
-		// Convert back to hex
-		return `#${finalRgb.map(c => c.toString(16).padStart(2, '0')).join('')}`;
-	}
-
-	setComponent(ip, name) {
-		XmlHttp.Post("http://" + ip + ":80/json/info", (xhr) => {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				const response = JSON.parse(xhr.responseText);
-				if (response.str !== name) {
-					DeviceState.Change(ip, true, 128, false, false, false, false);
-					XmlHttp.Post("http://" + ip + ":80/json/state", (xhr) => {
-						if (xhr.readyState === 4 && xhr.status === 200) {
-							// Successfully set component
+					if (devicedata.seg[0].hasOwnProperty("stopY")) {
+						displaySize.width = devicedata.seg[0].stop;
+						displaySize.height = devicedata.seg[0].stopY;
+						let length = displaySize.width * displaySize.height;
+						for (let i = 0; i <= length; i++) {
+							COMPONENT_MAPPING.push(i);
 						}
-					}, {
-						n: name
-					}, false);
+						device.log('2D mapping found, automatic mapping completed.');
+						jobRunning = false;
+						display = new Array(displaySize.height * displaySize.width).fill(0);
+					}
+					else {
+						device.log(`2D mapping not found, unable to auto mapping. Create your 2D mapping in http://${instance.ip}:${instance.port}/settings/2D`);
+					}
+				} catch (e) {
+					device.log("ERROR for IP " + instance.ip + ", JSON info could not be parsed!" + e);
+
+					return;
 				}
+			} else {
+				device.log("ERROR for IP " + instance.ip + ", device is OFFLINE or does not respond!");
 			}
-		}, {});
+		}
+	});
+}
+
+function replaceEx(str, obj) {
+	for (const x in obj) { str = str.replace(new RegExp(x, 'g'), obj[x]); }
+	return str
+}
+
+function formatDateTime(format) {
+	const now = new Date();
+	const month = now.getMonth() + 1;
+	const day = now.getDate();
+	const year = now.getFullYear();
+
+	const hour12 = now.getHours() % 12 || 12;
+	const hour24 = now.getHours();
+	const minute = now.getMinutes();
+	const second = now.getSeconds();
+	const ampm = now.getHours() >= 12 ? 'pm' : 'am';
+
+	let _format = replaceEx(format, {
+		'dd': String(day).padStart(2, '0'), 'd': day,
+		'hh': String(hour12).padStart(2, '0'), 'h': hour12,
+		'HH': String(hour24).padStart(2, '0'), 'H': hour24,
+		'mm': String(minute).padStart(2, '0'), 'm': minute,
+		'MM': String(month).padStart(2, '0'), 'M': month,
+		'ss': String(second).padStart(2, '0'), 's': second,
+		'tt': ampm, 't': ampm == 'am' ? 'a' : 'p',
+		'yyyy': year, 'yyy': year, 'yy': year.toString().substring(2), 'y': year.toString().substring(2),
+	});
+	return _format;
+}
+
+function lowerBrightnessRGB(R, G, B, factor) {
+	const newR = Math.max(0, Math.floor(R * factor));
+	const newG = Math.max(0, Math.floor(G * factor));
+	const newB = Math.max(0, Math.floor(B * factor));
+
+	return [newR, newG, newB];
+}
+
+function displayClock() {
+	display.fill(0);
+	const now = new Date();
+
+	let timeDigits;
+	switch (display_mode) {
+		case 'Pixel Art':
+			timeDigits = 'Pixel Art';
+			break;
+		case 'Custom Text':
+			timeDigits = custom_text;
+			break;
+		default:
+			if (now.getSeconds() % 2 !== 0) {
+				timeDigits = replaceEx(formatDateTime(time_format), { ':': ';' });
+			}
+			else {
+				timeDigits = formatDateTime(time_format);
+			}
 	}
 
-	updateLiveMode(isLive) {
-		if (this.liveMode !== isLive) {
-			this.liveMode = isLive;
-			DeviceState.Change(this.ip, true, 128, false, false, false, false);
-			XmlHttp.Post("http://" + this.ip + ":80/json/state", (xhr) => {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					// Successfully updated live mode
+	let colOffset = 0;
+	for (const digit of timeDigits) {
+		switch (display_mode) {
+			case 'Time':
+				if (fontSize == 'Medium') {
+					insertDigitIntoDisplay(display, DIGITS[digit], colOffset);
+					if (digit == ":" || digit == ";" || digit == '.') {
+						colOffset += 2;
+					}
+					else if (digit == " ") {
+						colOffset += 1;
+					}
+					else {
+						colOffset += 5;
+					}
 				}
-			}, {
-				live: isLive
-			}, false);
+				else {
+					insertDigitIntoDisplay(display, SMALL_DIGITS[digit], colOffset);
+					if (digit == ":" || digit == ";" || digit == '.') {
+						colOffset += 2;
+					}
+					else if (digit == " ") {
+						colOffset += 1;
+					}
+					else {
+						colOffset += 4;
+					}
+				}
+
+				break;
+			case 'Pixel Art':
+				insertPixelArtIntoDisplay(display, PIXELART);
+				break;
+			default:
+				if (fontSize == 'Medium') {
+					insertDigitIntoDisplay(display, LETTERS[digit], colOffset);
+					switch (digit) {
+						case ' ':
+							colOffset += 1;
+							break;
+						case '!':
+						case '|':
+						case ':':
+						case "'":
+						case '.':
+							colOffset += 2;
+							break;
+						case '`':
+						case '(':
+						case ')':
+						case '[':
+						case ']':
+						case ';':
+						case ',':
+						case '1':
+							colOffset += 3;
+							break;
+						case 'a':
+						case 'c':
+						case 'I':
+						case 'i':
+						case 'j':
+						case 'L':
+						case 'l':
+						case 'r':
+						case 'Y':
+						case '$':
+						case '^':
+						case '*':
+						case '-':
+						case '=':
+						case '+':
+						case '{':
+						case '}':
+						case '\\':
+						case '"':
+						case '<':
+						case '>':
+						case '/':
+						case '?':
+							colOffset += 4;
+							break;
+						case 'T':
+						case 'W':
+						case '@':
+						case '#':
+						case '%':
+						case '&':
+							colOffset += 6;
+							break;
+						default:
+							colOffset += 5;
+					}
+				}
+				else {
+					insertDigitIntoDisplay(display, SMALL_LETTERS[digit], colOffset);
+					switch (digit) {
+						case ' ':
+							colOffset += 1;
+							break;
+						case 'i':
+						case 'l':
+						case '!':
+						case '|':
+						case ':':
+						case '.':
+							colOffset += 2;
+							break;
+						case 'j':
+						case 'r':
+						case '1':
+						case '`':
+						case '(':
+						case ')':
+						case '[':
+						case ']':
+						case ';':
+						case "'":
+						case ',':
+							colOffset += 3;
+							break;
+						case '~':
+							colOffset += 5;
+							break;
+						default:
+							colOffset += 4;
+					}
+				}
 		}
-	}
-
-	setColor(color) {
-		this.data.seg[0].col[0] = WLEDApi.hexToRgb(color);
-	}
-
-	update(force, leds) {
-		if (this.liveMode) {
-			this.sendLiveLeds(leds);
-		} else if (force) {
-			this.sendUpdate();
-		}
-	}
-
-	sendLiveLeds(leds) {
-		let totalLeds = leds.length;
-		let numPackets = Math.ceil(totalLeds / MaxLedsInPacket);
-
-		for (let i = 0; i < numPackets; i++) {
-			let start = i * MaxLedsInPacket;
-			let end = Math.min(start + MaxLedsInPacket, totalLeds);
-			let packetLeds = leds.slice(start, end);
-
-			let packet = [BIG_ENDIAN, start >> 8, start & 0xFF, packetLeds.length >> 8, packetLeds.length & 0xFF];
-
-			packetLeds.forEach(color => {
-				packet.push(color.r, color.g, color.b);
-			});
-
-			this.sendUdp(packet);
-		}
-	}
-
-	sendUdp(data) {
-		controller.sendUDP(this.ip, 21324, data);
-	}
-
-	sendUpdate() {
-		XmlHttp.Post("http://" + this.ip + ":80/json/state", (xhr) => {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				// Successfully updated
-			}
-		}, this.data, false);
 	}
 }
 
-class MatrixDisplay {
-	constructor(wled, size) {
-		this.wled = wled;
-		this.width = size.width;
-		this.height = size.height;
-		this.pixelColors = Array(this.width * this.height).fill(null);
+class WLEDDevice {
+	constructor(controller) {
+		this.mac = controller.mac;
+		this.hostname = controller.hostname;
+		this.name = controller.name;
+		this.ip = controller.ip;
+		this.port = controller.port;
+		this.streamingPort = controller.streamingPort;
+		this.deviceledcount = controller.deviceledcount;
+		this.defaultOn = controller.defaultOn;
+		this.defaultBri = controller.defaultBri;
 	}
 
-	size() {
-		return this.width * this.height;
+	changeDeviceState(forceOff = false, forceOn = false, fullBright = false) {
+		DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, forceOff, forceOn, fullBright, false);
 	}
 
-	index(x, y) {
-		if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-			return x + y * this.width;
+	SetupChannel() {
+		device.SetLedLimit(this.deviceledcount);
+		device.addChannel(this.name, this.deviceledcount);
+	}
+
+	SendColorPackets(shutdown = false) {
+		const componentChannel = device.channel(this.name);
+		let ChannelLedCount = componentChannel.ledCount > this.deviceledcount ? this.deviceledcount : componentChannel.ledCount;
+
+		let RGBData = [];
+
+		if (shutdown) {
+			RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
+		} else if (LightingMode === "Forced") {
+			RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
+		} else if (componentChannel.shouldPulseColors()) {
+			ChannelLedCount = this.deviceledcount;
+
+			const pulseColor = device.getChannelPulseColor(this.name);
+			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
+		} else {
+			RGBData = componentChannel.getColors("Inline");
+			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
+			// and force foreground pixels (display) to use contrasting colors so they remain visible.
+			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+
+    // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
+    // 回退到 overlayColor（全局变量风格），最终兜底 "#FFFFFF"
+    let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
+        ? controller.overlayColor
+        : (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
+
+    // 使用已有的 hexToRgb 函数（如果存在），否则本地解析
+    let overlayRgb;
+    if (typeof hexToRgb === 'function') {
+        overlayRgb = hexToRgb(overlayHex);
+    } else {
+        // 简单安全解析：支持 #RGB / #RRGGBB / RGB / RRGGBB
+        let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
+        if (h.length === 3) h = h.split('').map(function(c){ return c + c; }).join('');
+        if (h.length !== 6) {
+            overlayRgb = { r: 255, g: 255, b: 255 };
+        } else {
+            overlayRgb = {
+                r: parseInt(h.substr(0,2), 16) || 0,
+                g: parseInt(h.substr(2,2), 16) || 0,
+                b: parseInt(h.substr(4,2), 16) || 0
+            };
+        }
+    }
+
+    for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+        let val = Snake_display_local[led_index];
+        // treat val as foreground if it's not one of the special control values
+        if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
+            // 应用 overlay RGB（不再写死白色）
+            RGBData[led_index * 3]     = overlayRgb.r;
+            RGBData[led_index * 3 + 1] = overlayRgb.g;
+            RGBData[led_index * 3 + 2] = overlayRgb.b;
+					}
+				}
+			}
+			
 		}
-		return -1;
-	}
 
-	setPixel(x, y, colorHex) {
-		const index = this.index(x, y);
-		if (index !== -1) {
-			this.pixelColors[index] = WLEDApi.hexToRgb(colorHex);
+		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
+
+		if (display_mode != 'Components') {
+			if (display != undefined) {
+				displayClock();
+				let Snake_display = rearrangeDisplayForSnakeLayout(display);
+				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
+					switch (Snake_display[led_index]) {
+						case 0:
+                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                                RGBData[led_index * 3] = 0;
+                                RGBData[led_index * 3 + 1] = 0;
+                                RGBData[led_index * 3 + 2] = 0;
+                            }
+                            break;
+						case 0.3:
+							let fcRGB = hexToRgb(forcedColor);
+							RGBData[led_index * 3] = fcRGB.r;
+							RGBData[led_index * 3 + 1] = fcRGB.g;
+							RGBData[led_index * 3 + 2] = fcRGB.b;
+							break;
+						case 0.5:
+							let scaleFactor = translucent1 / 100;
+							let darken = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor);
+							RGBData[led_index * 3] = darken[0];
+							RGBData[led_index * 3 + 1] = darken[1];
+							RGBData[led_index * 3 + 2] = darken[2];
+							break;
+						case 0.7:
+							let scaleFactor2 = translucent2 / 100;
+							let darken2 = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor2);
+							RGBData[led_index * 3] = darken2[0];
+							RGBData[led_index * 3 + 1] = darken2[1];
+							RGBData[led_index * 3 + 2] = darken2[2];
+							break;
+					}
+				}
+			}
+		}
+
+		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
+			const startIdx = CurrPacket * MaxLedsInPacket;
+			const highByte = ((startIdx >> 8) & 0xFF);
+			const lowByte = (startIdx & 0xFF);
+			let packet = [0x04, 0x02, highByte, lowByte];
+			packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * 3));
+			udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
+		}
+	}
+}
+
+export function Initialize() {
+	device.setName(controller.name);
+	device.setImageFromBase64(WLEDicon);
+	device.addFeature("udp");
+	WLED = new WLEDDevice(controller);
+	WLED.SetupChannel();
+	WLED.changeDeviceState(false, true, true);
+
+	detect2DMapping();
+
+	if (display_mode == 'Pixel Art') {
+		try {
+			PIXELART = JSON.parse(pixel_art)
+			device.log('Pixel Art Updated!');
+		}
+		catch (ex) {
+			device.log(ex.message);
 		}
 	}
 
-	setLED(i, color) {
-		if (i >= 0 && i < this.pixelColors.length) {
-			this.pixelColors[i] = WLEDApi.colorToRgb(color);
+}
+
+export function Render() {
+	WLED.SendColorPackets();
+}
+
+export function Shutdown(suspend) {
+	WLED.SendColorPackets(true);
+	WLED.changeDeviceState(turnOffOnShutdown);
+}
+
+export function ImageUrl() {
+	return "https://raw.githubusercontent.com/SRGBmods/public/main/images/wled/998_led_nodemcu.png";
+}
+
+// -------------------------------------------<( Discovery Service )>--------------------------------------------------
+
+
+export function DiscoveryService() {
+	this.IconUrl = "https://raw.githubusercontent.com/SRGBmods/public/main/images/wled/998_led_nodemcu.png";
+
+	this.MDns = ["_wled._tcp.local."];
+
+	this.forceDiscover = function (ipaddress) {
+		if (!ipaddress || ipaddress === undefined) {
+
+		} else if (this.isValidIP(ipaddress)) {
+			service.log("Forcing Discovery for WLED device at IP: " + ipaddress);
+			this.ip = ipaddress;
+			this.port = 80;
+			this.forced = true;
+			this.offline = false;
+			this.prepareDiscovery(false);
+
+		} else {
+
+		}
+	};
+
+	this.forceDelete = function (ipaddress) {
+		if (!ipaddress || ipaddress === undefined) {
+
+		} else if (this.isValidIP(ipaddress)) {
+			let devicelist_string = service.getSetting("forcedDiscovery", "devicelist");
+
+			if (devicelist_string === undefined || devicelist_string.length === 0) {
+
+			} else if (devicelist_string !== undefined && devicelist_string.length > 0 && devicelist_string.includes(ipaddress)) {
+				service.log("Force Deleting WLED device at IP: " + ipaddress);
+
+				const devicelist = JSON.parse(devicelist_string);
+				const macAddress = devicelist[ipaddress];
+				delete devicelist[ipaddress];
+				devicelist_string = JSON.stringify(devicelist);
+				service.saveSetting("forcedDiscovery", "devicelist", devicelist_string);
+				this.ip = ipaddress;
+				this.mac = macAddress;
+				this.port = 80;
+				this.forced = true;
+				this.prepareDiscovery(true);
+
+			}
+		} else {
+
+		}
+	};
+
+	this.isValidIP = function (ipaddress) {
+		if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+			return true;
+		}
+
+		return false;
+	};
+
+	this.prepareDiscovery = function (deletion = false) {
+		const instance = this;
+
+		if (!deletion) {
+			service.log(`Requesting basic Device Information for forced discovery...`);
+			service.log(`http://${instance.ip}:${instance.port}/json/info/`);
+			XmlHttp.Get(`http://${instance.ip}:${instance.port}/json/info/`, (xhr) => {
+
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						let devicedata;
+
+						try {
+							devicedata = JSON.parse(xhr.response);
+						} catch (e) {
+							service.log("ERROR for IP " + instance.ip + ", JSON info could not be parsed!");
+
+							return;
+						}
+
+						if (devicedata.hasOwnProperty("brand") && devicedata.brand === "WLED") {
+							const wledname = devicedata.name === "WLED" ? "wled-" + devicedata.mac.substr(devicedata.mac.length - 6) : devicedata.name;
+							const forcedvalue = { "hostname": devicedata.ip, "mac": devicedata.mac, "name": wledname, "port": 80, "forced": true };
+							instance.Discovered(forcedvalue);
+						} else {
+							service.log("ERROR for IP " + instance.ip + ", device is NOT a WLED flashed MCU!");
+						}
+					} else {
+						service.log("ERROR for IP " + instance.ip + ", device is OFFLINE or does not respond!");
+					}
+				}
+			});
+		} else {
+			for (const controller of service.controllers) {
+				if (controller.id === instance.mac) {
+					service.removeSetting(controller.id, "name");
+					service.removeSetting(controller.id, "ip");
+					service.removeController(controller);
+
+					return;
+				}
+			}
+		}
+	};
+
+	this.Initialize = function () {
+		service.log("Initializing Plugin!");
+		service.log("Searching for WLED devices...");
+	};
+
+	this.loadForcedDevices = function () {
+		const devicelist_string = service.getSetting("forcedDiscovery", "devicelist");
+
+		if (devicelist_string !== undefined && devicelist_string.length > 0) {
+			service.log("Refreshing force discovered devices...");
+
+			const devicelist = JSON.parse(devicelist_string);
+			Object.keys(devicelist).forEach(key => {
+				let controllerExists = false;
+
+				for (const cont of service.controllers) {
+					if (cont.obj.ip === key) {
+						controllerExists = true;
+					}
+				}
+
+				if (!controllerExists) {
+					this.forceDiscover(key);
+				}
+			});
+		}
+	};
+
+	this.Update = function () {
+		for (const cont of service.controllers) {
+			cont.obj.update();
+		}
+		const currentTime = Date.now();
+
+		if (currentTime - lastForcedUpdate >= 60000) {
+			lastForcedUpdate = currentTime;
+			this.loadForcedDevices();
+		}
+	};
+
+	this.Discovered = function (value) {
+		service.log("Device discovered:");
+		service.log(value);
+
+		const controller = service.getController(value.mac);
+
+		if (controller === undefined) {
+			service.addController(new WLEDBridge(value));
+		} else {
+			if (this.forced === value.forced) {
+				controller.updateWithValue(value);
+			}
+		}
+	};
+}
+
+class WLEDBridge {
+	constructor(value) {
+		this.readyToAnnounce = false;
+		this.announced = false;
+		this.hostname = value.hostname;
+		this.mac = value.mac;
+		this.name = value.name;
+		this.id = value.mac;
+		this.port = value.port;
+		this.arch = "";
+		this.deviceledcount = 0;
+		this.firmwareversion = 0;
+		this.linked = service.getSetting(this.mac, "ip");
+		this.ip = "";
+		this.connected = false;
+		this.forced = value.forced;
+		this.defaultOn = false;
+		this.defaultBri = 128;
+		this.signalstrength = 0;
+		this.lastUpdate = Date.now();
+		this.firstUpdate = true;
+		this.offline = false;
+
+		service.log("Constructed: " + this.name);
+
+		if (!this.forced) {
+			this.getDeviceIP();
+		} else {
+			this.ip = this.hostname;
+			this.getDeviceInfo();
 		}
 	}
 
-	getColors() {
-		return this.pixelColors.map(rgb => {
-			if (rgb === null) return { r: 0, g: 0, b: 0 };
-			return { r: rgb[0], g: rgb[1], b: rgb[2] };
+	updateWithValue(value) {
+		this.forced = value.forced;
+		this.hostname = value.hostname;
+		this.mac = value.mac;
+		this.name = value.name;
+		this.port = value.port;
+		this.id = value.mac;
+		this.ip = this.forced ? value.hostname : value.ip;
+
+		if (this.forced) {
+			this.saveForceDiscovery();
+		}
+
+		service.log("Updated: " + this.mac);
+		service.updateController(this);
+		this.getDeviceInfo();
+	}
+
+	update() {
+		if (this.waitingforlink) {
+			this.waitingforlink = false;
+			this.connected = this.linked === this.ip;
+			this.readyToAnnounce = true;
+			service.updateController(this);
+		}
+
+		this.createDevice();
+
+		const currentTime = Date.now();
+
+		if (currentTime - this.lastUpdate >= (Math.floor(Math.random() * 10000) + 50000)) {
+			this.lastUpdate = currentTime;
+			this.getDeviceInfo();
+		}
+	}
+
+	createDevice() {
+		if (this.readyToAnnounce && !this.announced) {
+			if (!this.connected) {
+				this.saveController();
+				service.log("Adding Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
+			} else {
+				service.updateController(this);
+				service.announceController(this);
+				service.log("Announcing existing Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
+			}
+
+			this.announced = true;
+
+			if (this.connected) {
+				DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
+			}
+
+			service.updateController(this);
+		}
+	}
+
+	saveController() {
+		service.saveSetting(this.mac, "name", this.name);
+		service.saveSetting(this.mac, "ip", this.ip);
+		service.updateController(this);
+		service.announceController(this);
+		this.connected = true;
+	}
+
+	getDeviceInfo() {
+		const instance = this;
+		service.log(`Requesting complete Device Information...`);
+		service.log(`http://${instance.ip}:${instance.port}/json/`);
+		XmlHttp.Get(`http://${instance.ip}:${instance.port}/json/`, (xhr) => {
+
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					instance.offline = false;
+					service.updateController(instance);
+					instance.setDeviceInfo(JSON.parse(xhr.response));
+				} else {
+					instance.offline = true;
+					service.updateController(instance);
+					service.log("ERROR for IP " + instance.ip + ", device is OFFLINE or does not respond!");
+				}
+			}
 		});
+	}
+
+	getDeviceIP() {
+		const instance = this;
+		service.log(`Reading IPV4 from JSON API...`);
+
+		const mdnsHostname = instance.hostname.substring(0, instance.hostname.length - 1);
+		service.log(`http://${mdnsHostname}:${this.port}/json/`);
+		XmlHttp.Get(`http://${mdnsHostname}:${this.port}/json/`, (xhr) => {
+
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					const devicedata = JSON.parse(xhr.response);
+					instance.ip = devicedata.info.ip;
+					service.log("IP for " + instance.hostname + " received: " + instance.ip);
+					instance.offline = false;
+					service.updateController(instance);
+					instance.setDeviceInfo(devicedata);
+				} else {
+					instance.offline = true;
+					service.updateController(instance);
+					service.log("ERROR for mdnsHostname: " + instance.hostname + ", device is OFFLINE or does not respond!");
+				}
+			}
+		});
+	}
+
+	setDeviceInfo(response) {
+		if (this.firstUpdate) {
+			this.defaultOn = response.state.on;
+			this.defaultBri = response.state.bri;
+			this.firstUpdate = false;
+		}
+
+		this.streamingPort = response.info.udpport;
+		this.arch = response.info.arch;
+		this.firmwareversion = response.info.ver;
+		this.deviceledcount = response.info.leds.count;
+		this.signalstrength = response.info.wifi.signal;
+		service.log("Device info for " + this.name + " with IP " + this.ip + " received:");
+		service.log("UDP Port: " + this.streamingPort + " - Arch: " + this.arch + " - Firmware: " + this.firmwareversion + " - LED count: " + this.deviceledcount + " - default State: " + (this.defaultOn ? "ON" : "OFF") + " - default Brightness: " + this.defaultBri + " - Signal strength: " + this.signalstrength);
+
+		this.linked = service.getSetting(this.mac, "ip");
+
+		if (this.linked === this.ip) {
+			this.connected = true;
+			this.readyToAnnounce = true;
+		}
+
+		if (this.forced) {
+			this.saveForceDiscovery();
+		}
+
+		service.updateController(this);
+	}
+
+	saveForceDiscovery() {
+		let devicelist_string = service.getSetting("forcedDiscovery", "devicelist");
+		let devicelist = {};
+
+		if (devicelist_string === undefined || devicelist_string.length === 0) {
+			devicelist[this.ip] = this.mac;
+			devicelist_string = JSON.stringify(devicelist);
+			service.saveSetting("forcedDiscovery", "devicelist", devicelist_string);
+		} else if (devicelist_string !== undefined && devicelist_string.length > 0 && !devicelist_string.includes(this.ip)) {
+			devicelist = JSON.parse(devicelist_string);
+			devicelist[this.ip] = this.mac;
+			devicelist_string = JSON.stringify(devicelist);
+			service.saveSetting("forcedDiscovery", "devicelist", devicelist_string);
+		}
+	}
+
+	startLink() {
+		DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
+		this.waitingforlink = true;
+		service.updateController(this);
+	}
+
+	startRemove() {
+		DeviceState.Change(this.ip, this.defaultOn, this.defaultBri);
+		service.removeSetting(this.mac, "name");
+		service.removeSetting(this.mac, "ip");
+		this.connected = false;
+		this.announced = false;
+		this.readyToAnnounce = false;
+		service.suppressController(this);
+		service.updateController(this);
+	}
+
+	startDelete() {
+		discovery.forceDelete(this.ip);
+	}
+
+	startForceDiscover() {
+		discovery.forceDiscover(this.ip);
+	}
+
+	turnOn() {
+		DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
+	}
+
+	turnOff() {
+		DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, true);
 	}
 }
 
@@ -1553,6 +2909,9 @@ class XmlHttp {
 	static Get(url, callback, async = true) {
 		const xhr = new XMLHttpRequest();
 		xhr.open("GET", url, async);
+
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
 
 		xhr.onreadystatechange = callback.bind(null, xhr);
 
@@ -1602,90 +2961,9 @@ function applyOverlay(signalRgbColors, overlayColors) {
 }
 
 
-// === MultiPixelArt 渲染逻辑 (修复) ===
-// 修复 MultiPixelArt 模式不工作的问题：定义缺失的核心渲染函数。
-if (!globalThis.__MultiPixelArtExtension) {
-  globalThis.__MultiPixelArtExtension = {};
-}
-
-/**
- * 渲染多色像素图案。
- * @param {function(number, number, string)} drawFunc - 用于绘制单个像素的函数 (x, y, color)。
- * @param {string} artString - 包含 2D 颜色数组的 JSON 字符串。
- * @param {number} matrixWidth - 设备的矩阵宽度（目前未使用，但保留参数）。
- * @param {number} matrixHeight - 设备的矩阵高度（目前未使用，但保留参数）。
- * @param {string} forcedColor - 强制颜色（目前未使用，但保留参数）。
- */
-globalThis.__MultiPixelArtExtension.renderMultiPixelArt = function(drawFunc, artString, matrixWidth, matrixHeight, forcedColor) {
-  try {
-    const artMatrix = JSON.parse(artString);
-
-    if (!Array.isArray(artMatrix)) {
-        if (console && console.warn) console.warn("MultiPixelArt: artString parsed to non-array.", artMatrix);
-        return;
-    }
-
-    // artMatrix 的结构应该是 [[color1, color2, ...], [colorN, colorN+1, ...]]
-    // y 代表行 (row), x 代表列 (col)
-
-    // 注: SignalRGB 的坐标系通常是左上角 (0, 0)。
-    // WLED Modding API 中的 drawPixel/setPixel 期望 (x, y) 坐标。
-    for (let y = 0; y < artMatrix.length; y++) {
-      const row = artMatrix[y];
-      if (!Array.isArray(row)) continue;
-
-      for (let x = 0; x < row.length; x++) {
-        let color = row[x];
-
-        // 检查颜色是否是有效的字符串（Hex Color: #RRGGBB 或 #RGB）
-        // 如果是数字 0 或 null/空字符串，也认为是黑色/关闭
-        if (typeof color === 'string' && color.match(/^#([0-9A-F]{3}){1,2}$/i)) {
-            drawFunc(x, y, color);
-        } else if (color === 0 || color === '0' || color === null) {
-            // 兼容可能的用户输入 0 或 null 代表黑色/关闭
-            drawFunc(x, y, colorBlack); 
-        } else if (color === 1 || color === '1') {
-            // 兼容可能的用户输入 1 代表强制色 (forcedColor)
-            drawFunc(x, y, forcedColor); 
-        }
-        // 如果不是有效颜色，不绘制（保持背景色，透出 SignalRGB 效果）
-      }
-    }
-  } catch (e) {
-    if (console && console.error) console.error("MultiPixelArt Rendering Failed. Check your JSON format:", e);
-  }
-}
-
-// === End MultiPixelArt 渲染逻辑 ===
-
 
 // === Final LED Render ===
 // 将 SignalRGB 背景层 和 Overlay 前景层 合成后输出到 leds[]
 if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
     leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
-
-
-
-// MultiPixelArt fallback render hook: if there is an updateDisplay function, this will try to render after it.
-(function(){
-  try {
-    if (typeof updateDisplay === 'function') {
-      var __orig_updateDisplay = updateDisplay;
-      updateDisplay = function() {
-        __orig_updateDisplay.apply(this, arguments);
-        try {
-          if (typeof settings !== 'undefined' && settings.display_mode === "MultiPixelArt") {
-            if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
-              globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
-                if (typeof setPixel === 'function') setPixel(x,y,color);
-                else if (typeof drawPixel === 'function') drawPixel(x,y,color);
-                else if (typeof setLED === 'function') setLED(x,y,color);
-              }, settings.multi_pixel_art, settings.matrixWidth || 16, settings.matrixHeight || 16, settings.forcedColor);
-            }
-          }
-        } catch(e){ if (console && console.error) console.error("MultiPixelArt Extension Render Hook Failed:", e); }
-      }
-    }
-  } catch(e){ if (console && console.error) console.error("MultiPixelArt Extension Hook Failed:", e); }
-})();
