@@ -33,10 +33,10 @@ export function ControllableParameters() {
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
 {
-  {
-		"property": "multi_pixel_art_preset", "label": "预设图案", "type": "combobox", "description": "选择一个预设图案或自定义输入。", "values": ["Heart", "Rainbow", "Custom"], "default": "Heart"
+		"property": "multi_pixel_art_preset", "label": "预设图案", "type": "combobox", "description": "选择一个预设图案或自定义输入。", "values": ["Heart","Rainbow","Custom"], "default": "Heart"
 	},
-		"property": "multi_pixel_art",
+{
+  "property": "multi_pixel_art",
   "label": "显示模式：多色像素图案",
   "type": "textfield",
   "description": "与普通像素图不同，每个像素点都可以自定义颜色。",
@@ -2077,63 +2077,6 @@ export function ondisplay_modeChanged() {
 				device.log(ex.message);
 			}
 			break;
-
-                case 'MultiPixelArt':
-                    try {
-                        // MultiPixelArt preset handling
-                        var artPreset = (typeof multi_pixel_art_preset !== 'undefined') ? multi_pixel_art_preset : "Custom";
-                        var artData = null;
-                        if (artPreset === "Heart") {
-                            artData = [
-                              ["#000000","#FF0000","#000000","#FF0000","#000000"],
-                              ["#FF0000","#FF0000","#FF0000","#FF0000","#FF0000"],
-                              ["#FF0000","#FF0000","#FF0000","#FF0000","#FF0000"],
-                              ["#000000","#FF0000","#FF0000","#FF0000","#000000"],
-                              ["#000000","#000000","#FF0000","#000000","#000000"]
-                            ];
-                        } else if (artPreset === "Rainbow") {
-                            artData = [
-                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"],
-                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"],
-                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"],
-                              ["#FF0000","#FF7F00","#FFFF00","#00FF00","#0000FF","#4B0082","#8B00FF"]
-                            ];
-                        } else {
-                            try {
-                                artData = JSON.parse(multi_pixel_art);
-                            } catch(e) {
-                                artData = [];
-                                device.log("MultiPixelArt JSON parse error: " + e);
-                            }
-                        }
-
-                        var rows = artData.length || 0;
-                        var cols = (rows>0 && artData[0]) ? artData[0].length : 0;
-
-                        for (var y = 0; y < rows; y++) {
-                            for (var x = 0; x < cols; x++) {
-                                var color = artData[y][x];
-                                if (typeof setPixel === 'function') {
-                                    if (color && color !== "#000000") setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
-                                    else setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
-                                } else if (typeof drawPixel === 'function') {
-                                    if (color && color !== "#000000") drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
-                                    else drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
-                                } else {
-                                    var index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
-                                    if (index < displaySize.height * displaySize.width && index >= 0) {
-                                        display[index] = color && color !== "#000000" ? color : 0;
-                                    }
-                                }
-                            }
-                        }
-
-                        device.log("MultiPixelArt (" + artPreset + ") rendered");
-                        return;
-                    } catch(err) {
-                        device.log("MultiPixelArt render failed: " + err);
-                    }
-                    break;
 		default:
 			break;
 	}
@@ -2460,7 +2403,7 @@ class WLEDDevice {
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
 			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
-if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components' && display_mode != 'MultiPixelArt') {
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
     let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
 
     // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
@@ -2504,7 +2447,7 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 
 		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
 
-		if (display_mode != 'Components' && display_mode != 'MultiPixelArt') {
+		if (display_mode != 'Components') {
 			if (display != undefined) {
 				displayClock();
 				let Snake_display = rearrangeDisplayForSnakeLayout(display);
@@ -2512,7 +2455,7 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 					switch (Snake_display[led_index]) {
 						case 0:
                             // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
-                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components' && display_mode != 'MultiPixelArt')) {
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
                                 RGBData[led_index * 3] = 0;
                                 RGBData[led_index * 3 + 1] = 0;
                                 RGBData[led_index * 3 + 2] = 0;
@@ -2577,6 +2520,44 @@ export function Initialize() {
 }
 
 export function Render() {
+    // --- MultiPixelArt early-render guard (inserted) ---
+    try {
+        if (typeof display_mode !== 'undefined' && display_mode === 'MultiPixelArt') {
+            var artData = [];
+            try {
+                if (typeof multi_pixel_art === 'string' && multi_pixel_art.trim().length > 0) {
+                    artData = JSON.parse(multi_pixel_art);
+                }
+            } catch(e) {
+                device.log("MultiPixelArt JSON parse error (early guard): " + e);
+                artData = [];
+            }
+            var rows = artData.length || 0;
+            var cols = (rows>0 && artData[0]) ? artData[0].length : 0;
+            for (var y=0; y<rows; y++) {
+                for (var x=0; x<cols; x++) {
+                    var color = artData[y][x];
+                    if (typeof setPixel === 'function') {
+                        if (color && color !== "#000000") setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
+                        else setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
+                    } else if (typeof drawPixel === 'function') {
+                        if (color && color !== "#000000") drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
+                        else drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
+                    } else if (typeof display !== 'undefined' && typeof displaySize !== 'undefined') {
+                        var index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
+                        if (index < displaySize.height * displaySize.width && index >= 0) {
+                            display[index] = color && color !== "#000000" ? color : 0;
+                        }
+                    }
+                }
+            }
+            return;
+        }
+    } catch(e) {
+        device.log("MultiPixelArt early guard error: " + e);
+    }
+    // --- end guard ---
+
 	WLED.SendColorPackets();
 }
 
