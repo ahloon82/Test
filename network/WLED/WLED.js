@@ -2974,3 +2974,28 @@ function applyOverlay(signalRgbColors, overlayColors) {
 if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
     leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
+
+
+
+// MultiPixelArt fallback render hook: if there is an updateDisplay function, this will try to render after it.
+(function(){
+  try {
+    if (typeof updateDisplay === 'function') {
+      var __orig_updateDisplay = updateDisplay;
+      updateDisplay = function() {
+        __orig_updateDisplay.apply(this, arguments);
+        try {
+          if (typeof settings !== 'undefined' && settings.display_mode === "MultiPixelArt") {
+            if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
+              globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
+                if (typeof setPixel === 'function') setPixel(x,y,color);
+                else if (typeof drawPixel === 'function') drawPixel(x,y,color);
+                else if (typeof setLED === 'function') setLED(x,y,color);
+              }, settings.multi_pixel_art, settings.matrixWidth || 16, settings.matrixHeight || 16, settings.forcedColor);
+            }
+          }
+        } catch(e){ if (console && console.error) console.error("MultiPixelArt fallback render error", e); }
+      };
+    }
+  } catch(e){}
+})();
