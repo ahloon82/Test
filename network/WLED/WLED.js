@@ -2075,25 +2075,35 @@ export function ondisplay_modeChanged() {
 			}
 			break;
 
-        case 'MultiPixelArt':
-            try {
-                const art = JSON.parse(multi_pixel_art);
-                const rows = art.length;
-                const cols = art[0].length;
-                for (let y = 0; y < rows; y++) {
-                    for (let x = 0; x < cols; x++) {
-                        const color = art[y][x];
-                        if (color && color !== "#000000") {
-                            setPixel(x + paddingX, y + paddingY, color);
-                        } else {
-                            setPixel(x + paddingX, y + paddingY, "#000000");
+                case 'MultiPixelArt':
+                    try {
+                        // Independent MultiPixelArt rendering: parse 2D color array and set pixels directly.
+                        const art = JSON.parse(multi_pixel_art);
+                        const rows = art.length || 0;
+                        const cols = (rows>0 && art[0]) ? art[0].length : 0;
+                        for (let y = 0; y < rows; y++) {
+                            for (let x = 0; x < cols; x++) {
+                                const color = art[y][x];
+                                // use existing setPixel/drawPixel/setLED helpers if available, otherwise write into display array
+                                if (typeof setPixel === 'function') {
+                                    if (color && color !== "#000000") setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
+                                    else setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
+                                } else if (typeof drawPixel === 'function') {
+                                    if (color && color !== "#000000") drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
+                                    else drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
+                                } else {
+                                    // fallback: write into display[] using same index calc as insertPixelArtIntoDisplay
+                                    let index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
+                                    if (index < displaySize.height * displaySize.width && index >= 0) {
+                                        display[index] = color && color !== "#000000" ? color : 0;
+                                    }
+                                }
+                            }
                         }
+                    } catch (err) {
+                        device.log("MultiPixelArt render failed: " + err);
                     }
-                }
-            } catch (err) {
-                device.log("MultiPixelArt render failed: " + err);
-            }
-            break;
+                    break;
 		default:
 			break;
 	}
@@ -2420,9 +2430,32 @@ class WLEDDevice {
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
 			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
-if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display_mode !== 'MultiPixelArt') {
-    // overlay logic skipped for MultiPixelArt
-}
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components' && display_mode != 'MultiPixelArt') {
+    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+
+    // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
+    // 回退到 overlayColor（全局变量风格），最终兜底 "#FFFFFF"
+    let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
+        ? controller.overlayColor
+        : (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
+
+    // 使用已有的 hexToRgb 函数（如果存在），否则本地解析
+    let overlayRgb;
+    if (typeof hexToRgb === 'function') {
+        overlayRgb = hexToRgb(overlayHex);
+    } else {
+        // 简单安全解析：支持 #RGB / #RRGGBB / RGB / RRGGBB
+        let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
+        if (h.length === 3) h = h.split('').map(function(c){ return c + c; }).join('');
+        if (h.length !== 6) {
+            overlayRgb = { r: 255, g: 255, b: 255 };
+        } else {
+            overlayRgb = {
+                r: parseInt(h.substr(0,2), 16) || 0,
+                g: parseInt(h.substr(2,2), 16) || 0,
+                b: parseInt(h.substr(4,2), 16) || 0
+            };
+        }
     }
 
     for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
@@ -2441,7 +2474,7 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display_mode !== 
 
 		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
 
-		if (display_mode != 'Components') {
+		if (display_mode != 'Components' && display_mode != 'MultiPixelArt') {
 			if (display != undefined) {
 				displayClock();
 				let Snake_display = rearrangeDisplayForSnakeLayout(display);
@@ -2449,7 +2482,7 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display_mode !== 
 					switch (Snake_display[led_index]) {
 						case 0:
                             // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
-                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components' && display_mode != 'MultiPixelArt')) {
                                 RGBData[led_index * 3] = 0;
                                 RGBData[led_index * 3 + 1] = 0;
                                 RGBData[led_index * 3 + 2] = 0;
