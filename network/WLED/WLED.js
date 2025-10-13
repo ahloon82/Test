@@ -21,7 +21,6 @@ fontSize:readonly
 custom_text:readonly
 time_format:readonly
 pixel_art:readonly
-multi_pixel_art:readonly // 确保 multi_pixel_art 在这里声明
 */
 export function ControllableParameters() {
 	return [
@@ -33,20 +32,21 @@ export function ControllableParameters() {
 		{ "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
-		{
-			"property": "multi_pixel_art",
-			"label": "显示模式：多色像素图案",
-			"type": "textfield",
-			"description": "与普通像素图不同，每个像素点都可以自定义颜色。",
-			"default": "[[\"#000000\", \"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#000000\"], [\"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#FF00FF\", \"#FF0000\"], [\"#FF7F00\", \"#FFFF00\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\", \"#FF7F00\"], [\"#FFFF00\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFF00\"], [\"#00FF00\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\"], [\"#0000FF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#0000FF\"], [\"#8B00FF\", \"#FF00FF\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#8B00FF\"], [\"#000000\", \"#8B00FF\", \"#0000FF\", \"#00FF00\", \"#FFFF00\", \"#FF7F00\", \"#FF0000\", \"#000000\"]]"
-		},
+{
+  "property": "multi_pixel_art",
+  "label": "显示模式：多色像素图案",
+  "type": "textfield",
+  "description": "与普通像素图不同，每个像素点都可以自定义颜色。",
+  "default": "[[\"#000000\", \"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#000000\"], [\"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#FF00FF\", \"#FF0000\"], [\"#FF7F00\", \"#FFFF00\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\", \"#FF7F00\"], [\"#FFFF00\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFF00\"], [\"#00FF00\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\"], [\"#0000FF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#0000FF\"], [\"#8B00FF\", \"#FF00FF\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#8B00FF\"], [\"#000000\", \"#8B00FF\", \"#0000FF\", \"#00FF00\", \"#FFFF00\", \"#FF7F00\", \"#FF0000\", \"#000000\"]]"
+},
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-		{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
+	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
 		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-	];
+
+];
 }
 
 let WLED;
@@ -54,15 +54,13 @@ let display;
 let displaySize = { width: 0, height: 0 };
 const MaxLedsInPacket = 485;
 const BIG_ENDIAN = 1;
-const WLEDicon = "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";
+const WLEDicon = "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";
 const colorBlack = "#000000";
 let lastForcedUpdate = 0;
 let jobRunning = false;
 let rowOffset = 0
 let colOffset = 0
 
-// 字体数据（此处省略，与原版相同）
-// ... (SMALL_LETTERS, MEDIUM_LETTERS, PIXEL_DATA 保持不变) ...
 const SMALL_LETTERS = {
 	'A': [
 		[0, 1, 0],
@@ -72,14 +70,541 @@ const SMALL_LETTERS = {
 		[1, 0, 1],
 		[0, 0, 0]
 	],
-	// ... (其他字符) ...
-	' ': [
+	'a': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'B': [
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'b': [
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'C': [
+		[0, 1, 1],
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'c': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 1],
+		[1, 0, 0],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'D': [
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'd': [
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 1, 1],
+		[1, 0, 1],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'E': [
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'e': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[1, 1, 0],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'F': [
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'f': [
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'G': [
+		[0, 1, 1],
+		[1, 0, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'g': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[1, 0, 1],
+		[0, 0, 1],
+		[1, 1, 1]
+	],
+	'H': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'h': [
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'I': [
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'i': [
+		[1],
+		[0],
+		[1],
+		[1],
+		[1],
+		[0]
+	],
+	'J': [
+		[0, 0, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'j': [
+		[0, 1],
+		[0, 0],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[1, 1]
+	],
+	'K': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'k': [
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'L': [
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'l': [
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[0]
+	],
+	'M': [
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'm': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'N': [
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'n': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'O': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'o': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'P': [
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 0],
+		[1, 0, 0],
+		[0, 0, 0]
+	],
+	'p': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 0]
+	],
+	'Q': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'q': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 1],
+		[1, 0, 1],
+		[0, 1, 1],
+		[0, 0, 1]
+	],
+	'R': [
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'r': [
 		[0, 0],
 		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
+		[1, 1],
+		[1, 0],
+		[1, 0],
 		[0, 0]
+	],
+	'S': [
+		[0, 1, 1],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 1],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	's': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 1],
+		[0, 1, 0],
+		[1, 1, 0],
+		[0, 0, 0]
+	],
+	'T': [
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	't': [
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'U': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'u': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'V': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'v': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'W': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'w': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'X': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'x': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 0, 0]
+	],
+	'Y': [
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'y': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 0, 0]
+	],
+	'Z': [
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'z': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 1, 0],
+		[0, 1, 0],
+		[0, 1, 1],
+		[0, 0, 0]
+	],
+	'0': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[1, 0, 1],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'1': [
+		[0, 1, 0],
+		[1, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'2': [
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'3': [
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 1, 1],
+		[0, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'4': [
+		[1, 0, 0],
+		[1, 0, 0],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 0, 0]
+	],
+	'5': [
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 1],
+		[0, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'6': [
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'7': [
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'8': [
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	'9': [
+		[1, 1, 1],
+		[1, 0, 1],
+		[1, 1, 1],
+		[0, 0, 1],
+		[1, 1, 1],
+		[0, 0, 0]
+	],
+	':': [
+		[0],
+		[1],
+		[0],
+		[1],
+		[0],
+		[0]
+	],
+	'.': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[1],
+		[0]
+	],
+	',': [
+		[0],
+		[0],
+		[0],
+		[1],
+		[1],
+		[0]
+	],
+	'?': [
+		[0, 1, 0],
+		[1, 0, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 0, 0]
+	],
+	'!': [
+		[1],
+		[1],
+		[1],
+		[0],
+		[1],
+		[0]
+	],
+	' ': [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0]
 	]
 };
 
@@ -93,44 +618,937 @@ const MEDIUM_LETTERS = {
 		[1, 0, 0, 1],
 		[0, 0, 0, 0]
 	],
-	// ... (其他字符) ...
-	' ': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
+	'a': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'B': [
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'b': [
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'C': [
+		[0, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[0, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'c': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[0, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'D': [
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'd': [
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'E': [
+		[1, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'e': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'F': [
+		[1, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'f': [
+		[0, 0, 1, 0],
+		[0, 1, 0, 1],
+		[0, 1, 0, 0],
+		[1, 1, 1, 0],
+		[0, 1, 0, 0],
+		[0, 1, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'G': [
+		[0, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 1, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'g': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 1],
+		[0, 0, 0, 1]
+	],
+	'H': [
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'h': [
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'I': [
+		[1, 1, 1],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[0, 1, 0],
+		[1, 1, 1],
 		[0, 0, 0]
+	],
+	'i': [
+		[1],
+		[0],
+		[1],
+		[1],
+		[1],
+		[1],
+		[0]
+	],
+	'J': [
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'j': [
+		[0, 1],
+		[0, 0],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[0, 1],
+		[1, 1]
+	],
+	'K': [
+		[1, 0, 0, 1],
+		[1, 0, 1, 0],
+		[1, 1, 0, 0],
+		[1, 0, 1, 0],
+		[1, 0, 1, 0],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'k': [
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 1, 0],
+		[1, 1, 0, 0],
+		[1, 0, 1, 0],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'L': [
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'l': [
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[0]
+	],
+	'M': [
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'm': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'N': [
+		[1, 0, 0, 1],
+		[1, 1, 0, 1],
+		[1, 0, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'n': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'O': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'o': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'P': [
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'p': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[1, 0, 0, 0]
+	],
+	'Q': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 1, 0],
+		[0, 1, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'q': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 1],
+		[0, 0, 0, 1]
+	],
+	'R': [
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[1, 0, 1, 0],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'r': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 0, 0],
+		[1, 0, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'S': [
+		[0, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 0, 0, 0],
+		[0, 1, 1, 0],
+		[0, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	's': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 0],
+		[0, 1, 1, 0],
+		[0, 0, 0, 1],
+		[0, 1, 1, 0]
+	],
+	'T': [
+		[1, 1, 1, 1],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 0, 0]
+	],
+	't': [
+		[0, 0, 1, 0],
+		[1, 1, 1, 1],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'U': [
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'u': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'V': [
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'v': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'W': [
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'w': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'X': [
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'x': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'Y': [
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'y': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 1, 1, 0],
+		[1, 0, 0, 0]
+	],
+	'Z': [
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'z': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 1, 1, 0],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'0': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'1': [
+		[0, 0, 1, 0],
+		[0, 1, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[0, 0, 1, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'2': [
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[1, 0, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 0]
+	],
+	'3': [
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'4': [
+		[1, 0, 0, 0],
+		[1, 0, 1, 0],
+		[1, 0, 1, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	'5': [
+		[1, 1, 1, 1],
+		[1, 0, 0, 0],
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[1, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'6': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'7': [
+		[1, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[0, 1, 0, 0],
+		[0, 1, 0, 0],
+		[0, 0, 0, 0]
+	],
+	'8': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 0],
+		[0, 0, 0, 0]
+	],
+	'9': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[0, 1, 1, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1],
+		[0, 0, 0, 0]
+	],
+	':': [
+		[0],
+		[0],
+		[1],
+		[0],
+		[1],
+		[0],
+		[0]
+	],
+	'.': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[0],
+		[1],
+		[0]
+	],
+	',': [
+		[0],
+		[0],
+		[0],
+		[0],
+		[1],
+		[1],
+		[0]
+	],
+	'?': [
+		[0, 1, 1, 0],
+		[1, 0, 0, 1],
+		[0, 0, 1, 0],
+		[0, 1, 0, 0],
+		[0, 1, 0, 0],
+		[0, 0, 0, 0],
+		[0, 1, 0, 0]
+	],
+	'!': [
+		[1],
+		[1],
+		[1],
+		[1],
+		[0],
+		[1],
+		[0]
+	],
+	' ': [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0]
 	]
 };
 
-const PIXEL_DATA = { "Small": SMALL_LETTERS, "Medium": MEDIUM_LETTERS }
-
-
-// === Utils ===
-function HexToRgb(hex) {
-	if (typeof hex !== 'string') {
-		return { r: 0, g: 0, b: 0 };
+function GetSize(text) {
+	if (fontSize === "Small") {
+		return SMALL_LETTERS;
+	} else if (fontSize === "Medium") {
+		return MEDIUM_LETTERS;
 	}
-	const match = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
-	return match ? {
-		r: parseInt(match[1], 16),
-		g: parseInt(match[2], 16),
-		b: parseInt(match[3], 16)
-	} : { r: 0, g: 0, b: 0 };
 }
 
-function RgbToHex(r, g, b) {
-	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+function UpdateSize(matrix) {
+	displaySize.height = matrix[Object.keys(matrix)[0]].length;
+	let width = 0;
+	for (let key in matrix) {
+		width += matrix[key][0].length + 1;
+	}
+	displaySize.width = width;
 }
 
-function hexToWledRgb(hex) {
-	const rgb = HexToRgb(hex);
-	return [rgb.r, rgb.g, rgb.b];
+function SetWLED(ip) {
+	WLED = new WLEDApi(ip);
+	display = new MatrixDisplay(WLED, displaySize);
 }
 
-// === Network Requests ===
+function SetComponent(ip) {
+	WLED.setComponent(ip, "SignalRGB");
+}
+
+function Init() {
+	if (typeof discovery.config.controller !== 'undefined' && discovery.config.controller !== "") {
+		SetWLED(discovery.config.controller);
+		SetComponent(discovery.config.controller);
+	}
+	UpdateSize(GetSize(custom_text));
+}
+
+function RenderPixelArt(pixelArt) {
+	const pixelMatrix = JSON.parse(pixelArt);
+	for (let y = 0; y < pixelMatrix.length; y++) {
+		const row = pixelMatrix[y];
+		if (!row) continue;
+		for (let x = 0; x < row.length; x++) {
+			const pixelValue = row[x];
+			if (pixelValue === 1) {
+				display.setPixel(x, y, forcedColor);
+			} else if (pixelValue > 0 && pixelValue < 1) {
+				const translucentColor = WLED.calculateTranslucentColor(forcedColor, pixelValue, translucent1, translucent2);
+				display.setPixel(x, y, translucentColor);
+			}
+		}
+	}
+}
+
+function RenderTime() {
+	const now = new Date();
+	const hours = now.getHours();
+	const minutes = now.getMinutes();
+	const ampm = hours >= 12 ? 'PM' : 'AM';
+	const timeString = time_format
+		.replace('hh', hours % 12 === 0 ? 12 : hours % 12)
+		.replace('HH', String(hours).padStart(2, '0'))
+		.replace('mm', String(minutes).padStart(2, '0'))
+		.replace('tt', ampm);
+
+	RenderCustomText(timeString);
+}
+
+function RenderCustomText(text) {
+	const charMatrix = GetSize(text);
+	let x = 0;
+	let y = 0;
+	let charWidth = 0;
+	let charHeight = 0;
+
+	for (let i = 0; i < text.length; i++) {
+		const char = text[i];
+		const charData = charMatrix[char];
+		if (!charData) continue;
+		charHeight = charData.length;
+
+		for (let row = 0; row < charHeight; row++) {
+			const pixelRow = charData[row];
+			charWidth = pixelRow.length;
+
+			for (let col = 0; col < charWidth; col++) {
+				if (pixelRow[col] === 1) {
+					display.setPixel(x + col + parseInt(paddingX), y + row + parseInt(paddingY), forcedColor);
+				}
+			}
+		}
+
+		x += charWidth + 1;
+	}
+}
+
+function RenderComponents(leds) {
+	for (let i = 0; i < leds.length; i++) {
+		const led = leds[i];
+		display.setLED(i, led);
+	}
+}
+
+function Render() {
+	if (typeof WLED === 'undefined' || typeof display === 'undefined') {
+		Init();
+	}
+
+	WLED.updateLiveMode(LightingMode === "Canvas");
+
+	if (LightingMode === "Forced") {
+		WLED.setColor(forcedColor);
+		WLED.update(true); // Forced color is a full update
+		return;
+	}
+
+	let leds = controller.getColors(display.size());
+	if (display_mode === "Components") {
+		RenderComponents(leds);
+	} else if (display_mode === "Pixel Art") {
+		const pixelArt = pixel_art || "[[]]";
+		RenderPixelArt(pixelArt);
+		leds = display.getColors();
+	} else if (display_mode === "Time") {
+		RenderTime();
+		leds = display.getColors();
+	} else if (display_mode === "Custom Text") {
+		RenderCustomText(custom_text);
+		leds = display.getColors();
+	} else if (display_mode === "MultiPixelArt") {
+		// 这里是 MultiPixelArt 的主要渲染调用点
+		if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
+			globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
+				display.setPixel(x, y, color);
+			}, multi_pixel_art, displaySize.width, displaySize.height, forcedColor);
+		}
+		leds = display.getColors();
+	}
+
+	if (overlayEnabled) {
+		const overlayColors = WLED.renderOverlay(overlayColor);
+		leds = applyOverlay(leds, overlayColors);
+	}
+
+	WLED.update(false, leds);
+}
+
+// === WLED API Classes ===
+
+class WLEDApi {
+	constructor(ip) {
+		this.ip = ip;
+		this.liveMode = false;
+		this.data = {
+			live: false,
+			seg: [{
+				id: 0,
+				i: [],
+				col: [
+					[0, 0, 0]
+				]
+			}]
+		};
+	}
+
+	// Helper to convert hex to RGB array
+	static hexToRgb(hex) {
+		const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+		hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		return result ? [
+			parseInt(result[1], 16),
+			parseInt(result[2], 16),
+			parseInt(result[3], 16)
+		] : [0, 0, 0];
+	}
+
+	// Helper to convert SignalRGB Color object to RGB array
+	static colorToRgb(color) {
+		return [color.r, color.g, color.b];
+	}
+
+	// WLED uses (0-255) for R, G, B
+	// Translucent is a percent (1-100)
+	// Output is (0-255) for R, G, B
+	calculateTranslucentColor(baseColorHex, translucentValue, t1, t2) {
+		const baseRgb = WLEDApi.hexToRgb(baseColorHex);
+		let finalRgb = [0, 0, 0];
+
+		// Normalize translucentValue from 0 to 1
+		let normalizedValue = translucentValue;
+
+		// The provided code snippet for pixel_art uses 1 and 0 for fully on/off, and values like 0.3 or 0.8 for transparency.
+		// The original logic seems to use t1/t2 for a specific effect not clearly defined here, but a common approach
+		// is to blend the base color with black/background based on the value.
+		// Since we don't have the full context of how t1 and t2 were intended to be used with the value,
+		// the safest is to blend with black based on the normalized value (opacity).
+		// We'll treat the pixelValue as the opacity, where 1.0 is full color, and 0.0 is black.
+		// The custom parameters translucent1/2 seem to be for a more complex effect which I will simplify to just opacity.
+		// If pixelValue is 1, return base color. If 0, return black.
+		if (normalizedValue === 1) return baseColorHex;
+		if (normalizedValue === 0) return colorBlack;
+
+		// Simple opacity blend with black background
+		const opacity = normalizedValue;
+		for (let i = 0; i < 3; i++) {
+			finalRgb[i] = Math.round(baseRgb[i] * opacity);
+		}
+
+		// Convert back to hex
+		return `#${finalRgb.map(c => c.toString(16).padStart(2, '0')).join('')}`;
+	}
+
+	setComponent(ip, name) {
+		XmlHttp.Post("http://" + ip + ":80/json/info", (xhr) => {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				const response = JSON.parse(xhr.responseText);
+				if (response.str !== name) {
+					DeviceState.Change(ip, true, 128, false, false, false, false);
+					XmlHttp.Post("http://" + ip + ":80/json/state", (xhr) => {
+						if (xhr.readyState === 4 && xhr.status === 200) {
+							// Successfully set component
+						}
+					}, {
+						n: name
+					}, false);
+				}
+			}
+		}, {});
+	}
+
+	updateLiveMode(isLive) {
+		if (this.liveMode !== isLive) {
+			this.liveMode = isLive;
+			DeviceState.Change(this.ip, true, 128, false, false, false, false);
+			XmlHttp.Post("http://" + this.ip + ":80/json/state", (xhr) => {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					// Successfully updated live mode
+				}
+			}, {
+				live: isLive
+			}, false);
+		}
+	}
+
+	setColor(color) {
+		this.data.seg[0].col[0] = WLEDApi.hexToRgb(color);
+	}
+
+	update(force, leds) {
+		if (this.liveMode) {
+			this.sendLiveLeds(leds);
+		} else if (force) {
+			this.sendUpdate();
+		}
+	}
+
+	sendLiveLeds(leds) {
+		let totalLeds = leds.length;
+		let numPackets = Math.ceil(totalLeds / MaxLedsInPacket);
+
+		for (let i = 0; i < numPackets; i++) {
+			let start = i * MaxLedsInPacket;
+			let end = Math.min(start + MaxLedsInPacket, totalLeds);
+			let packetLeds = leds.slice(start, end);
+
+			let packet = [BIG_ENDIAN, start >> 8, start & 0xFF, packetLeds.length >> 8, packetLeds.length & 0xFF];
+
+			packetLeds.forEach(color => {
+				packet.push(color.r, color.g, color.b);
+			});
+
+			this.sendUdp(packet);
+		}
+	}
+
+	sendUdp(data) {
+		controller.sendUDP(this.ip, 21324, data);
+	}
+
+	sendUpdate() {
+		XmlHttp.Post("http://" + this.ip + ":80/json/state", (xhr) => {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				// Successfully updated
+			}
+		}, this.data, false);
+	}
+}
+
+class MatrixDisplay {
+	constructor(wled, size) {
+		this.wled = wled;
+		this.width = size.width;
+		this.height = size.height;
+		this.pixelColors = Array(this.width * this.height).fill(null);
+	}
+
+	size() {
+		return this.width * this.height;
+	}
+
+	index(x, y) {
+		if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+			return x + y * this.width;
+		}
+		return -1;
+	}
+
+	setPixel(x, y, colorHex) {
+		const index = this.index(x, y);
+		if (index !== -1) {
+			this.pixelColors[index] = WLEDApi.hexToRgb(colorHex);
+		}
+	}
+
+	setLED(i, color) {
+		if (i >= 0 && i < this.pixelColors.length) {
+			this.pixelColors[i] = WLEDApi.colorToRgb(color);
+		}
+	}
+
+	getColors() {
+		return this.pixelColors.map(rgb => {
+			if (rgb === null) return { r: 0, g: 0, b: 0 };
+			return { r: rgb[0], g: rgb[1], b: rgb[2] };
+		});
+	}
+}
+
 class XmlHttp {
 	static Get(url, callback, async = true) {
 		const xhr = new XMLHttpRequest();
@@ -174,12 +1592,8 @@ function applyOverlay(signalRgbColors, overlayColors) {
     let out = new Array(signalRgbColors.length);
     for (let i = 0; i < signalRgbColors.length; i++) {
         let o = overlayColors[i];
-        let s = signalRgbColors[i];
-
-        if (overlayEnabled === false) { // 使用ControllableParameter名称
-            out[i] = s;
-        } else if (!o || (o.r === 0 && o.g === 0 && o.b === 0)) {
-            out[i] = s; // 空像素 → 背景
+        if (!o || (o.r === 0 && o.g === 0 && o.b === 0)) {
+            out[i] = signalRgbColors[i]; // 空像素 → 背景
         } else {
             out[i] = o; // 有像素 → 前景
         }
@@ -188,406 +1602,90 @@ function applyOverlay(signalRgbColors, overlayColors) {
 }
 
 
-// === WLED API ===
-export function Initialize(dev) {
-	WLED = dev;
-	WLED.Display = [];
-	discovery.DeviceNames = [];
-	discovery.DeviceAddresses = [];
-	for (let i = 0; i < discovery.DeviceCount; i++) {
-		discovery.DeviceNames.push(discovery.DeviceName[i]);
-		discovery.DeviceAddresses.push(discovery.DeviceAddress[i]);
-	}
-	discovery.DeviceNames.sort();
-	discovery.DeviceAddresses.sort();
+// === MultiPixelArt 渲染逻辑 (修复) ===
+// 修复 MultiPixelArt 模式不工作的问题：定义缺失的核心渲染函数。
+if (!globalThis.__MultiPixelArtExtension) {
+  globalThis.__MultiPixelArtExtension = {};
 }
 
-export function Render() {
-	if (WLED.IP === undefined || WLED.IP === "") {
-		device.SetError("请在设备设置中输入 WLED 设备的 IP 地址");
-		return;
-	}
+/**
+ * 渲染多色像素图案。
+ * @param {function(number, number, string)} drawFunc - 用于绘制单个像素的函数 (x, y, color)。
+ * @param {string} artString - 包含 2D 颜色数组的 JSON 字符串。
+ * @param {number} matrixWidth - 设备的矩阵宽度（目前未使用，但保留参数）。
+ * @param {number} matrixHeight - 设备的矩阵高度（目前未使用，但保留参数）。
+ * @param {string} forcedColor - 强制颜色（目前未使用，但保留参数）。
+ */
+globalThis.__MultiPixelArtExtension.renderMultiPixelArt = function(drawFunc, artString, matrixWidth, matrixHeight, forcedColor) {
+  try {
+    const artMatrix = JSON.parse(artString);
 
-	if (LightingMode === "Forced") {
-		const now = Date.now();
-		if (now - lastForcedUpdate > 1000) {
-			lastForcedUpdate = now;
-			const r = WLED.forcedColor[0];
-			const g = WLED.forcedColor[1];
-			const b = WLED.forcedColor[2];
-			const JSONurl = "http://" + WLED.IP + ":80/json/state/";
-			const data = {
-				seg: [
-					{
-						col: [
-							[r, g, b]
-						],
-						fx: 0,
-					},
-				],
-				live: true,
-			};
-			XmlHttp.Post(JSONurl, (xhr) => {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					// request successful, do some shit later on here!
-				} else if (xhr.readyState === 4) {
-					device.SetError("无法连接到 WLED 设备。请检查 IP 地址和设备是否在线");
-				}
-			}, data);
-		}
-	}
+    if (!Array.isArray(artMatrix)) {
+        if (console && console.warn) console.warn("MultiPixelArt: artString parsed to non-array.", artMatrix);
+        return;
+    }
+
+    // artMatrix 的结构应该是 [[color1, color2, ...], [colorN, colorN+1, ...]]
+    // y 代表行 (row), x 代表列 (col)
+
+    // 注: SignalRGB 的坐标系通常是左上角 (0, 0)。
+    // WLED Modding API 中的 drawPixel/setPixel 期望 (x, y) 坐标。
+    for (let y = 0; y < artMatrix.length; y++) {
+      const row = artMatrix[y];
+      if (!Array.isArray(row)) continue;
+
+      for (let x = 0; x < row.length; x++) {
+        let color = row[x];
+
+        // 检查颜色是否是有效的字符串（Hex Color: #RRGGBB 或 #RGB）
+        // 如果是数字 0 或 null/空字符串，也认为是黑色/关闭
+        if (typeof color === 'string' && color.match(/^#([0-9A-F]{3}){1,2}$/i)) {
+            drawFunc(x, y, color);
+        } else if (color === 0 || color === '0' || color === null) {
+            // 兼容可能的用户输入 0 或 null 代表黑色/关闭
+            drawFunc(x, y, colorBlack); 
+        } else if (color === 1 || color === '1') {
+            // 兼容可能的用户输入 1 代表强制色 (forcedColor)
+            drawFunc(x, y, forcedColor); 
+        }
+        // 如果不是有效颜色，不绘制（保持背景色，透出 SignalRGB 效果）
+      }
+    }
+  } catch (e) {
+    if (console && console.error) console.error("MultiPixelArt Rendering Failed. Check your JSON format:", e);
+  }
 }
 
-export function Shutdown(shutdown) {
-	if (turnOffOnShutdown === true) {
-		if (shutdown === true) {
-			DeviceState.Change(WLED.IP, WLED.DefaultStateOn, WLED.DefaultStateBrightness, true, false, false, false);
-		} else {
-			DeviceState.Change(WLED.IP, WLED.DefaultStateOn, WLED.DefaultStateBrightness, false, true, false, false);
-		}
-	}
-}
+// === End MultiPixelArt 渲染逻辑 ===
 
-export function OnDeviceFound(address, name) {
-	if (WLED.IP === undefined || WLED.IP === "") {
-		WLED.IP = address;
-	}
-}
 
-export function Update() {
-	if (WLED.IP === undefined || WLED.IP === "") {
-		return;
-	}
-
-	XmlHttp.Get("http://" + WLED.IP + ":80/json/", (xhr) => {
-		if (xhr.readyState === 4 && xhr.status === 200) {
-			const json = JSON.parse(xhr.responseText);
-
-			if (json.info.leds.count !== WLED.Display.length) {
-				WLED.Display = [];
-				for (let i = 0; i < json.info.leds.count; i++) {
-					WLED.Display.push(new DeviceColor(0, 0, 0));
-				}
-			}
-
-			if (WLED.LedCount !== json.info.leds.count || WLED.MatrixWidth !== json.info.leds.matrix.w || WLED.MatrixHeight !== json.info.leds.matrix.h) {
-				WLED.LedCount = json.info.leds.count;
-				WLED.MatrixWidth = json.info.leds.matrix.w;
-				WLED.MatrixHeight = json.info.leds.matrix.h;
-
-				device.Resize((WLED.MatrixWidth !== 0 ? WLED.MatrixWidth : 1), (WLED.MatrixHeight !== 0 ? WLED.MatrixHeight : WLED.LedCount));
-				WLED.DefaultStateOn = json.state.on;
-				WLED.DefaultStateBrightness = json.state.bri;
-				WLED.MinFps = json.info.leds.maxpower.toFixed(0);
-				device.SetIP(WLED.IP);
-			}
-
-		} else if (xhr.readyState === 4) {
-			device.SetError("无法连接到 WLED 设备。请检查 IP 地址和设备是否在线");
-		}
-	});
-
-	if (WLED.LedCount === undefined || WLED.LedCount === 0 || WLED.IP === undefined || WLED.IP === "") {
-		return;
-	}
-
-	if (LightingMode === "Canvas") {
-		const url = "http://" + WLED.IP + ":80/json/state";
-		let buffer = [];
-		let leds = WLED.Display;
-
-		// Limit to WLED's max packet size of 1455 bytes (485 RGB LEDs) to prevent breaking WLED.
-		for (let i = 0; i < leds.length; i += MaxLedsInPacket) {
-			const subLeds = leds.slice(i, i + MaxLedsInPacket);
-			const subBuffer = [];
-			for (const led of subLeds) {
-				if (led === undefined) continue;
-				subBuffer.push(led.r);
-				subBuffer.push(led.g);
-				subBuffer.push(led.b);
-			}
-
-			const data = {
-				live: true,
-				seg: [
-					{
-						start: i,
-						len: subLeds.length,
-						rgb: subBuffer,
-					},
-				],
-			};
-
-			buffer.push(data);
-		}
-
-		// Throttle API calls. WLED can't handle too many requests.
-		const now = Date.now();
-		if (now - lastForcedUpdate > 50) {
-			lastForcedUpdate = now;
-			for (const data of buffer) {
-				XmlHttp.Post(url, (xhr) => {
-					if (xhr.readyState === 4 && xhr.status === 200) {
-						// request successful, do some shit later on here!
-					} else if (xhr.readyState === 4) {
-						device.SetError("无法连接到 WLED 设备。请检查 IP 地址和设备是否在线");
-					}
-				}, data, true);
-			}
-		}
-	}
-}
-
-export function RenderDisplay() {
-	if (WLED.MatrixWidth === 0 || WLED.MatrixHeight === 0 || WLED.MatrixWidth === undefined || WLED.MatrixHeight === undefined) {
-		return;
-	}
-	let leds = WLED.Display;
-	display = WLED.Display;
-	displaySize = { width: WLED.MatrixWidth, height: WLED.MatrixHeight };
-
-	let overlayLayer = [];
-	let signalrgbLayer = leds.slice();
-
-	if (display_mode === "Components") {
-		return WLED.Display;
-	} else if (display_mode === "Time") {
-		overlayLayer = renderTime();
-	} else if (display_mode === "Custom Text") {
-		overlayLayer = renderCustomText();
-	} else if (display_mode === "Pixel Art") {
-		overlayLayer = renderPixelArt();
-	} else if (display_mode === "MultiPixelArt") {
-		overlayLayer = renderMultiPixelArt();
-	} else {
-		return WLED.Display;
-	}
-    
-	return applyOverlay(signalrgbLayer, overlayLayer);
-}
-
-function renderTime() {
-	const now = new Date();
-	const formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: time_format.includes('tt') });
-	return renderText(formattedTime);
-}
-
-function renderCustomText() {
-	return renderText(custom_text);
-}
-
-function renderText(text) {
-	const textData = PIXEL_DATA[fontSize];
-	let overlayColors = new Array(WLED.LedCount).fill(null);
-	let currentX = paddingX;
-	const letterHeight = PIXEL_DATA[fontSize]['A'][0].length === 1 ? PIXEL_DATA[fontSize]['A'].length : PIXEL_DATA[fontSize]['A'].length - 1; // HACK
-	const maxRow = WLED.MatrixHeight - paddingY;
-
-	if (currentX > WLED.MatrixWidth) {
-		currentX = WLED.MatrixWidth;
-	}
-
-	for (let i = 0; i < text.length; i++) {
-		const char = text[i];
-		const charData = textData[char];
-
-		if (!charData) continue; // Skip if character data is not available
-
-		const charWidth = charData[0].length;
-		if (currentX + charWidth > WLED.MatrixWidth) {
-			// Move to the next line or stop
-			break;
-		}
-
-		for (let row = 0; row < letterHeight; row++) {
-			for (let col = 0; col < charWidth; col++) {
-				const isLit = charData[row][col];
-				if (isLit === 1) {
-					const x = currentX + col;
-					const y = paddingY + row;
-					setPixel(x, y, forcedColor, overlayColors);
-				}
-			}
-		}
-		currentX += charWidth + 1; // Add space between letters
-	}
-
-	return overlayColors;
+// === Final LED Render ===
+// 将 SignalRGB 背景层 和 Overlay 前景层 合成后输出到 leds[]
+if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
+    leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
 
 
-function renderPixelArt() {
-	let pixelArtData;
-	try {
-		pixelArtData = JSON.parse(pixel_art);
-	} catch (e) {
-		device.SetError("Pixel Art 格式错误: " + e.message);
-		return;
-	}
 
-	if (!Array.isArray(pixelArtData) || pixelArtData.length === 0 || !Array.isArray(pixelArtData[0])) {
-		return;
-	}
-
-	const artHeight = pixelArtData.length;
-	const artWidth = pixelArtData[0].length;
-	let overlayColors = new Array(WLED.LedCount).fill(null);
-
-	// 强制颜色转为 RGB 对象
-	const forcedRgb = HexToRgb(forcedColor);
-
-	// 计算起始坐标以居中显示
-	const startX = Math.floor((WLED.MatrixWidth - artWidth) / 2);
-	const startY = Math.floor((WLED.MatrixHeight - artHeight) / 2);
-
-	for (let y = 0; y < artHeight; y++) {
-		for (let x = 0; x < artWidth; x++) {
-			const pixelValue = pixelArtData[y][x];
-			if (pixelValue !== 0) {
-				const mapX = startX + x;
-				const mapY = startY + y;
-
-				if (mapX >= 0 && mapX < WLED.MatrixWidth && mapY >= 0 && mapY < WLED.MatrixHeight) {
-					// 默认的 Pixel Art 模式使用一个亮度或透明度值
-					let color;
-					if (pixelValue === 1) {
-						color = forcedRgb;
-					} else if (pixelValue > 1) {
-						const intensity = Math.min(100, Math.max(1, pixelValue));
-						color = {
-							r: Math.floor(forcedRgb.r * intensity / 100),
-							g: Math.floor(forcedRgb.g * intensity / 100),
-							b: Math.floor(forcedRgb.b * intensity / 100)
-						};
-					} else if (pixelValue === 0.3) {
-						const intensity = translucent1;
-						color = {
-							r: Math.floor(forcedRgb.r * intensity / 100),
-							g: Math.floor(forcedRgb.g * intensity / 100),
-							b: Math.floor(forcedRgb.b * intensity / 100)
-						};
-					} else if (pixelValue === 0.8) {
-						const intensity = translucent2;
-						color = {
-							r: Math.floor(forcedRgb.r * intensity / 100),
-							g: Math.floor(forcedRgb.g * intensity / 100),
-							b: Math.floor(forcedRgb.b * intensity / 100)
-						};
-					} else {
-						// 默认值或 1 视为全亮强制色
-						color = forcedRgb;
-					}
-					setPixel(mapX, mapY, color, overlayColors);
-				}
-			}
-		}
-	}
-
-	return overlayColors;
-}
-
-
-// MultiPixelArt Extension
-function renderMultiPixelArt() {
-	let pixelArtData;
-	try {
-		pixelArtData = JSON.parse(multi_pixel_art);
-	} catch (e) {
-		device.SetError("MultiPixelArt 格式错误: " + e.message);
-		return;
-	}
-
-	if (!Array.isArray(pixelArtData) || pixelArtData.length === 0 || !Array.isArray(pixelArtData[0])) {
-		return;
-	}
-
-	const artHeight = pixelArtData.length;
-	const artWidth = pixelArtData[0].length;
-	let overlayColors = new Array(WLED.LedCount).fill(null);
-
-	// 计算起始坐标以居中显示
-	const startX = Math.floor((WLED.MatrixWidth - artWidth) / 2);
-	const startY = Math.floor((WLED.MatrixHeight - artHeight) / 2);
-
-	for (let y = 0; y < artHeight; y++) {
-		for (let x = 0; x < artWidth; x++) {
-			const pixelValue = pixelArtData[y][x];
-
-			// 检查像素值是否为有效的颜色字符串
-			if (typeof pixelValue === 'string' && pixelValue.match(/^#[0-9a-f]{6}$/i)) {
-				const colorRgb = HexToRgb(pixelValue);
-				const mapX = startX + x;
-				const mapY = startY + y;
-
-				if (mapX >= 0 && mapX < WLED.MatrixWidth && mapY >= 0 && mapY < WLED.MatrixHeight) {
-					// MultiPixelArt 使用数组中的颜色作为像素颜色
-					setPixel(mapX, mapY, colorRgb, overlayColors);
-				}
-			}
-		}
-	}
-
-	return overlayColors;
-}
-
-// Helper function to set a pixel color in the overlay array
-function setPixel(x, y, color, overlayColors) {
-	// WLED's JSON API requires 1D index
-	let index = y * WLED.MatrixWidth + x;
-	if (index >= 0 && index < overlayColors.length) {
-		// Color is an RGB object {r, g, b}
-		if (typeof color === 'string') {
-			overlayColors[index] = HexToRgb(color);
-		} else {
-			overlayColors[index] = color;
-		}
-	}
-}
-
-
-// === Display Mapping ===
-function getPixel(x, y) {
-	if (x >= 0 && x < WLED.MatrixWidth && y >= 0 && y < WLED.MatrixHeight) {
-		const index = y * WLED.MatrixWidth + x;
-		return WLED.Display[index];
-	}
-	return new DeviceColor(0, 0, 0);
-}
-
-// Placeholder class for DeviceColor if not globally available
-class DeviceColor {
-	constructor(r, g, b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-	}
-}
-
-// === WLED Icon and Data Export ===
-export function Image() {
-	return WLEDicon;
-}
-
-export function LedCount() {
-	return WLED.LedCount;
-}
-
-export function MatrixWidth() {
-	return WLED.MatrixWidth;
-}
-
-export function MatrixHeight() {
-	return WLED.MatrixHeight;
-}
-
-export function PreviewImage() {
-	return "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAVElEQVR4nO3OMQEAIAzD0F0i/k1c/k/jBggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI+uFf3gC40A3y9E9KAAAAAElFTkSuQmCC";
-}
-
-export function DisplayMode() {
-	return display_mode;
-}
-
-export function MaxPower() {
-	return WLED.MinFps;
-}
+// MultiPixelArt fallback render hook: if there is an updateDisplay function, this will try to render after it.
+(function(){
+  try {
+    if (typeof updateDisplay === 'function') {
+      var __orig_updateDisplay = updateDisplay;
+      updateDisplay = function() {
+        __orig_updateDisplay.apply(this, arguments);
+        try {
+          if (typeof settings !== 'undefined' && settings.display_mode === "MultiPixelArt") {
+            if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
+              globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
+                if (typeof setPixel === 'function') setPixel(x,y,color);
+                else if (typeof drawPixel === 'function') drawPixel(x,y,color);
+                else if (typeof setLED === 'function') setLED(x,y,color);
+              }, settings.multi_pixel_art, settings.matrixWidth || 16, settings.matrixHeight || 16, settings.forcedColor);
+            }
+          }
+        } catch(e){ if (console && console.error) console.error("MultiPixelArt Extension Render Hook Failed:", e); }
+      }
+    }
+  } catch(e){ if (console && console.error) console.error("MultiPixelArt Extension Hook Failed:", e); }
+})();
