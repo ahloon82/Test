@@ -2967,3 +2967,172 @@ function applyOverlay(signalRgbColors, overlayColors) {
 if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
     leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
+
+
+
+/* ===== MultiPixelArt Extension (ADDED) =====
+   Non-destructive extension for SignalRGB/WLED plugin.
+   - Adds an injectable MultiPixelArt mode and editor helpers.
+   - Does NOT remove or modify existing code; it's appended.
+   - The extension will try to auto-integrate at runtime by searching
+     for a settings/display_mode definition and patching it.
+   - If automatic integration fails in your environment, use the
+     provided helper functions to manually integrate.
+   Usage:
+     1) This file is ready-to-run. The extension will attempt to patch
+        existing settings at runtime.
+     2) If you want to manually call integration, run:
+          if (typeof __MultiPixelArtExtension !== 'undefined') __MultiPixelArtExtension.integrate();
+   ===== end extension ===== */
+
+(function(){
+  // Avoid double-initialization
+  if (typeof globalThis.__MultiPixelArtExtensionInitialized !== 'undefined') return;
+  globalThis.__MultiPixelArtExtensionInitialized = true;
+
+  const EX = {
+    name: "MultiPixelArt Extension",
+    version: "1.0",
+    // New properties to add (declarative)
+    properties: [
+      {
+        "property": "multi_pixel_art",
+        "label": "显示模式：多色像素图",
+        "type": "textfield",
+        "description": "当显示模式为 'MultiPixelArt' 时使用，每个像素可定义为 #RRGGBB 格式",
+        "default": "[['#FF0000','#00FF00','#0000FF','#000000'],['#FFFFFF','#000000','#FF00FF','#00FFFF']]"
+      },
+      {
+        "property": "matrixWidth",
+        "label": "矩阵宽度",
+        "type": "number",
+        "min": "1",
+        "max": "128",
+        "default": "16",
+        "description": "LED矩阵的列数（X方向）"
+      },
+      {
+        "property": "matrixHeight",
+        "label": "矩阵高度",
+        "type": "number",
+        "min": "1",
+        "max": "128",
+        "default": "16",
+        "description": "LED矩阵的行数（Y方向）"
+      },
+      {
+        "property": "editMultiPixelArt",
+        "label": "编辑多色像素图",
+        "type": "button",
+        "description": "打开 SignalRGB 内置像素编辑界面（伪弹窗）"
+      }
+    ],
+
+    // Safe render function - call from your plugin rendering loop
+    renderMultiPixelArt: function(renderCellFn, matrixData, width, height, forcedColor) {
+      // renderCellFn(x,y,color) should be provided by host plugin to set LED color
+      try {
+        if (!matrixData) return;
+        const matrix = (typeof matrixData === "string") ? JSON.parse(matrixData) : matrixData;
+        const srcHeight = matrix.length;
+        const srcWidth = (matrix[0] && matrix[0].length) ? matrix[0].length : 0;
+        if (!srcWidth || !srcHeight) return;
+        width = Math.max(1, Math.floor(width) || 16);
+        height = Math.max(1, Math.floor(height) || 16);
+        for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+            const srcX = Math.floor(x * srcWidth / width);
+            const srcY = Math.floor(y * srcHeight / height);
+            const cell = matrix[srcY] && matrix[srcY][srcX];
+            if (typeof cell === 'string' && /^#([0-9a-fA-F]{6})$/.test(cell)) {
+              renderCellFn(x, y, cell);
+            } else if (cell === 1 || cell === "1") {
+              renderCellFn(x, y, forcedColor || "#FFFFFF");
+            } else {
+              // treat as off/black
+              renderCellFn(x, y, "#000000");
+            }
+          }
+        }
+      } catch (e) {
+        // don't throw in host environment
+        if (typeof console !== 'undefined' && console.error) console.error("renderMultiPixelArt error:", e);
+      }
+    },
+
+    // Attempt to auto-integrate into existing settings schema
+    integrate: function() {
+      try {
+        // Heuristics: find an array in global scope that looks like plugin properties
+        let found = false;
+        const candidates = [];
+        for (const k in globalThis) {
+          try {
+            const v = globalThis[k];
+            if (Array.isArray(v) && v.length && typeof v[0] === 'object') {
+              // candidate: array of objects
+              // look for an object having property 'property' and label or type keys
+              let score = 0;
+              for (const item of v) {
+                if (item && typeof item === 'object' && 'property' in item) score++;
+              }
+              if (score >= 1) candidates.push({name:k, ref:v, score});
+            }
+          } catch(e){}
+        }
+
+        // pick highest score candidate
+        candidates.sort((a,b)=>b.score-a.score);
+        if (candidates.length) {
+          const target = candidates[0].ref;
+          // ensure we don't duplicate properties
+          const existProps = new Set(target.map(p=>p.property).filter(Boolean));
+          // 1) Ensure display_mode contains MultiPixelArt
+          const dm = target.find(p=>p.property === 'display_mode' && Array.isArray(p.values));
+          if (dm && !dm.values.includes("MultiPixelArt")) {
+            dm.values = dm.values.concat(["MultiPixelArt"]);
+            found = true;
+          }
+          // 2) Append new properties if not present
+          this.properties.forEach(prop=>{
+            if (!existProps.has(prop.property)) {
+              target.push(prop);
+              existProps.add(prop.property);
+              found = true;
+            }
+          });
+
+          // store pointer for manual use
+          globalThis.__MultiPixelArtExtension_target = target;
+          if (found && typeof console !== 'undefined' && console.log) console.log("MultiPixelArt extension: integrated into", candidates[0].name);
+          return { integrated: found, targetName: candidates[0].name };
+        } else {
+          if (typeof console !== 'undefined' && console.log) console.log("MultiPixelArt extension: no suitable global settings array found. Manual integration may be required.");
+          return { integrated: false };
+        }
+      } catch (e) {
+        if (typeof console !== 'undefined' && console.error) console.error("MultiPixelArt integrate error:", e);
+        return { integrated: false, error: String(e) };
+      }
+    },
+
+    // Helper to produce a default NxM color matrix (all black)
+    makeEmptyMatrix: function(w,h,fill) {
+      fill = fill || "#000000";
+      const mat = [];
+      for (let y=0;y<h;y++){
+        const row = [];
+        for (let x=0;x<w;x++) row.push(fill);
+        mat.push(row);
+      }
+      return mat;
+    }
+  };
+
+  // Expose to global namespace
+  globalThis.__MultiPixelArtExtension = EX;
+
+  // Try auto-integrate immediately (best-effort)
+  try { EX.integrate(); } catch(e){}
+
+})();
