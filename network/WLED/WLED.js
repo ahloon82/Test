@@ -27,11 +27,18 @@ export function ControllableParameters() {
 		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
 		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
 		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
-		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art"], "default": "Components" },
+		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art", "MultiPixelArt"], "default": "Components" },
 		{ "property": "fontSize", "label": "字体大小", "type": "combobox", description: "The mode used when 'Display Mode' is set to 'Time' or 'Custom Text'", "values": ["Small", "Medium"], "default": "Medium" },
 		{ "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
+{
+  "property": "multi_pixel_art",
+  "label": "显示模式：多色像素图案",
+  "type": "textfield",
+  "description": "与普通像素图不同，每个像素点都可以自定义颜色。",
+  "default": "[[\"#000000\", \"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#000000\"], [\"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#FF00FF\", \"#FF0000\"], [\"#FF7F00\", \"#FFFF00\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\", \"#FF7F00\"], [\"#FFFF00\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFF00\"], [\"#00FF00\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\"], [\"#0000FF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#0000FF\"], [\"#8B00FF\", \"#FF00FF\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#8B00FF\"], [\"#000000\", \"#8B00FF\", \"#0000FF\", \"#00FF00\", \"#FFFF00\", \"#FF7F00\", \"#FF0000\", \"#000000\"]]"
+},
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
@@ -2067,6 +2074,36 @@ export function ondisplay_modeChanged() {
 				device.log(ex.message);
 			}
 			break;
+
+                case 'MultiPixelArt':
+                    try {
+                        // Independent MultiPixelArt rendering: parse 2D color array and set pixels directly.
+                        const art = JSON.parse(multi_pixel_art);
+                        const rows = art.length || 0;
+                        const cols = (rows>0 && art[0]) ? art[0].length : 0;
+                        for (let y = 0; y < rows; y++) {
+                            for (let x = 0; x < cols; x++) {
+                                const color = art[y][x];
+                                // use existing setPixel/drawPixel/setLED helpers if available, otherwise write into display array
+                                if (typeof setPixel === 'function') {
+                                    if (color && color !== "#000000") setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
+                                    else setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
+                                } else if (typeof drawPixel === 'function') {
+                                    if (color && color !== "#000000") drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
+                                    else drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
+                                } else {
+                                    // fallback: write into display[] using same index calc as insertPixelArtIntoDisplay
+                                    let index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
+                                    if (index < displaySize.height * displaySize.width && index >= 0) {
+                                        display[index] = color && color !== "#000000" ? color : 0;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        device.log("MultiPixelArt render failed: " + err);
+                    }
+                    break;
 		default:
 			break;
 	}
@@ -2393,7 +2430,7 @@ class WLEDDevice {
 			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
 			// and force foreground pixels (display) to use contrasting colors so they remain visible.
 			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
-if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components' && display_mode != 'MultiPixelArt') {
     let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
 
     // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
@@ -2437,7 +2474,7 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 
 		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
 
-		if (display_mode != 'Components') {
+		if (display_mode != 'Components' && display_mode != 'MultiPixelArt') {
 			if (display != undefined) {
 				displayClock();
 				let Snake_display = rearrangeDisplayForSnakeLayout(display);
@@ -2445,7 +2482,7 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 					switch (Snake_display[led_index]) {
 						case 0:
                             // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
-                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
+                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components' && display_mode != 'MultiPixelArt')) {
                                 RGBData[led_index * 3] = 0;
                                 RGBData[led_index * 3 + 1] = 0;
                                 RGBData[led_index * 3 + 2] = 0;
@@ -2967,3 +3004,28 @@ function applyOverlay(signalRgbColors, overlayColors) {
 if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
     leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
+
+
+
+// MultiPixelArt fallback render hook: if there is an updateDisplay function, this will try to render after it.
+(function(){
+  try {
+    if (typeof updateDisplay === 'function') {
+      var __orig_updateDisplay = updateDisplay;
+      updateDisplay = function() {
+        __orig_updateDisplay.apply(this, arguments);
+        try {
+          if (typeof settings !== 'undefined' && settings.display_mode === "MultiPixelArt") {
+            if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
+              globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
+                if (typeof setPixel === 'function') setPixel(x,y,color);
+                else if (typeof drawPixel === 'function') drawPixel(x,y,color);
+                else if (typeof setLED === 'function') setLED(x,y,color);
+              }, settings.multi_pixel_art, settings.matrixWidth || 16, settings.matrixHeight || 16, settings.forcedColor);
+            }
+          }
+        } catch(e){ if (console && console.error) console.error("MultiPixelArt fallback render error", e); }
+      };
+    }
+  } catch(e){}
+})();
