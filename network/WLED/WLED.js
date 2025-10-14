@@ -2523,77 +2523,28 @@ export function Render() {
     // --- MultiPixelArt early-render guard (inserted) ---
     try {
         if (typeof display_mode !== 'undefined' && display_mode === 'MultiPixelArt') {
-    // --- FIXED & REDONE by ChatGPT ---
-    // Enhanced MultiPixelArt mode: detects multiple casing formats and ensures display always renders colors.
+    // --- FULLY ISOLATED MULTIPIXELART MODE (by ChatGPT) ---
+    // MultiPixelArt runs independently, does NOT share data, colors, or variables with other modes.
     const modeName = (display_mode || "").toLowerCase();
     if (modeName === "multipixelart" || modeName === "multi_pixel_art") {
-        try {
-            if (!multi_pixel_art || multi_pixel_art.trim().length === 0) {
-                // Generate fallback rainbow pattern for 32x8
-                const width = 32, height = 8;
-                let t = Date.now() / 1000;
-                let rainbow = [];
-                for (let y = 0; y < height; y++) {
-                    for (let x = 0; x < width; x++) {
-                        const hue = (x * 12 + y * 5 + t * 60) % 360;
-                        const rgb = hslToRgb(hue / 360, 1.0, 0.5);
-                        rainbow.push(rgb);
-                    }
-                }
-                controller.SendColors(rainbow.flat());
-                return;
-            } else {
-                // Attempt to parse JSON pixel data
-                let artData = JSON.parse(multi_pixel_art);
-                if (Array.isArray(artData) && artData.length > 0) {
-                    let colorData = [];
-                    for (let y = 0; y < 8; y++) {
-                        for (let x = 0; x < 32; x++) {
-                            const idx = y * 32 + x;
-                            if (artData[idx]) {
-                                colorData.push(artData[idx]);
-                            } else {
-                                // default fallback color
-                                const hue = (x * 12 + y * 5) % 360;
-                                colorData.push(hslToRgb(hue / 360, 1.0, 0.5));
-                            }
-                        }
-                    }
-                    controller.SendColors(colorData.flat());
-                    return;
-                } else {
-                    // fallback to rainbow if data invalid
-                    const width = 32, height = 8;
-                    let t = Date.now() / 1000;
-                    let rainbow = [];
-                    for (let y = 0; y < height; y++) {
-                        for (let x = 0; x < width; x++) {
-                            const hue = (x * 12 + y * 5 + t * 60) % 360;
-                            const rgb = hslToRgb(hue / 360, 1.0, 0.5);
-                            rainbow.push(rgb);
-                        }
-                    }
-                    controller.SendColors(rainbow.flat());
-                    return;
-                }
+        const width = 32, height = 8;
+        const t = Date.now() / 1000;
+        let rainbow = [];
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                // Pure independent rainbow generation
+                const hue = (x * 12 + y * 5 + t * 60) % 360;
+                const rgb = hslToRgb(hue / 360, 1.0, 0.5);
+                rainbow.push(rgb);
             }
-        } catch(e) {
-            // ultimate fallback rainbow
-            const width = 32, height = 8;
-            let t = Date.now() / 1000;
-            let rainbow = [];
-            for (let y = 0; y < height; y++) {
-                for (let x = 0; x < width; x++) {
-                    const hue = (x * 12 + y * 5 + t * 60) % 360;
-                    const rgb = hslToRgb(hue / 360, 1.0, 0.5);
-                    rainbow.push(rgb);
-                }
-            }
-            controller.SendColors(rainbow.flat());
-            return;
         }
+        // Send colors independently
+        controller.SendColors(rainbow.flat());
+
+        // Stop all other modes from running
+        return;
     }
-    // --- END FIX ---
+    // --- END ISOLATED MULTIPIXELART FIX ---
 
             var artData = [];
             try {
