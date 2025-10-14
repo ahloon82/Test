@@ -24,7 +24,7 @@ pixel_art:readonly
 */
 export function ControllableParameters() {
 	return [
-		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
+		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Components", "Time", "Custom Text", "Pixel Art", "MultiPixelArt"], "default": "Canvas" },
 		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
 		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
 		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art", "MultiPixelArt"], "default": "Components" },
@@ -33,15 +33,13 @@ export function ControllableParameters() {
 		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
 		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
 {
-		"property": "multi_pixel_art_preset", "label": "预设图案", "type": "combobox", "description": "选择一个预设图案或自定义输入。", "values": ["Heart","Rainbow","Custom"], "default": "Heart"
-	},
-{
   "property": "multi_pixel_art",
-  "label": "显示模式：多色像素图案",
+  "label": "显示模式：多像素图案",
   "type": "textfield",
-  "description": "与普通像素图不同，每个像素点都可以自定义颜色。",
-  "default": "[[\"#000000\", \"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#000000\"], [\"#FF0000\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#FF00FF\", \"#FF0000\"], [\"#FF7F00\", \"#FFFF00\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\", \"#FF7F00\"], [\"#FFFF00\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#FFFFFF\", \"#FFFF00\"], [\"#00FF00\", \"#FFFFFF\", \"#FFFFFF\", \"#000000\", \"#000000\", \"#FFFFFF\", \"#FFFFFF\", \"#00FF00\"], [\"#0000FF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#FFFFFF\", \"#0000FF\"], [\"#8B00FF\", \"#FF00FF\", \"#FF7F00\", \"#FFFF00\", \"#00FF00\", \"#0000FF\", \"#8B00FF\", \"#8B00FF\"], [\"#000000\", \"#8B00FF\", \"#0000FF\", \"#00FF00\", \"#FFFF00\", \"#FF7F00\", \"#FF0000\", \"#000000\"]]"
+  "description": "Used when 'Display Mode' is set to 'MultiPixelArt'",
+  "default": "[[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1]]"
 },
+
 		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
 		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
 		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
@@ -2520,94 +2518,6 @@ export function Initialize() {
 }
 
 export function Render() {
-    // --- ChatGPT MultiPixelArt (1+0 preset version) ---
-    try {
-        const currentMode = (
-            (typeof display_mode !== "undefined" && display_mode) ||
-            (typeof LightingMode !== "undefined" && LightingMode.name) ||
-            (typeof controller !== "undefined" && controller.lighting_mode) ||
-            ""
-        ).toLowerCase();
-
-        if (currentMode.includes("multi")) {
-            const width = 32, height = 8;
-            const matrix = (typeof multi_pixel_art !== "undefined") ? multi_pixel_art : [];
-            let pixels = [];
-            const t = Date.now() / 1000;
-
-            // fallback: create random 1/0 pattern if preset missing
-            if (!Array.isArray(matrix) || matrix.length === 0) {
-                for (let y = 0; y < height; y++) {
-                    let row = [];
-                    for (let x = 0; x < width; x++) {
-                        row.push(Math.random() > 0.7 ? 1 : 0);
-                    }
-                    matrix.push(row);
-                }
-            }
-
-            for (let y = 0; y < height; y++) {
-                for (let x = 0; x < width; x++) {
-                    const val = (matrix[y] && matrix[y][x]) ? matrix[y][x] : 0;
-                    if (val === 1) {
-                        // assign stable pseudo-random color
-                        const hue = (x * 17 + y * 29) % 360;
-                        const rgb = hslToRgb(((hue + t * 0) % 360) / 360, 1, 0.5);
-                        pixels.push(rgb);
-                    } else {
-                        pixels.push([0, 0, 0]);
-                    }
-                }
-            }
-
-            if (typeof controller !== "undefined" && controller.SendColors) {
-                controller.SendColors(pixels.flat());
-            }
-            return; // stop all other rendering
-        }
-    } catch(e) {
-        // fail-safe: ignore MultiPixelArt errors
-    }
-    // --- END ChatGPT MultiPixelArt (1+0 preset version) ---
-
-    // --- MultiPixelArt early-render guard (inserted) ---
-    try {
-        if (typeof display_mode !== 'undefined' && display_mode === 'MultiPixelArt') {
-            var artData = [];
-            try {
-                if (typeof multi_pixel_art === 'string' && multi_pixel_art.trim().length > 0) {
-                    artData = JSON.parse(multi_pixel_art);
-                }
-            } catch(e) {
-                device.log("MultiPixelArt JSON parse error (early guard): " + e);
-                artData = [];
-            }
-            var rows = artData.length || 0;
-            var cols = (rows>0 && artData[0]) ? artData[0].length : 0;
-            for (var y=0; y<rows; y++) {
-                for (var x=0; x<cols; x++) {
-                    var color = artData[y][x];
-                    if (typeof setPixel === 'function') {
-                        if (color && color !== "#000000") setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
-                        else setPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
-                    } else if (typeof drawPixel === 'function') {
-                        if (color && color !== "#000000") drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), color);
-                        else drawPixel(x + parseInt(paddingX || 0), y + parseInt(paddingY || 0), "#000000");
-                    } else if (typeof display !== 'undefined' && typeof displaySize !== 'undefined') {
-                        var index = (y * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + x + parseInt(paddingX || 0);
-                        if (index < displaySize.height * displaySize.width && index >= 0) {
-                            display[index] = color && color !== "#000000" ? color : 0;
-                        }
-                    }
-                }
-            }
-            return;
-        }
-    } catch(e) {
-        device.log("MultiPixelArt early guard error: " + e);
-    }
-    // --- end guard ---
-
 	WLED.SendColorPackets();
 }
 
@@ -3067,50 +2977,39 @@ if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined'
 }
 
 
+// === MultiPixelArt Mode ===
+if (displayMode === "MultiPixelArt") {
+    let matrix = [];
+    try {
+        matrix = JSON.parse(multi_pixel_art);
+    } catch (e) {
+        matrix = [
+            [1,0,1,0,1,0,1,0],
+            [0,1,0,1,0,1,0,1],
+            [1,0,1,0,1,0,1,0],
+            [0,1,0,1,0,1,0,1],
+            [1,0,1,0,1,0,1,0],
+            [0,1,0,1,0,1,0,1],
+            [1,0,1,0,1,0,1,0],
+            [0,1,0,1,0,1,0,1]
+        ];
+    }
 
-// MultiPixelArt fallback render hook: if there is an updateDisplay function, this will try to render after it.
-(function(){
-  try {
-    if (typeof updateDisplay === 'function') {
-      var __orig_updateDisplay = updateDisplay;
-      updateDisplay = function() {
-        __orig_updateDisplay.apply(this, arguments);
-        try {
-          if (typeof settings !== 'undefined' && settings.display_mode === "MultiPixelArt") {
-            if (globalThis.__MultiPixelArtExtension && typeof globalThis.__MultiPixelArtExtension.renderMultiPixelArt === 'function') {
-              globalThis.__MultiPixelArtExtension.renderMultiPixelArt(function(x,y,color){
-                if (typeof setPixel === 'function') setPixel(x,y,color);
-                else if (typeof drawPixel === 'function') drawPixel(x,y,color);
-                else if (typeof setLED === 'function') setLED(x,y,color);
-              }, settings.multi_pixel_art, settings.matrixWidth || 16, settings.matrixHeight || 16, settings.forcedColor);
+    const height = matrix.length;
+    const width = matrix[0].length;
+    const colors = [];
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const idx = y * width + x;
+            if (matrix[y][x] === 1) {
+                colors[idx] = [Math.random(), Math.random(), Math.random()];
+            } else {
+                colors[idx] = [0, 0, 0];
             }
-          }
-        } catch(e){ if (console && console.error) console.error("MultiPixelArt fallback render error", e); }
-      };
+        }
     }
-  } catch(e){}
-})();
 
-
-// --- Helper added by ChatGPT ---
-function hslToRgb(h, s, l) {
-    let r, g, b;
-    if (s == 0) {
-        r = g = b = l;
-    } else {
-        const hue2rgb = function (p, q, t) {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1 / 6) return p + (q - p) * 6 * t;
-            if (t < 1 / 2) return q;
-            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-            return p;
-        };
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1 / 3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1 / 3);
-    }
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    controller.SetAllLEDColors(colors);
+    return;
 }
