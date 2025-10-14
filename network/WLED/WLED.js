@@ -2520,32 +2520,41 @@ export function Initialize() {
 }
 
 export function Render() {
+    // --- ChatGPT MultiPixelArt Isolation v2 ---
+    try {
+        const currentMode = (
+            (typeof display_mode !== "undefined" && display_mode) ||
+            (typeof LightingMode !== "undefined" && LightingMode.name) ||
+            (typeof controller !== "undefined" && controller.lighting_mode) ||
+            ""
+        ).toLowerCase();
+
+        if (currentMode.includes("multi")) {
+            const width = 32, height = 8;
+            const t = Date.now() / 1000;
+            let rainbow = [];
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const hue = (x * 12 + y * 6 + t * 60) % 360;
+                    const rgb = hslToRgb(hue / 360, 1.0, 0.5);
+                    rainbow.push(rgb);
+                }
+            }
+
+            if (typeof controller !== "undefined" && controller.SendColors) {
+                controller.SendColors(rainbow.flat());
+            }
+            return; // stop all other rendering
+        }
+    } catch(e) {
+        // fail-safe: ignore if MultiPixelArt isolation fails
+    }
+    // --- END ChatGPT MultiPixelArt Isolation ---
+
     // --- MultiPixelArt early-render guard (inserted) ---
     try {
         if (typeof display_mode !== 'undefined' && display_mode === 'MultiPixelArt') {
-    // --- FULLY ISOLATED MULTIPIXELART MODE (by ChatGPT) ---
-    // MultiPixelArt runs independently, does NOT share data, colors, or variables with other modes.
-    const modeName = (display_mode || "").toLowerCase();
-    if (modeName === "multipixelart" || modeName === "multi_pixel_art") {
-        const width = 32, height = 8;
-        const t = Date.now() / 1000;
-        let rainbow = [];
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                // Pure independent rainbow generation
-                const hue = (x * 12 + y * 5 + t * 60) % 360;
-                const rgb = hslToRgb(hue / 360, 1.0, 0.5);
-                rainbow.push(rgb);
-            }
-        }
-        // Send colors independently
-        controller.SendColors(rainbow.flat());
-
-        // Stop all other modes from running
-        return;
-    }
-    // --- END ISOLATED MULTIPIXELART FIX ---
-
             var artData = [];
             try {
                 if (typeof multi_pixel_art === 'string' && multi_pixel_art.trim().length > 0) {
