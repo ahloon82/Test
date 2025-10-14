@@ -2520,7 +2520,7 @@ export function Initialize() {
 }
 
 export function Render() {
-    // --- ChatGPT MultiPixelArt Isolation v2 ---
+    // --- ChatGPT MultiPixelArt (1+0 preset version) ---
     try {
         const currentMode = (
             (typeof display_mode !== "undefined" && display_mode) ||
@@ -2531,26 +2531,44 @@ export function Render() {
 
         if (currentMode.includes("multi")) {
             const width = 32, height = 8;
+            const matrix = (typeof multi_pixel_art !== "undefined") ? multi_pixel_art : [];
+            let pixels = [];
             const t = Date.now() / 1000;
-            let rainbow = [];
+
+            // fallback: create random 1/0 pattern if preset missing
+            if (!Array.isArray(matrix) || matrix.length === 0) {
+                for (let y = 0; y < height; y++) {
+                    let row = [];
+                    for (let x = 0; x < width; x++) {
+                        row.push(Math.random() > 0.7 ? 1 : 0);
+                    }
+                    matrix.push(row);
+                }
+            }
 
             for (let y = 0; y < height; y++) {
                 for (let x = 0; x < width; x++) {
-                    const hue = (x * 12 + y * 6 + t * 60) % 360;
-                    const rgb = hslToRgb(hue / 360, 1.0, 0.5);
-                    rainbow.push(rgb);
+                    const val = (matrix[y] && matrix[y][x]) ? matrix[y][x] : 0;
+                    if (val === 1) {
+                        // assign stable pseudo-random color
+                        const hue = (x * 17 + y * 29) % 360;
+                        const rgb = hslToRgb(((hue + t * 0) % 360) / 360, 1, 0.5);
+                        pixels.push(rgb);
+                    } else {
+                        pixels.push([0, 0, 0]);
+                    }
                 }
             }
 
             if (typeof controller !== "undefined" && controller.SendColors) {
-                controller.SendColors(rainbow.flat());
+                controller.SendColors(pixels.flat());
             }
             return; // stop all other rendering
         }
     } catch(e) {
-        // fail-safe: ignore if MultiPixelArt isolation fails
+        // fail-safe: ignore MultiPixelArt errors
     }
-    // --- END ChatGPT MultiPixelArt Isolation ---
+    // --- END ChatGPT MultiPixelArt (1+0 preset version) ---
 
     // --- MultiPixelArt early-render guard (inserted) ---
     try {
