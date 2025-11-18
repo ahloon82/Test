@@ -2491,6 +2491,7 @@ export function Initialize() {
 	device.setName(controller.name);
 	device.setImageFromBase64(WLEDicon);
 	device.addFeature("udp");
+	device.setFrameRateTarget(60);
 	WLED = new WLEDDevice(controller);
 	WLED.SetupChannel();
 	WLED.changeDeviceState(false, true, true);
