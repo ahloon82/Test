@@ -38,18 +38,18 @@ export function ControllableParameters() {
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
 		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-{ 
-  "property": "fpsTarget",
-  "label": "目标 FPS",
-  "type": "dropdown",
-  "values": [
-    { "label": "30 FPS", "value": "30" },
-    { "label": "45 FPS", "value": "45" },
-    { "label": "60 FPS", "value": "60" },
-    { "label": "75 FPS", "value": "75" }
-  ],
-  "default": "60"
-},
+        { 
+          "property": "fpsTarget",
+          "label": "目标 FPS",
+          "type": "dropdown",
+          "values": [
+            { "label": "30 FPS", "value": "30" },
+            { "label": "45 FPS", "value": "45" },
+            { "label": "60 FPS", "value": "60" },
+            { "label": "75 FPS", "value": "75" }
+          ],
+          "default": "60"
+        },
 
 
 ];
