@@ -2973,10 +2973,19 @@ if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined'
 }
 
 
+
 export function onFpsTargetChanged() {
     try {
-        device.setFrameRateTarget(parseInt(fpsTarget));
+        device.stop();  
+        setTimeout(() => {
+            device.setFrameRateTarget(parseInt(fpsTarget));
+            device.start(); 
+        }, 200);
     } catch (e) {
+        device.log("FPS change error: " + e.message);
+    }
+}
+ catch (e) {
         device.log("onFpsTargetChanged error: " + e.message);
     }
 }
