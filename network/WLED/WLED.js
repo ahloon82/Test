@@ -38,14 +38,8 @@ export function ControllableParameters() {
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
 		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-{ 
-  "property": "fpsTarget",
-  "label": "目标 FPS",
-  "type": "combobox",
-  "description": "调整实时刷新帧率",
-  "values": ["30","45","60","75"],
-  "default": "60"
-},
+        { "property": "fpsTarget", "label": "目标 FPS", "type": "combobox",
+           "values": ["30","45","60","75"], "default": "60" },
 
 
 ];
@@ -2976,17 +2970,4 @@ function applyOverlay(signalRgbColors, overlayColors) {
 // 将 SignalRGB 背景层 和 Overlay 前景层 合成后输出到 leds[]
 if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
     leds = applyOverlay(signalrgbLayer, overlayLayer);
-}
-
-
-export function onFpsTargetChanged() {
-    try {
-        device.stop();
-        setTimeout(() => {
-            device.setFrameRateTarget(parseInt(fpsTarget));
-            device.start();
-        }, 200);
-    } catch(e) {
-        device.log("FPS reconnect error: " + e.message);
-    }
 }
