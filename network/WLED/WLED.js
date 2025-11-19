@@ -38,6 +38,15 @@ export function ControllableParameters() {
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
 		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+{ 
+  "property": "fpsTarget",
+  "label": "目标 FPS",
+  "type": "combobox",
+  "description": "选择设备的帧率（SignalRGB 刷新速度）",
+  "values": ["30", "45", "60", "75"],
+  "default": "60"
+},
+
 
 ];
 }
@@ -2491,7 +2500,7 @@ export function Initialize() {
 	device.setName(controller.name);
 	device.setImageFromBase64(WLEDicon);
 	device.addFeature("udp");
-	device.setFrameRateTarget(60);
+	device.setFrameRateTarget(parseInt(fpsTarget));
 	WLED = new WLEDDevice(controller);
 	WLED.SetupChannel();
 	WLED.changeDeviceState(false, true, true);
