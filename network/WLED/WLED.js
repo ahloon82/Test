@@ -38,14 +38,9 @@ export function ControllableParameters() {
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
 		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-{ 
-  "property": "fpsTarget",
-  "label": "目标 FPS",
-  "type": "combobox",
-  "description": "调整实时刷新帧率",
-  "values": ["30","45","60","75"],
-  "default": "60"
-},
+        { "property": "fpsTarget", "label": "目标 FPS", "type": "combobox",
+           "values": ["30","45","60","75"], "default": "60" },
+
 
 ];
 }
@@ -2490,39 +2485,16 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 			const lowByte = (startIdx & 0xFF);
 			let packet = [0x04, 0x02, highByte, lowByte];
 			packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * 3));
-			sendPixels(this.ip, this.streamingPort, packet, BIG_ENDIAN);
+			udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
 		}
 	}
 }
 
-
-function sendPixels(ip, port, packet, bigEndian) {
-    // Try to send using DDP if available, otherwise fallback to UDP.
-    try {
-        if (typeof ddp !== 'undefined' && ddp && typeof ddp.send === 'function') {
-            // ddp.send expects (ip, port, buffer) or (ip, port, pixelsArray) depending on runtime.
-            // We'll attempt to send the raw packet as a byte array.
-            ddp.send(ip, port, packet);
-            return;
-        }
-    } catch(e) {
-        // ddp not available or failed, fallback to UDP below
-    }
-    try {
-        udp.send(ip, port, packet, bigEndian);
-    } catch(e) {
-        // log if available
-        if (typeof device !== 'undefined' && device && typeof device.log === 'function') {
-            device.log("sendPixels error: " + e.message);
-        }
-    }
-}
 export function Initialize() {
 	device.setName(controller.name);
 	device.setImageFromBase64(WLEDicon);
 	device.addFeature("udp");
-	device.addFeature("ddp");
-	device.setFrameRateTarget(60);
+	device.setFrameRateTarget(parseInt(fpsTarget));
 	WLED = new WLEDDevice(controller);
 	WLED.SetupChannel();
 	WLED.changeDeviceState(false, true, true);
