@@ -2971,3 +2971,12 @@ function applyOverlay(signalRgbColors, overlayColors) {
 if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
     leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
+
+
+export function onFpsTargetChanged() {
+    try {
+        device.setFrameRateTarget(parseInt(fpsTarget));
+    } catch (e) {
+        device.log("onFpsTargetChanged error: " + e.message);
+    }
+}
