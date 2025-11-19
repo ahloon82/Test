@@ -38,6 +38,14 @@ export function ControllableParameters() {
 		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
 	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
 		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
+{ 
+  "property": "fpsTarget",
+  "label": "目标 FPS",
+  "type": "combobox",
+  "description": "调整实时刷新帧率",
+  "values": ["30","45","60","75"],
+  "default": "60"
+},
 
 ];
 }
