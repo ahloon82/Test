@@ -23,32 +23,29 @@ time_format:readonly
 pixel_art:readonly
 */
 export function ControllableParameters() {
-	return [
-		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
-		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
-		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
-		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art"], "default": "Components" },
-		{ "property": "fontSize", "label": "字体大小", "type": "combobox", description: "The mode used when 'Display Mode' is set to 'Time' or 'Custom Text'", "values": ["Small", "Medium"], "default": "Medium" },
-		{ "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
-		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
-		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
-		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
-		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
-		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-        { "property": "fpsTarget", "label": "目标 FPS", "type": "combobox",
-           "values": ["30","45","60","75"], "default": "60" },
-		   { "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW 模式", "type": "boolean", "description": "如果你使用的是 Athom 的 WLED 彩光灯泡，请开启此选项", "default": "false" },
+    return [
+        { "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", "description": "决定设备的 RGB 来源。画布模式从当前效果获取，强制模式则覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
+        { "property": "forcedColor", "group": "settings", "label": "强制颜色", "description": "开启“强制”灯光模式时使用的颜色", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
+        { "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", "description": "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
+        { "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW 模式", "type": "boolean", "description": "如果你使用的是 Athom 的 WLED 彩光灯泡，请开启此选项", "default": "false" },
+        { "property": "display_mode", "label": "显示模式", "type": "combobox", "description": "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
+        { "property": "fontSize", "label": "字体大小", "type": "combobox", "description": "当显示模式设为“时间”或“自定义文本”时使用的字体规格", "values": ["Small", "Medium", "Large"], "default": "Medium" },
+        { "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", "description": "当显示模式设为“自定义文本”时显示的文字内容", "default": "WLED" },
+        { "property": "time_format", "label": "显示模式：时间", "type": "textfield", "description": "输入你想要显示的时间格式。例如：'hh:mm tt' 或 24小时制的 'HH:mm:ss'", "default": "hh:mm tt" },
         { "property": "lhmjson", "label": "LHM 网页服务器地址", "type": "textfield", "description": "当显示模式设为“Libre Hardware Monitor”时使用", "default": "http://127.0.0.1:8085/" },
         { "property": "lhm_format", "label": "LHM 显示格式", "type": "textfield", "description": "设置要显示的硬件监控项，需要 Libre Hardware Monitor 在后台运行", "default": "cpu_load cpu_temp" },
         { "property": "lhm_update", "label": "LHM 更新间隔 (ms)", "description": "硬件数据刷新的等待时间", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
         { "property": "scroll_direction", "label": "滚动方向", "type": "combobox", "description": "用于“时间”或“自定义文本”模式的滚动设置", "values": ["Off", "Left", "Right"], "default": "Off" },
         { "property": "scroll_speed", "label": "滚动速度", "description": "开启滚动方向后的移动速度", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
-
-
-];
+        { "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", "description": "创建自己的像素画，或从社区浏览图案数据", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
+        { "property": "translucent1", "label": "透明度等级 1", "description": "当显示模式设为“像素图案”时使用", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
+        { "property": "translucent2", "label": "透明度等级 2", "description": "当显示模式设为“像素图案”时使用", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
+        { "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
+        { "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
+        { "property": "overlayEnabled", "label": "叠加层开启", "type": "boolean", "default": "false" },
+        { "property": "overlayColor", "label": "叠加层颜色", "type": "color", "default": "#FFFFFF" },
+        { "property": "fpsTarget", "label": "目标 FPS", "type": "combobox", "values": ["30", "45", "60", "75"], "default": "60" }
+    ];
 }
 
 let WLED;
