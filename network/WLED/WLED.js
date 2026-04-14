@@ -1,3 +1,4 @@
+import { SMALL_LETTERS, LETTERS, LARGE_LETTERS, DIGITS, SMALL_DIGITS, LARGE_DIGITS } from './WLED_Text.js';
 export function Name() { return "WLED"; }
 export function Version() { return "0.15.0"; }
 export function Type() { return "network"; }
@@ -20,2031 +21,58 @@ display_mode:readonly
 fontSize:readonly
 custom_text:readonly
 time_format:readonly
+overlayEnabled:readonly
+overlayColor:readonly
+scroll_direction:readonly
+scroll_speed:readonly
 pixel_art:readonly
+paddingX:readonly
+paddingY:readonly
+rgbcw_mode:readonly
+lhmjson:readonly
+overlayAlpha:readonly
+lhm_format:readonly
+lhm_update:readonly
 */
 export function ControllableParameters() {
-	return [
-		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", description: "决定设备的 RGB 来源。画布模式会从当前效果获取，而强制模式会覆盖为指定颜色", "values": ["Canvas", "Forced"], "default": "Canvas" },
-		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
-		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关机时关闭WLED设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，软关闭 WLED", "default": "false" },
-		{ "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你希望此设备执行的操作", "values": ["Components", "Time", "Custom Text", "Pixel Art"], "default": "Components" },
-		{ "property": "fontSize", "label": "字体大小", "type": "combobox", description: "The mode used when 'Display Mode' is set to 'Time' or 'Custom Text'", "values": ["Small", "Medium"], "default": "Medium" },
-		{ "property": "custom_text", "label": "显示模式：自定义文本", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
-		{ "property": "time_format", "label": "显示模式：时间", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time'", "default": "hh:mm tt" },
-		{ "property": "pixel_art", "label": "显示模式：像素图案", "type": "textfield", description: "This used when 'Display Mode' is set to 'Pixel Art'", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
-		{ "property": "translucent1", "label": "透明度等级1", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
-		{ "property": "translucent2", "label": "透明度等级2", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-		{ "property": "paddingX", "label": "水平边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
-		{ "property": "paddingY", "label": "垂直边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-	{ "property": "overlayEnabled", "label": "Overlay 开启", "type": "boolean", "default": "false" },
-		{ "property": "overlayColor", "label": "Overlay 颜色", "type": "color", "default": "#FFFFFF" },
-        { "property": "fpsTarget", "label": "目标 FPS", "type": "combobox",
-           "values": ["30","45","60","75"], "default": "60" },
-
-
-];
+    return [
+        { "property": "LightingMode", "group": "常规设置", "label": "灯效模式", "type": "combobox", description: "决定设备的 RGB 来源。'画布'模式将提取 SignalRGB 的实时特效，'强制'模式将固定为下方选择的颜色。", "values": ["Canvas", "Forced"], "default": "Canvas" },
+        { "property": "forcedColor", "group": "常规设置", "label": "强制颜色", description: "当灯效模式设置为'强制'时所使用的颜色。", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
+        { "property": "turnOffOnShutdown", "group": "常规设置", "label": "退出/关机时关闭设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，自动关闭 WLED 设备灯光。", "default": "false" },
+        { "property": "rgbcw_mode", "group": "灯光配置", "label": "RGBCW 模式", "type": "boolean", description: "如果你使用的是 Athom 等品牌的 WLED 五色灯泡，请开启此选项。", "default": "false" },
+        { "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你想让设备显示的内容类型。", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
+        { "property": "fontSize", "label": "字体大小", "type": "combobox", description: "用于'时间'或'自定义文本'模式的字体尺寸。", "values": ["Small", "Medium", "Large"], "default": "Medium" },
+        { "property": "custom_text", "label": "自定义文本内容", "type": "textfield", description: "在'自定义文本'模式下显示的文字内容。", "default": "WLED" },
+        { "property": "time_format", "label": "时间格式", "type": "textfield", description: "输入你想要显示的时间格式。例如：'hh:mm tt' 或 'HH:mm:ss' (24小时制)。", "default": "hh:mm tt" },
+        { "property": "overlayEnabled", "label": "开启 Overlay 叠加", "type": "boolean", "default": "false" },
+        { "property": "overlayColor", "label": "Overlay 文字颜色", "type": "color", "default": "#FFFFFF" },
+        { "property": "overlayAlpha", "label": "Overlay 不透明度", "step": "1", "type": "number", "min": "1", "max": "100", "default": "100" },
+        { "property": "lhmjson", "label": "LHM 服务器地址", "type": "textfield", description: "Libre Hardware Monitor 的 Web 服务器地址。", "default": "http://127.0.0.1:8085/" },
+        { "property": "lhm_format", "label": "硬件监控项", "type": "textfield", description: "设置要显示的监控参数，需要后台运行 Libre Hardware Monitor。例如: cpu_load cpu_temp", "default": "cpu_load cpu_temp" },
+        { "property": "lhm_update", "label": "监控刷新间隔 (ms)", description: "硬件数据更新的频率。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
+        { "property": "scroll_direction", "label": "滚动方向", "type": "combobox", description: "用于'时间'或'自定义文本'模式的滚动设置。", "values": ["Off", "Left", "Right"], "default": "Off" },
+        { "property": "scroll_speed", "label": "滚动速度", description: "开启滚动时的文字移动速度。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
+        { "property": "pixel_art", "label": "像素画内容", "type": "textfield", description: "在此输入像素画矩阵代码。", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
+        { "property": "translucent1", "label": "半透明 1 亮度等级", description: "当像素值为 0.5 时使用的亮度百分比。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
+        { "property": "translucent2", "label": "半透明 2 亮度等级", description: "当像素值为 0.7 时使用的亮度百分比。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
+        { "property": "paddingX", "label": "水平偏移 (X)", "type": "number", "step": "1", "min": "-100", "max": "100", "default": 0 },
+        { "property": "paddingY", "label": "垂直偏移 (Y)", "type": "number", "step": "1", "min": "-100", "max": "100", "default": 1 }
+    ];
 }
 
+const WLEDicon = "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";
 let WLED;
 let display;
 let displaySize = { width: 0, height: 0 };
 const MaxLedsInPacket = 485;
 const BIG_ENDIAN = 1;
-const WLEDicon = "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";
 const colorBlack = "#000000";
 let lastForcedUpdate = 0;
 let jobRunning = false;
-let rowOffset = 0
-let colOffset = 0
-
-const SMALL_LETTERS = {
-	'A': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'a': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'B': [
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'b': [
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'C': [
-		[0, 1, 1],
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'c': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 1],
-		[1, 0, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'D': [
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'd': [
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 1, 1],
-		[1, 0, 1],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'E': [
-		[1, 1, 1],
-		[1, 0, 0],
-		[1, 1, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'e': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[1, 1, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'F': [
-		[1, 1, 1],
-		[1, 0, 0],
-		[1, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'f': [
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'G': [
-		[0, 1, 1],
-		[1, 0, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'g': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[1, 0, 1],
-		[0, 0, 1],
-		[1, 1, 1]
-	],
-	'H': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'h': [
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'I': [
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'i': [
-		[1],
-		[0],
-		[1],
-		[1],
-		[1],
-		[0]
-	],
-	'J': [
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'j': [
-		[0, 1],
-		[0, 0],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[1, 1]
-	],
-	'K': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'k': [
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'L': [
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'l': [
-		[1],
-		[1],
-		[1],
-		[1],
-		[1],
-		[0]
-	],
-	'M': [
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'm': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'N': [
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'n': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'O': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'o': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'P': [
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'p': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 0]
-	],
-	'Q': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'q': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 1],
-		[1, 0, 1],
-		[0, 1, 1],
-		[0, 0, 1]
-	],
-	'R': [
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'r': [
-		[0, 0],
-		[0, 0],
-		[1, 1],
-		[1, 0],
-		[1, 0],
-		[0, 0]
-	],
-	'S': [
-		[0, 1, 1],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	's': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 1],
-		[0, 1, 0],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'T': [
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	't': [
-		[0, 0, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'U': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'u': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'V': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'v': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'W': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'w': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'X': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'x': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'Y': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'y': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0]
-	],
-	'Z': [
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'z': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'`': [
-		[1, 1],
-		[0, 1],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0]
-	],
-	'~': [
-		[0, 1, 0, 1],
-		[1, 0, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'!': [
-		[1],
-		[1],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	'@': [
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'#': [
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'$': [
-		[0, 1, 0],
-		[0, 1, 1],
-		[1, 1, 0],
-		[0, 1,],
-		[1, 1, 0],
-		[0, 1, 0]
-	],
-	'%': [
-		[1, 0, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'^': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'&': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'*': [
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'(': [
-		[0, 1],
-		[1, 0],
-		[1, 0],
-		[1, 0],
-		[0, 1],
-		[0, 0]
-	],
-	')': [
-		[1, 0],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[1, 0],
-		[0, 0]
-	],
-	'-': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'_': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1]
-	],
-	'=': [
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'+': [
-		[0, 0, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'[': [
-		[1, 1],
-		[1, 0],
-		[1, 0],
-		[1, 0],
-		[1, 1],
-		[0, 0]
-	],
-	'{': [
-		[0, 1, 1],
-		[0, 1, 0],
-		[1, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	']': [
-		[1, 1],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[1, 1],
-		[0, 0]
-	],
-	'}': [
-		[1, 1, 0],
-		[0, 1, 0],
-		[0, 1, 1],
-		[0, 1, 0],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'\\': [
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'|': [
-		[1],
-		[1],
-		[1],
-		[1],
-		[1],
-		[0]
-	],
-	';': [
-		[0, 0],
-		[0, 0],
-		[0, 1],
-		[0, 0],
-		[1, 1],
-		[1, 0]
-	],
-	':': [
-		[0],
-		[0],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	"'": [
-		[1, 1],
-		[1, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0]
-	],
-	'"': [
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	',': [
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[1, 1],
-		[1, 0]
-	],
-	'<': [
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'.': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[1],
-		[0]
-	],
-	'>': [
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'/': [
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'?': [
-		[1, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'1': [
-		[0, 1],
-		[1, 1],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[0, 0]
-	],
-	'2': [
-		[1, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'3': [
-		[1, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'4': [
-		[0, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'5': [
-		[1, 1, 1],
-		[1, 0, 0],
-		[1, 1, 0],
-		[0, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'6': [
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'7': [
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 1, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'8': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'9': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'0': [
-		[0, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	' ': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	]
-}
-
-const LETTERS = {
-	'A': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'a': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 0],
-		[0, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'B': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'b': [
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'C': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[0, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'c': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 1],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 1, 1],
-		[0, 0, 0]
-	],
-	'D': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'd': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 1],
-		[0, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'E': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'e': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 1, 1, 1],
-		[1, 0, 0, 0],
-		[0, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'F': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'f': [
-		[0, 0, 0, 0],
-		[0, 0, 1, 1],
-		[0, 1, 0, 0],
-		[1, 1, 1, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'G': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'g': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0]
-	],
-	'H': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'h': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'I': [
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'i': [
-		[0, 1, 0],
-		[0, 0, 0],
-		[1, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'J': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 1],
-		[0, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'j': [
-		[0, 0, 1],
-		[0, 0, 0],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[1, 1, 0]
-	],
-	'K': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 1, 0],
-		[1, 1, 0, 0],
-		[1, 0, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'k': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 0],
-		[1, 0, 1, 0],
-		[1, 1, 0, 0],
-		[1, 0, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'L': [
-		[0, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'l': [
-		[1, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'M': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'm': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'N': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 1, 0, 1],
-		[1, 0, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'n': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'O': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'o': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'P': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'p': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[1, 0, 0, 0]
-	],
-	'Q': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 1]
-	],
-	'q': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 1]
-	],
-	'R': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0],
-	],
-	'r': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'S': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 0, 0, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	's': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 1, 1],
-		[1, 1, 0, 0],
-		[0, 0, 1, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'T': [
-		[0, 0, 0, 0, 0],
-		[1, 1, 1, 1, 1],
-		[0, 0, 1, 0, 0],
-		[0, 0, 1, 0, 0],
-		[0, 0, 1, 0, 0],
-		[0, 0, 1, 0, 0],
-		[0, 0, 0, 0, 0]
-	],
-	't': [
-		[0, 0, 0, 0],
-		[0, 1, 0, 0],
-		[1, 1, 1, 1],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'U': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'u': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'V': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'v': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'W': [
-		[0, 0, 0, 0, 0],
-		[1, 0, 0, 0, 1],
-		[1, 0, 1, 0, 1],
-		[1, 0, 1, 0, 1],
-		[0, 1, 0, 1, 0],
-		[0, 1, 0, 1, 0],
-		[0, 0, 0, 0, 0]
-	],
-	'w': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'X': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 1, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'x': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'Y': [
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'y': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0]
-	],
-	'Z': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'z': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'`': [
-		[0, 0],
-		[1, 0],
-		[0, 1],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0]
-	],
-	'~': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 1, 0, 1],
-		[1, 0, 1, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'!': [
-		[0],
-		[1],
-		[1],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	'@': [
-		[0, 0, 0, 0, 0],
-		[0, 1, 1, 1, 0],
-		[1, 0, 0, 0, 1],
-		[1, 0, 1, 1, 0],
-		[1, 0, 0, 0, 0],
-		[0, 1, 1, 1, 0],
-		[0, 0, 0, 0, 0]
-	],
-	'#': [
-		[0, 0, 0, 0, 0],
-		[0, 1, 0, 1, 0],
-		[1, 1, 1, 1, 1],
-		[0, 1, 0, 1, 0],
-		[1, 1, 1, 1, 1],
-		[0, 1, 0, 1, 0],
-		[0, 0, 0, 0, 0]
-	],
-	'$': [
-		[0, 0, 0],
-		[0, 1, 0],
-		[0, 1, 1],
-		[1, 0, 0],
-		[0, 1, 1],
-		[1, 1, 0],
-		[0, 1, 0]
-	],
-	'%': [
-		[0, 1, 0, 0, 0],
-		[1, 0, 1, 0, 1],
-		[0, 1, 0, 1, 0],
-		[0, 0, 1, 0, 0],
-		[0, 1, 0, 1, 0],
-		[1, 0, 1, 0, 1],
-		[0, 0, 0, 1, 0]
-	],
-	'^': [
-		[0, 0, 0],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'&': [
-		[0, 0, 0, 0, 0],
-		[0, 0, 1, 1, 0],
-		[0, 1, 0, 0, 0],
-		[0, 1, 1, 0, 1],
-		[1, 0, 0, 1, 0],
-		[0, 1, 1, 0, 1],
-		[0, 0, 0, 0, 0]
-	],
-	'*': [
-		[0, 0, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'(': [
-		[0, 0],
-		[0, 1],
-		[1, 0],
-		[1, 0],
-		[1, 0],
-		[0, 1],
-		[0, 0]
-	],
-	')': [
-		[0, 0],
-		[1, 0],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[1, 0],
-		[0, 0]
-	],
-	'-': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'_': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 1]
-	],
-	'=': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'+': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 0],
-		[1, 1, 1],
-		[0, 1, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'[': [
-		[0, 0],
-		[1, 1],
-		[1, 0],
-		[1, 0],
-		[1, 0],
-		[1, 1],
-		[0, 0]
-	],
-	'{': [
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	']': [
-		[0, 0],
-		[1, 1],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[1, 1],
-		[0, 0]
-	],
-	'}': [
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'\\': [
-		[0, 0, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'|': [
-		[1],
-		[1],
-		[1],
-		[1],
-		[1],
-		[1],
-		[0]
-	],
-	';': [
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 1],
-		[0, 0],
-		[0, 1],
-		[1, 0]
-	],
-	':': [
-		[0],
-		[0],
-		[0],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	"'": [
-		[1],
-		[1],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	],
-	'"': [
-		[0, 0, 0],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	',': [
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 1],
-		[1, 0]
-	],
-	'<': [
-		[0, 0, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'.': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[1],
-		[0]
-	],
-	'>': [
-		[0, 0, 0],
-		[1, 0, 0],
-		[0, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'/': [
-		[0, 0, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'?': [
-		[0, 0, 0],
-		[1, 1, 0],
-		[0, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'0': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'1': [
-		[0, 0],
-		[0, 1],
-		[1, 1],
-		[0, 1],
-		[0, 1],
-		[0, 1],
-		[0, 0]
-	],
-	'2': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'3': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'4': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 1],
-		[0, 0, 1, 1],
-		[0, 1, 0, 1],
-		[1, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'5': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'6': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'7': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'8': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'9': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	' ': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	]
-}
-
-const SMALL_DIGITS =
-{
-	'1': [
-		[0, 0, 1],
-		[0, 1, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'2': [
-		[1, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0]
-	],
-	'3': [
-		[1, 1, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'4': [
-		[0, 0, 1],
-		[1, 0, 1],
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 0, 0]
-	],
-	'5': [
-		[1, 1, 1],
-		[1, 0, 0],
-		[1, 1, 0],
-		[0, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	'6': [
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'7': [
-		[1, 1, 1],
-		[0, 0, 1],
-		[0, 1, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'8': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'9': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[0, 1, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 0, 0]
-	],
-	'0': [
-		[0, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[1, 1, 0],
-		[0, 0, 0]
-	],
-	':': [
-		[0],
-		[0],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	';': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	],
-	'a': [
-		[0, 1, 0],
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	'p': [
-		[1, 1, 0],
-		[1, 0, 1],
-		[1, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'm': [
-		[1, 0, 1],
-		[1, 1, 1],
-		[1, 1, 1],
-		[1, 0, 1],
-		[1, 0, 1],
-		[0, 0, 0]
-	],
-	' ': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	],
-	'/': [
-		[0, 0, 1],
-		[0, 0, 1],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'-': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'_': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1]
-	],
-	'.': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[1],
-		[0]
-	],
-	',': [
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[1, 1],
-		[1, 0]
-	],
-};
-
-const DIGITS =
-{
-	'0': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'1': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 1],
-		[0, 0, 1, 1],
-		[0, 0, 0, 1],
-		[0, 0, 0, 1],
-		[0, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'2': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 0]
-	],
-	'3': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'4': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 1],
-		[0, 0, 1, 1],
-		[0, 1, 0, 1],
-		[1, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'5': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[0, 0, 0, 1],
-		[1, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'6': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'7': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 0, 1, 0],
-		[0, 1, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'8': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	'9': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[0, 1, 1, 1],
-		[0, 0, 0, 1],
-		[0, 1, 1, 0],
-		[0, 0, 0, 0]
-	],
-	':': [
-		[0],
-		[0],
-		[0],
-		[1],
-		[0],
-		[1],
-		[0]
-	],
-	';': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	],
-	'a': [
-		[0, 0, 0, 0],
-		[0, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	'p': [
-		[0, 0, 0, 0],
-		[1, 1, 1, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 0],
-		[1, 0, 0, 0],
-		[1, 0, 0, 0],
-		[0, 0, 0, 0]
-	],
-	'm': [
-		[0, 0, 0, 0],
-		[1, 0, 0, 1],
-		[1, 1, 1, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[1, 0, 0, 1],
-		[0, 0, 0, 0]
-	],
-	' ': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[0]
-	],
-	'/': [
-		[0, 0, 0],
-		[0, 0, 1],
-		[0, 1, 0],
-		[0, 1, 0],
-		[1, 0, 0],
-		[1, 0, 0],
-		[0, 0, 0]
-	],
-	'-': [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0],
-		[1, 1, 1],
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	],
-	'_': [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[1, 1, 1, 1]
-	],
-	'.': [
-		[0],
-		[0],
-		[0],
-		[0],
-		[0],
-		[1],
-		[0]
-	],
-	',': [
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 0],
-		[0, 1],
-		[1, 0]
-	],
-};
+let scrollOffset = 0;
+let lastLHMFetch = { time: 0, result: 'Loading...' };
 
 var PIXELART = [];
-
 var COMPONENT_MAPPING = [];
 
 export function onpixel_artChanged() {
@@ -2075,36 +103,6 @@ export function ondisplay_modeChanged() {
 	}
 }
 
-function insertDigitIntoDisplay(display, digit, startCol) {
-	let newLineCh = digit.length;
-	let digitWidth = digit[0].length - 1;
-	let nLine = Math.floor((startCol + digitWidth) / displaySize.width);
-	rowOffset = nLine * newLineCh;
-
-	for (let row = 0; row < digit.length; row++) {
-		for (let col = 0; col < digit[row].length; col++) {
-			let index = (rowOffset * displaySize.width + row * displaySize.width + (displaySize.width * paddingY)) + startCol + col + parseInt(paddingX);
-
-			if (index < displaySize.height * displaySize.width) {
-				display[index] = digit[row][col];
-			}
-		}
-	}
-	//rowOffset = 0;
-}
-
-function insertPixelArtIntoDisplay(display, art) {
-	for (let row = 0; row < art.length; row++) {
-		for (let col = 0; col < art[row].length; col++) {
-			let index = (row * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + col + parseInt(paddingX);
-
-			if (index < displaySize.height * displaySize.width) {
-				display[index] = art[row][col];
-			}
-		}
-	}
-}
-
 function rearrangeDisplayForSnakeLayout(display) {
 	const snakeDisplay = new Array(display.length);
 
@@ -2113,6 +111,15 @@ function rearrangeDisplayForSnakeLayout(display) {
 	}
 
 	return snakeDisplay;
+}
+
+function insertZeroes(rgb_array) {
+	const result = [];
+	for (let i = 0; i < rgb_array.length; i += 3) {
+		result.push(rgb_array[i], rgb_array[i + 1], rgb_array[i + 2]);
+		result.push(0, 0);
+	}
+	return result.filter(x => x !== undefined);
 }
 
 function hexToRgb(hex) {
@@ -2193,6 +200,97 @@ function formatDateTime(format) {
 	return _format;
 }
 
+function formatLHM(format) {
+	const now = Date.now();
+
+	if (now - lastLHMFetch.time < lhm_update && lastLHMFetch.result !== null) {
+		return lastLHMFetch.result;
+	}
+
+	XmlHttp.Get(`${lhmjson}/data.json`, (xhr) => {
+		if (xhr.readyState === 4) {
+			if (xhr.status === 200) {
+				const datajson = JSON.parse(xhr.response);
+
+				// CPU
+				const cpu_load = findNodeWithParent(datajson, 'CPU Total', 'Load');
+				const cpu_temp = findNodeWithParent(datajson, 'CPU Package', 'Temperatures');
+
+				// Fans
+				const mb_fan1 = findNodeWithParent(datajson, 'Fan #1', 'Fans');
+				const mb_fan2 = findNodeWithParent(datajson, 'Fan #2', 'Fans');
+				const mb_fan3 = findNodeWithParent(datajson, 'Fan #3', 'Fans');
+				const mb_fan4 = findNodeWithParent(datajson, 'Fan #4', 'Fans');
+				const mb_fan5 = findNodeWithParent(datajson, 'Fan #5', 'Fans');
+				const mb_fan6 = findNodeWithParent(datajson, 'Fan #6', 'Fans');
+				const mb_fan7 = findNodeWithParent(datajson, 'Fan #7', 'Fans');
+				const mb_fan8 = findNodeWithParent(datajson, 'Fan #8', 'Fans');
+				const mb_fan9 = findNodeWithParent(datajson, 'Fan #9', 'Fans');
+				const mb_fan10 = findNodeWithParent(datajson, 'Fan #10', 'Fans');
+
+				// RAM
+				const ram_load = findNodeWithParent(datajson, 'Memory', 'Load');
+				const ram_used = findNodeWithParent(datajson, 'Memory Used', 'Data');
+
+				// GPU
+				const gpu_load = findNodeWithParent(datajson, 'GPU Core', 'Load');
+				const gpu_temp = findNodeWithParent(datajson, 'GPU Core', 'Temperatures');
+				const gpu_fan1 = findNodeWithParent(datajson, 'GPU Fan 1', 'Fans');
+				const gpu_fan2 = findNodeWithParent(datajson, 'GPU Fan 2', 'Fans');
+				const gpu_mem_load = findNodeWithParent(datajson, 'GPU Memory', 'Load');
+				const gpu_mem_used = findNodeWithParent(datajson, 'GPU Memory Used', 'Data');
+
+				let _format = replaceEx(format, {
+					'cpu_load': cpu_load ? cpu_load.Value : 'N/A',
+					'cpu_temp': cpu_temp ? cpu_temp.Value : 'N/A',
+					'mb_fan1': mb_fan1 ? mb_fan1.Value : 'N/A',
+					'mb_fan2': mb_fan2 ? mb_fan2.Value : 'N/A',
+					'mb_fan3': mb_fan3 ? mb_fan3.Value : 'N/A',
+					'mb_fan4': mb_fan4 ? mb_fan4.Value : 'N/A',
+					'mb_fan5': mb_fan5 ? mb_fan5.Value : 'N/A',
+					'mb_fan6': mb_fan6 ? mb_fan6.Value : 'N/A',
+					'mb_fan7': mb_fan7 ? mb_fan7.Value : 'N/A',
+					'mb_fan8': mb_fan8 ? mb_fan8.Value : 'N/A',
+					'mb_fan9': mb_fan9 ? mb_fan9.Value : 'N/A',
+					'mb_fan10': mb_fan10 ? mb_fan10.Value : 'N/A',
+					'ram_load': ram_load ? ram_load.Value : 'N/A',
+					'ram_used': ram_used ? ram_used.Value : 'N/A',
+					'gpu_load': gpu_load ? gpu_load.Value : 'N/A',
+					'gpu_temp': gpu_temp ? gpu_temp.Value : 'N/A',
+					'gpu_fan1': gpu_fan1 ? gpu_fan1.Value : 'N/A',
+					'gpu_fan2': gpu_fan2 ? gpu_fan2.Value : 'N/A',
+					'gpu_mem_load': gpu_mem_load ? gpu_mem_load.Value : 'N/A',
+					'gpu_mem_used': gpu_mem_used ? gpu_mem_used.Value : 'N/A'
+				});
+
+				lastLHMFetch.result = _format;
+				lastLHMFetch.time = now;
+			} else {
+				device.log("HTTP error:", xhr.status);
+			}
+		}
+	});
+
+	// Always return the cached result (default "Loading..." on first call)
+	return lastLHMFetch.result;
+}
+
+function findNodeWithParent(node, textToFind, parentToFind, currentParentName = "") {
+	// Check if THIS node matches and its parent matches
+	if (node.Text === textToFind && currentParentName === parentToFind) {
+		return node;
+	}
+
+	// Recursively check children, passing the current node's text as the next parent name
+	if (node.Children && node.Children.length > 0) {
+		for (let child of node.Children) {
+			let found = findNodeWithParent(child, textToFind, parentToFind, node.Text);
+			if (found) return found;
+		}
+	}
+	return null;
+}
+
 function lowerBrightnessRGB(R, G, B, factor) {
 	const newR = Math.max(0, Math.floor(R * factor));
 	const newG = Math.max(0, Math.floor(G * factor));
@@ -2202,156 +300,172 @@ function lowerBrightnessRGB(R, G, B, factor) {
 }
 
 function displayClock() {
-	display.fill(0);
-	const now = new Date();
+   
+    display.fill(0);
+    const now = new Date();
 
-	let timeDigits;
-	switch (display_mode) {
-		case 'Pixel Art':
-			timeDigits = 'Pixel Art';
-			break;
-		case 'Custom Text':
-			timeDigits = custom_text;
-			break;
-		default:
-			if (now.getSeconds() % 2 !== 0) {
-				timeDigits = replaceEx(formatDateTime(time_format), { ':': ';' });
-			}
-			else {
-				timeDigits = formatDateTime(time_format);
-			}
-	}
+    let text;
+    switch (display_mode) {
+        case 'Pixel Art':
+            text = 'Pixel Art';
+            insertPixelArtIntoDisplay(display, PIXELART);
+            return;
+        case 'Custom Text':
+            text = custom_text;
+            break;
+        case 'Libre Hardware Monitor':
+            text = formatLHM(lhm_format);
+            break;
+        default:
+            if (now.getSeconds() % 2 !== 0) {
+                text = replaceEx(formatDateTime(time_format), { ':': ';' });
+            } else {
+                text = formatDateTime(time_format);
+            }
+    }
 
-	let colOffset = 0;
-	for (const digit of timeDigits) {
-		switch (display_mode) {
-			case 'Time':
-				if (fontSize == 'Medium') {
-					insertDigitIntoDisplay(display, DIGITS[digit], colOffset);
-					if (digit == ":" || digit == ";" || digit == '.') {
-						colOffset += 2;
-					}
-					else if (digit == " ") {
-						colOffset += 1;
-					}
-					else {
-						colOffset += 5;
-					}
-				}
-				else {
-					insertDigitIntoDisplay(display, SMALL_DIGITS[digit], colOffset);
-					if (digit == ":" || digit == ";" || digit == '.') {
-						colOffset += 2;
-					}
-					else if (digit == " ") {
-						colOffset += 1;
-					}
-					else {
-						colOffset += 4;
-					}
-				}
+    let baseRow = parseInt(paddingY);
+    let textWithGap = text + " ".repeat(Math.floor(displaySize.width / 2));
+    let { buffer, bufferWidth } = renderTextBuffer(textWithGap, fontSize, baseRow, display_mode == 'Time');
 
-				break;
-			case 'Pixel Art':
-				insertPixelArtIntoDisplay(display, PIXELART);
-				break;
-			default:
-				if (fontSize == 'Medium') {
-					insertDigitIntoDisplay(display, LETTERS[digit], colOffset);
-					switch (digit) {
-						case ' ':
-							colOffset += 1;
-							break;
-						case '!':
-						case '|':
-						case ':':
-						case "'":
-						case '.':
-							colOffset += 2;
-							break;
-						case '`':
-						case '(':
-						case ')':
-						case '[':
-						case ']':
-						case ';':
-						case ',':
-						case '1':
-							colOffset += 3;
-							break;
-						case 'a':
-						case 'c':
-						case 'I':
-						case 'i':
-						case 'j':
-						case 'L':
-						case 'l':
-						case 'r':
-						case 'Y':
-						case '$':
-						case '^':
-						case '*':
-						case '-':
-						case '=':
-						case '+':
-						case '{':
-						case '}':
-						case '\\':
-						case '"':
-						case '<':
-						case '>':
-						case '/':
-						case '?':
-							colOffset += 4;
-							break;
-						case 'T':
-						case 'W':
-						case '@':
-						case '#':
-						case '%':
-						case '&':
-							colOffset += 6;
-							break;
-						default:
-							colOffset += 5;
-					}
-				}
-				else {
-					insertDigitIntoDisplay(display, SMALL_LETTERS[digit], colOffset);
-					switch (digit) {
-						case ' ':
-							colOffset += 1;
-							break;
-						case 'i':
-						case 'l':
-						case '!':
-						case '|':
-						case ':':
-						case '.':
-							colOffset += 2;
-							break;
-						case 'j':
-						case 'r':
-						case '1':
-						case '`':
-						case '(':
-						case ')':
-						case '[':
-						case ']':
-						case ';':
-						case "'":
-						case ',':
-							colOffset += 3;
-							break;
-						case '~':
-							colOffset += 5;
-							break;
-						default:
-							colOffset += 4;
-					}
-				}
-		}
-	}
+    // --- Scroll offset update ---
+    if (scroll_direction === "Left") {
+        scrollOffset -= (scroll_speed / 100);   // move text leftward
+    } else if (scroll_direction === "Right") {
+        scrollOffset += (scroll_speed / 100);   // move text rightward
+    }
+
+    // --- Wrap offset seamlessly ---
+    const totalSpan = bufferWidth + displaySize.width;
+    if (scrollOffset <= -bufferWidth) {
+        scrollOffset += bufferWidth; // wrap seamlessly
+    }
+    if (scrollOffset >= bufferWidth) {
+        scrollOffset -= bufferWidth; // wrap seamlessly
+    }
+
+    // --- Copy visible slice (tile buffer) ---
+    for (let row = 0; row < displaySize.height; row++) {
+        for (let col = 0; col < displaySize.width; col++) {
+            // repeat buffer by using modulo
+            let srcX = Math.floor((col - scrollOffset) % bufferWidth);
+            if (srcX < 0) srcX += bufferWidth; // ensure positive index
+            display[row * displaySize.width + col] = buffer[row * bufferWidth + srcX];
+        }
+    }
+}
+
+function insertPixelArtIntoDisplay(display, art) {
+    for (let row = 0; row < art.length; row++) {
+        for (let col = 0; col < art[row].length; col++) {
+            let index = (row * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + col + parseInt(paddingX);
+
+            if (index < displaySize.height * displaySize.width) {
+                display[index] = art[row][col];
+            }
+        }
+    }
+}
+
+function getSpacing(digit, fontSize, time) {
+    if (time) {
+        if (fontSize === 'Medium') {
+            switch (digit) {
+                case ':': case ';': case '.': return 2;
+                case ' ': return 1;
+                default: return 5;
+            }
+        } else if (fontSize === 'Large') {
+            switch (digit) {
+                case ':': case ';': case '.': return 3;
+                case ' ': return 2;
+                default: return 6;
+            }
+        } else {
+            switch (digit) {
+                case ':': case ';': case '.': return 2;
+                case ' ': return 1;
+                default: return 4;
+            }
+        }
+    } else {
+        if (fontSize === 'Medium') {
+            switch (digit) {
+                case ' ': return 1;
+                case '!': case '|': case ':': case "'": case '.': return 2;
+                case '`': case '(': case ')': case '[': case ']': case ';': case ',': case '1': return 3;
+                case 'a': case 'c': case 'I': case 'i': case 'j': case 'L': case 'l': case 'r':
+                case 'Y': case '$': case '^': case '*': case '-': case '=': case '+': case '{':
+                case '}': case '\\': case '"': case '<': case '>': case '/': case '?': case '°': return 4;
+                case 'T': case 'W': case '@': case '#': case '%': case '&': return 6;
+                default: return 5;
+            }
+        } else if (fontSize === 'Large') {
+            switch (digit) {
+                case '|': return 2;
+                case 'i': case 'l': case '`': case "(": case ')': case ';': case ':': case "'": case ',': case '.': case ' ': return 3;
+                case 'I': case '!': case '[': case ']': case '1': case '°': return 4;
+                case 'f': case 'h': case 'j': case 'k': case 'n': case 't': case 'u': case 'x':
+                case 'y': case 'Z': case 'z': case '~': case '$': case '{': case '}': case '<': case '>': return 5;
+                default: return 6;
+            }
+        } else {
+            switch (digit) {
+                case ' ': return 1;
+                case 'i': case 'l': case '!': case '|': case ':': case '.': return 2;
+                case 'j': case 'r': case '1': case '`': case '(': case ')': case '[': case ']':
+                case ';': case "'": case ',': return 3;
+                case '~': return 5;
+                default: return 4;
+            }
+        }
+    }
+}
+
+function renderTextBuffer(text, fontSize, baseRow, time) {
+    let glyphs = [];
+    let totalWidth = 0;
+
+    for (const ch of text) {
+        let glyph;
+        switch (fontSize) {
+            case 'Large':
+                glyph = time ? LARGE_DIGITS[ch] : LARGE_LETTERS[ch];
+                break;
+            case 'Small':
+                glyph = time ? SMALL_DIGITS[ch] : SMALL_LETTERS[ch];
+                break;
+            default:
+                glyph = time ? DIGITS[ch] : LETTERS[ch];
+                break;
+        }
+
+        let spacing = getSpacing(ch, fontSize, time);
+
+        if (glyph) {
+            glyphs.push({ glyph, offset: totalWidth });
+        }
+        totalWidth += spacing; // always advance, even for spaces
+    }
+
+    let bufferWidth = totalWidth;
+    let bufferHeight = displaySize.height;
+    let buffer = new Array(bufferWidth * bufferHeight).fill(0); 
+
+    for (const { glyph, offset } of glyphs) {
+        for (let row = 0; row < glyph.length; row++) {
+            for (let col = 0; col < glyph[row].length; col++) {
+                let x = offset + col;
+                let y = baseRow + row;
+                if (y >= 0 && y < bufferHeight && x >= 0 && x < bufferWidth) {
+            
+                    buffer[y * bufferWidth + x] = glyph[row][col] ? 1 : 0;
+                }
+            }
+        }
+    }
+
+    return { buffer, bufferWidth };
 }
 
 class WLEDDevice {
@@ -2383,62 +497,74 @@ class WLEDDevice {
 		let RGBData = [];
 
 		if (shutdown) {
-			RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(device.createColorArray(colorBlack, ChannelLedCount, "Inline"));
+			} else {
+				RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
+			}
 		} else if (LightingMode === "Forced") {
-			RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(device.createColorArray(forcedColor, ChannelLedCount, "Inline"));
+			} else {
+				RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
+			}
 		} else if (componentChannel.shouldPulseColors()) {
 			ChannelLedCount = this.deviceledcount;
-
 			const pulseColor = device.getChannelPulseColor(this.name);
-			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
+
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(device.createColorArray(pulseColor, ChannelLedCount, "Inline"));
+			} else {
+				RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
+			}
 		} else {
-			RGBData = componentChannel.getColors("Inline");
-			// === overlay handling: when overlayEnabled is true, keep SignalRGB as background
-			// and force foreground pixels (display) to use contrasting colors so they remain visible.
-			// ====== Overlay 渲染（已替换：支持 controller.overlayColor / overlayColor） ======
-if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-    let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(componentChannel.getColors("Inline"));
+			} else {
+				RGBData = componentChannel.getColors("Inline");
+			}
+		}
 
-    // 优先使用 controller.overlayColor（SignalRGB 的 controller 风格），
-    // 回退到 overlayColor（全局变量风格），最终兜底 "#FFFFFF"
-    let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
-        ? controller.overlayColor
-        : (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
+		if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
+			let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
 
-    // 使用已有的 hexToRgb 函数（如果存在），否则本地解析
-    let overlayRgb;
-    if (typeof hexToRgb === 'function') {
-        overlayRgb = hexToRgb(overlayHex);
-    } else {
-        // 简单安全解析：支持 #RGB / #RRGGBB / RGB / RRGGBB
-        let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
-        if (h.length === 3) h = h.split('').map(function(c){ return c + c; }).join('');
-        if (h.length !== 6) {
-            overlayRgb = { r: 255, g: 255, b: 255 };
-        } else {
-            overlayRgb = {
-                r: parseInt(h.substr(0,2), 16) || 0,
-                g: parseInt(h.substr(2,2), 16) || 0,
-                b: parseInt(h.substr(4,2), 16) || 0
-            };
-        }
-    }
+			let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
+				? controller.overlayColor
+				: (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
 
-    for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
-        let val = Snake_display_local[led_index];
-        // treat val as foreground if it's not one of the special control values
-        if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-            // 应用 overlay RGB（不再写死白色）
-            RGBData[led_index * 3]     = overlayRgb.r;
-            RGBData[led_index * 3 + 1] = overlayRgb.g;
-            RGBData[led_index * 3 + 2] = overlayRgb.b;
-					}
+			let overlayRgb;
+			if (typeof hexToRgb === 'function') {
+				overlayRgb = hexToRgb(overlayHex);
+			} else {
+				let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
+				if (h.length === 3) h = h.split('').map(function(c) { return c + c; }).join('');
+				if (h.length !== 6) {
+					overlayRgb = { r: 255, g: 255, b: 255 };
+				} else {
+					overlayRgb = {
+						r: parseInt(h.substr(0, 2), 16) || 0,
+						g: parseInt(h.substr(2, 2), 16) || 0,
+						b: parseInt(h.substr(4, 2), 16) || 0
+					};
 				}
 			}
-			
+
+			let alpha = (typeof overlayAlpha !== 'undefined' ? overlayAlpha : 100) / 100;
+
+			for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
+				let val = Snake_display_local[led_index];
+				
+				if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
+					
+					RGBData[led_index * 3]     = (RGBData[led_index * 3]     * (1 - alpha)) + (overlayRgb.r * alpha);
+					RGBData[led_index * 3 + 1] = (RGBData[led_index * 3 + 1] * (1 - alpha)) + (overlayRgb.g * alpha);
+					RGBData[led_index * 3 + 2] = (RGBData[led_index * 3 + 2] * (1 - alpha)) + (overlayRgb.b * alpha);
+				}
+			}
 		}
 
 		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
+
 
 		if (display_mode != 'Components') {
 			if (display != undefined) {
@@ -2447,13 +573,13 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
 					switch (Snake_display[led_index]) {
 						case 0:
-                            // empty pixel: when overlayEnabled is ON, keep SignalRGB background; otherwise set black
-                            if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components')) {
-                                RGBData[led_index * 3] = 0;
-                                RGBData[led_index * 3 + 1] = 0;
-                                RGBData[led_index * 3 + 2] = 0;
-                            }
-                            break;
+						
+							if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled)) {
+								RGBData[led_index * 3] = 0;
+								RGBData[led_index * 3 + 1] = 0;
+								RGBData[led_index * 3 + 2] = 0;
+							}
+							break;
 						case 0.3:
 							let fcRGB = hexToRgb(forcedColor);
 							RGBData[led_index * 3] = fcRGB.r;
@@ -2479,12 +605,14 @@ if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefi
 			}
 		}
 
+		let times = rgbcw_mode == true ? 5 : 3;
+
 		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
 			const startIdx = CurrPacket * MaxLedsInPacket;
 			const highByte = ((startIdx >> 8) & 0xFF);
 			const lowByte = (startIdx & 0xFF);
 			let packet = [0x04, 0x02, highByte, lowByte];
-			packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * 3));
+			packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * times));
 			udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
 		}
 	}
@@ -2494,7 +622,6 @@ export function Initialize() {
 	device.setName(controller.name);
 	device.setImageFromBase64(WLEDicon);
 	device.addFeature("udp");
-	device.setFrameRateTarget(parseInt(fpsTarget));
 	WLED = new WLEDDevice(controller);
 	WLED.SetupChannel();
 	WLED.changeDeviceState(false, true, true);
@@ -2510,7 +637,6 @@ export function Initialize() {
 			device.log(ex.message);
 		}
 	}
-
 }
 
 export function Render() {
@@ -2521,6 +647,7 @@ export function Shutdown(suspend) {
 	WLED.SendColorPackets(true);
 	WLED.changeDeviceState(turnOffOnShutdown);
 }
+
 
 export function ImageUrl() {
 	return "https://raw.githubusercontent.com/SRGBmods/public/main/images/wled/998_led_nodemcu.png";
@@ -2688,103 +815,103 @@ export function DiscoveryService() {
 }
 
 class WLEDBridge {
-	constructor(value) {
-		this.readyToAnnounce = false;
-		this.announced = false;
-		this.hostname = value.hostname;
-		this.mac = value.mac;
-		this.name = value.name;
-		this.id = value.mac;
-		this.port = value.port;
-		this.arch = "";
-		this.deviceledcount = 0;
-		this.firmwareversion = 0;
-		this.linked = service.getSetting(this.mac, "ip");
-		this.ip = "";
-		this.connected = false;
-		this.forced = value.forced;
-		this.defaultOn = false;
-		this.defaultBri = 128;
-		this.signalstrength = 0;
-		this.lastUpdate = Date.now();
-		this.firstUpdate = true;
-		this.offline = false;
+    constructor(value) {
+        this.readyToAnnounce = false;
+        this.announced = false;
+        this.hostname = value.hostname;
+        this.mac = value.mac;
+        this.name = value.name;
+        this.id = value.mac;
+        this.port = value.port;
+        this.arch = "";
+        this.deviceledcount = 0;
+        this.firmwareversion = 0;
+        this.linked = service.getSetting(this.mac, "ip");
+        this.ip = "";
+        this.connected = false;
+        this.forced = value.forced;
+        this.defaultOn = false;
+        this.defaultBri = 128;
+        this.signalstrength = 0;
+        this.lastUpdate = Date.now();
+        this.firstUpdate = true;
+        this.offline = false;
 
-		service.log("Constructed: " + this.name);
+        service.log("Constructed: " + this.name);
 
-		if (!this.forced) {
-			this.getDeviceIP();
-		} else {
-			this.ip = this.hostname;
-			this.getDeviceInfo();
-		}
-	}
+        if (!this.forced) {
+            this.getDeviceIP();
+        } else {
+            this.ip = this.hostname;
+            this.getDeviceInfo();
+        }
+    }
 
-	updateWithValue(value) {
-		this.forced = value.forced;
-		this.hostname = value.hostname;
-		this.mac = value.mac;
-		this.name = value.name;
-		this.port = value.port;
-		this.id = value.mac;
-		this.ip = this.forced ? value.hostname : value.ip;
+    updateWithValue(value) {
+        this.forced = value.forced;
+        this.hostname = value.hostname;
+        this.mac = value.mac;
+        this.name = value.name;
+        this.port = value.port;
+        this.id = value.mac;
+        this.ip = this.forced ? value.hostname : value.ip;
 
-		if (this.forced) {
-			this.saveForceDiscovery();
-		}
+        if (this.forced) {
+            this.saveForceDiscovery();
+        }
 
-		service.log("Updated: " + this.mac);
-		service.updateController(this);
-		this.getDeviceInfo();
-	}
+        service.log("Updated: " + this.mac);
+        service.updateController(this);
+        this.getDeviceInfo();
+    }
 
-	update() {
-		if (this.waitingforlink) {
-			this.waitingforlink = false;
-			this.connected = this.linked === this.ip;
-			this.readyToAnnounce = true;
-			service.updateController(this);
-		}
+    update() {
+        if (this.waitingforlink) {
+            this.waitingforlink = false;
+            this.connected = this.linked === this.ip;
+            this.readyToAnnounce = true;
+            service.updateController(this);
+        }
 
-		this.createDevice();
+        this.createDevice();
 
-		const currentTime = Date.now();
+        const currentTime = Date.now();
 
-		if (currentTime - this.lastUpdate >= (Math.floor(Math.random() * 10000) + 50000)) {
-			this.lastUpdate = currentTime;
-			this.getDeviceInfo();
-		}
-	}
+        if (currentTime - this.lastUpdate >= (Math.floor(Math.random() * 10000) + 50000)) {
+            this.lastUpdate = currentTime;
+            this.getDeviceInfo();
+        }
+    }
 
-	createDevice() {
-		if (this.readyToAnnounce && !this.announced) {
-			if (!this.connected) {
-				this.saveController();
-				service.log("Adding Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
-			} else {
-				service.updateController(this);
-				service.announceController(this);
-				service.log("Announcing existing Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
-			}
+    createDevice() {
+        if (this.readyToAnnounce && !this.announced) {
+            if (!this.connected) {
+                this.saveController();
+                service.log("Adding Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
+            } else {
+                service.updateController(this);
+                service.announceController(this);
+                service.log("Announcing existing Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
+            }
 
-			this.announced = true;
+            this.announced = true;
 
-			if (this.connected) {
-				DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
-			}
+            if (this.connected) {
+                DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
+            }
 
-			service.updateController(this);
-		}
-	}
+            service.updateController(this);
+        }
+    }
 
-	saveController() {
-		service.saveSetting(this.mac, "name", this.name);
-		service.saveSetting(this.mac, "ip", this.ip);
-		service.updateController(this);
-		service.announceController(this);
-		this.connected = true;
-	}
-
+    saveController() {
+        service.saveSetting(this.mac, "name", this.name);
+        service.saveSetting(this.mac, "ip", this.ip);
+        service.updateController(this);
+        service.announceController(this);
+        this.connected = true;
+    }
+	
 	getDeviceInfo() {
 		const instance = this;
 		service.log(`Requesting complete Device Information...`);
@@ -2946,28 +1073,4 @@ class DeviceState {
 			{ on: (forceOff ? false : forceOn ? true : defaultOn), bri: (fullBright ? 255 : defaultBri), live: false },
 			async);
 	}
-}
-
-
-// === Transparent Overlay Merge ===
-// 有像素显示Overlay，没有像素透出SignalRGB
-function applyOverlay(signalRgbColors, overlayColors) {
-    let out = new Array(signalRgbColors.length);
-    for (let i = 0; i < signalRgbColors.length; i++) {
-        let o = overlayColors[i];
-        if (!o || (o.r === 0 && o.g === 0 && o.b === 0)) {
-            out[i] = signalRgbColors[i]; // 空像素 → 背景
-        } else {
-            out[i] = o; // 有像素 → 前景
-        }
-    }
-    return out;
-}
-
-
-
-// === Final LED Render ===
-// 将 SignalRGB 背景层 和 Overlay 前景层 合成后输出到 leds[]
-if (typeof signalrgbLayer !== 'undefined' && typeof overlayLayer !== 'undefined') {
-    leds = applyOverlay(signalrgbLayer, overlayLayer);
 }
