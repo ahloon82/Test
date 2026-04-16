@@ -1,4 +1,5 @@
 import { SMALL_LETTERS, LETTERS, LARGE_LETTERS, DIGITS, SMALL_DIGITS, LARGE_DIGITS } from './WLED_Text.js';
+import { ZH_FONT } from './WLED_Text_ZH.min.js';
 export function Name() { return "WLED"; }
 export function Version() { return "0.15.0"; }
 export function Type() { return "network"; }
@@ -21,8 +22,7 @@ display_mode:readonly
 fontSize:readonly
 custom_text:readonly
 time_format:readonly
-overlayEnabled:readonly
-overlayColor:readonly
+invert_color:readonly
 scroll_direction:readonly
 scroll_speed:readonly
 pixel_art:readonly
@@ -30,47 +30,49 @@ paddingX:readonly
 paddingY:readonly
 rgbcw_mode:readonly
 lhmjson:readonly
-overlayAlpha:readonly
 lhm_format:readonly
 lhm_update:readonly
 */
 export function ControllableParameters() {
     return [
-        { "property": "LightingMode", "group": "常规设置", "label": "灯效模式", "type": "combobox", description: "决定设备的 RGB 来源。'画布'模式将提取 SignalRGB 的实时特效，'强制'模式将固定为下方选择的颜色。", "values": ["Canvas", "Forced"], "default": "Canvas" },
-        { "property": "forcedColor", "group": "常规设置", "label": "强制颜色", description: "当灯效模式设置为'强制'时所使用的颜色。", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
-        { "property": "turnOffOnShutdown", "group": "常规设置", "label": "退出/关机时关闭设备", "type": "boolean", description: "当 SignalRGB 退出或电脑关机时，自动关闭 WLED 设备灯光。", "default": "false" },
-        { "property": "rgbcw_mode", "group": "灯光配置", "label": "RGBCW 模式", "type": "boolean", description: "如果你使用的是 Athom 等品牌的 WLED 五色灯泡，请开启此选项。", "default": "false" },
-        { "property": "display_mode", "label": "显示模式", "type": "combobox", description: "选择你想让设备显示的内容类型。", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
-        { "property": "fontSize", "label": "字体大小", "type": "combobox", description: "用于'时间'或'自定义文本'模式的字体尺寸。", "values": ["Small", "Medium", "Large"], "default": "Medium" },
-        { "property": "custom_text", "label": "自定义文本内容", "type": "textfield", description: "在'自定义文本'模式下显示的文字内容。", "default": "WLED" },
-        { "property": "time_format", "label": "时间格式", "type": "textfield", description: "输入你想要显示的时间格式。例如：'hh:mm tt' 或 'HH:mm:ss' (24小时制)。", "default": "hh:mm tt" },
-        { "property": "overlayEnabled", "label": "开启 Overlay 叠加", "type": "boolean", "default": "false" },
-        { "property": "overlayColor", "label": "Overlay 文字颜色", "type": "color", "default": "#FFFFFF" },
-        { "property": "overlayAlpha", "label": "Overlay 不透明度", "step": "1", "type": "number", "min": "1", "max": "100", "default": "100" },
-        { "property": "lhmjson", "label": "LHM 服务器地址", "type": "textfield", description: "Libre Hardware Monitor 的 Web 服务器地址。", "default": "http://127.0.0.1:8085/" },
-        { "property": "lhm_format", "label": "硬件监控项", "type": "textfield", description: "设置要显示的监控参数，需要后台运行 Libre Hardware Monitor。例如: cpu_load cpu_temp", "default": "cpu_load cpu_temp" },
-        { "property": "lhm_update", "label": "监控刷新间隔 (ms)", description: "硬件数据更新的频率。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
-        { "property": "scroll_direction", "label": "滚动方向", "type": "combobox", description: "用于'时间'或'自定义文本'模式的滚动设置。", "values": ["Off", "Left", "Right"], "default": "Off" },
-        { "property": "scroll_speed", "label": "滚动速度", description: "开启滚动时的文字移动速度。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
-        { "property": "pixel_art", "label": "像素画内容", "type": "textfield", description: "在此输入像素画矩阵代码。", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
-        { "property": "translucent1", "label": "半透明 1 亮度等级", description: "当像素值为 0.5 时使用的亮度百分比。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
-        { "property": "translucent2", "label": "半透明 2 亮度等级", description: "当像素值为 0.7 时使用的亮度百分比。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-        { "property": "paddingX", "label": "水平偏移 (X)", "type": "number", "step": "1", "min": "-100", "max": "100", "default": 0 },
-        { "property": "paddingY", "label": "垂直偏移 (Y)", "type": "number", "step": "1", "min": "-100", "max": "100", "default": 1 }
+        { "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", "description": "决定设备的 RGB 来源。'画布 (Canvas)' 将从当前特效取色，而 '强制 (Forced)' 将覆盖并显示特定颜色。", "values": ["Canvas", "Forced"], "default": "Canvas" },
+        { "property": "forcedColor", "group": "settings", "label": "强制颜色", "description": "开启 '强制' 灯光模式时使用的颜色。", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
+        { "property": "turnOffOnShutdown", "group": "settings", "label": "关闭时关闭WLED设备", "type": "boolean", "description": "在 SignalRGB 退出或电脑关机时软关闭 WLED 设备。", "default": "false" },
+        { "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW模式", "type": "boolean", "description": "如果你使用的是来自 Athom 的 WLED 彩色灯泡，请开启此选项。", "default": "false" },
+        { "property": "display_mode", "group": "settings", "label": "显示模式", "type": "combobox", "description": "选择你希望此设备显示的内容。", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
+        { "property": "fontSize", "group": "settings", "label": "字体大小", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用的模式。", "values": ["Small", "Medium", "Large"], "default": "Medium" },
+        { "property": "custom_text", "group": "settings", "label": "自定义文本", "type": "textfield", "description": "当 '显示模式' 设置为 '自定义文本' 时使用此项。", "default": "WLED" },
+        { "property": "time_format", "group": "settings", "label": "时间格式", "type": "textfield", "description": "输入你想要显示的时间格式。例如：'hh:mm tt' 或 'HH:mm:ss'（24小时制）。", "default": "hh:mm tt" },
+        { "property": "invert_color",  "group": "settings","label": "反转文字颜色", "type": "boolean", "description": "这将反转文字颜色。", "default": "false" },
+        { "property": "inverted_text_color",  "group": "settings","label": "反转模式：文字颜色", "type": "color", "description": "启用 '反转文字' 时用于文字的颜色。", "default": "#FFFFFF" },
+        { "property": "invert_text_color_enabled", "group": "settings", "label": "反转模式：自定义文字颜色", "type": "boolean", "default": false },
+        { "property": "lhmjson",  "group": "settings","label": "硬件监控地址", "type": "textfield", "description": "当 '显示模式' 设置为 'Libre Hardware Monitor' 时使用此项。", "default": "http://127.0.0.1:8085/" },
+        { "property": "lhm_format",  "group": "settings","label": "硬件监控显示内容", "type": "textfield", "description": "显示选定的硬件监控传感器数据，这需要 Libre Hardware Monitor 在后台运行。", "default": "cpu_load cpu_temp" },
+        { "property": "lhm_update",  "group": "settings","label": "硬件监控刷新间隔(ms)", "description": "下次刷新的暂停时间。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
+        { "property": "scroll_direction", "group": "settings", "label": "滚动方向", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用此项。", "values": ["Off", "Left", "Right"], "default": "Off" },
+        { "property": "scroll_speed", "group": "settings", "label": "滚动速度", "description": "当 '滚动方向' 启用时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
+        { "property": "pixel_art",  "group": "settings","label": "像素画", "type": "textfield", "description": "创建你自己的像素画或从 https://pixelart.nolliergb.com/ 浏览社区作品。", "default": "[...]" },
+        { "property": "pixelArtFPS", "group": "settings", "label": "像素画帧率 (GIF)", "type": "number", "min": 1, "max": 50, "default": 5 },
+        { "property": "translucent1", "group": "settings", "label": "透明度等级1", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
+        { "property": "translucent2",  "group": "settings","label": "透明度等级2", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
+        { "property": "paddingX", "group": "settings", "label": "横向边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
+        { "property": "paddingY", "group": "settings", "label": "纵向边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
     ];
 }
-
-const WLEDicon = "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";
 let WLED;
 let display;
 let displaySize = { width: 0, height: 0 };
 const MaxLedsInPacket = 485;
 const BIG_ENDIAN = 1;
+const WLEDicon = "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";
 const colorBlack = "#000000";
 let lastForcedUpdate = 0;
 let jobRunning = false;
 let scrollOffset = 0;
 let lastLHMFetch = { time: 0, result: 'Loading...' };
+const ZH_FONT_DIGITS = Object.assign({}, ZH_FONT, LARGE_DIGITS);
+const ZH_FONT_LETTERS = Object.assign({}, ZH_FONT, LARGE_LETTERS);
+
 
 var PIXELART = [];
 var COMPONENT_MAPPING = [];
@@ -203,10 +205,12 @@ function formatDateTime(format) {
 function formatLHM(format) {
 	const now = Date.now();
 
+	// If cache is fresh, return it
 	if (now - lastLHMFetch.time < lhm_update && lastLHMFetch.result !== null) {
 		return lastLHMFetch.result;
 	}
 
+	// Trigger a refresh, but don't expect immediate result
 	XmlHttp.Get(`${lhmjson}/data.json`, (xhr) => {
 		if (xhr.readyState === 4) {
 			if (xhr.status === 200) {
@@ -300,172 +304,257 @@ function lowerBrightnessRGB(R, G, B, factor) {
 }
 
 function displayClock() {
-   
-    display.fill(0);
-    const now = new Date();
+	// Fill background based on invert_color
+	display.fill(invert_color ? 1 : 0);
+	const now = new Date();
 
-    let text;
-    switch (display_mode) {
-        case 'Pixel Art':
-            text = 'Pixel Art';
-            insertPixelArtIntoDisplay(display, PIXELART);
-            return;
-        case 'Custom Text':
-            text = custom_text;
-            break;
-        case 'Libre Hardware Monitor':
-            text = formatLHM(lhm_format);
-            break;
-        default:
-            if (now.getSeconds() % 2 !== 0) {
-                text = replaceEx(formatDateTime(time_format), { ':': ';' });
-            } else {
-                text = formatDateTime(time_format);
-            }
-    }
+	let text;
+	switch (display_mode) {
+		case 'Pixel Art':
+			text = 'Pixel Art';
+			insertPixelArtIntoDisplay(display, PIXELART);
+			return;
+		case 'Custom Text':
+			text = custom_text;
+			break;
+		case 'Libre Hardware Monitor':
+			text = formatLHM(lhm_format);
+			break;
+		default:
+			if (now.getSeconds() % 2 !== 0) {
+				text = replaceEx(formatDateTime(time_format), { ':': ';' });
+			} else {
+				text = formatDateTime(time_format);
+			}
+	}
 
-    let baseRow = parseInt(paddingY);
-    let textWithGap = text + " ".repeat(Math.floor(displaySize.width / 2));
-    let { buffer, bufferWidth } = renderTextBuffer(textWithGap, fontSize, baseRow, display_mode == 'Time');
+	let baseRow = parseInt(paddingY);
+	let textWithGap = text + " ".repeat(Math.floor(displaySize.width / 2));
+	let { buffer, bufferWidth } = renderTextBuffer(textWithGap, fontSize, baseRow, display_mode == 'Time');
 
-    // --- Scroll offset update ---
-    if (scroll_direction === "Left") {
-        scrollOffset -= (scroll_speed / 100);   // move text leftward
-    } else if (scroll_direction === "Right") {
-        scrollOffset += (scroll_speed / 100);   // move text rightward
-    }
+	// --- Scroll offset update ---
+	if (scroll_direction === "Left") {
+		scrollOffset -= (scroll_speed / 100);   // move text leftward
+	} else if (scroll_direction === "Right") {
+		scrollOffset += (scroll_speed / 100);   // move text rightward
+	}
 
-    // --- Wrap offset seamlessly ---
-    const totalSpan = bufferWidth + displaySize.width;
-    if (scrollOffset <= -bufferWidth) {
-        scrollOffset += bufferWidth; // wrap seamlessly
-    }
-    if (scrollOffset >= bufferWidth) {
-        scrollOffset -= bufferWidth; // wrap seamlessly
-    }
+	// --- Wrap offset seamlessly ---
+	const totalSpan = bufferWidth + displaySize.width;
+	if (scrollOffset <= -bufferWidth) {
+		scrollOffset += bufferWidth; // wrap seamlessly
+	}
+	if (scrollOffset >= bufferWidth) {
+		scrollOffset -= bufferWidth; // wrap seamlessly
+	}
 
-    // --- Copy visible slice (tile buffer) ---
-    for (let row = 0; row < displaySize.height; row++) {
-        for (let col = 0; col < displaySize.width; col++) {
-            // repeat buffer by using modulo
-            let srcX = Math.floor((col - scrollOffset) % bufferWidth);
-            if (srcX < 0) srcX += bufferWidth; // ensure positive index
-            display[row * displaySize.width + col] = buffer[row * bufferWidth + srcX];
-        }
-    }
+	// --- Copy visible slice (tile buffer) ---
+	for (let row = 0; row < displaySize.height; row++) {
+		for (let col = 0; col < displaySize.width; col++) {
+			// repeat buffer by using modulo
+			let srcX = Math.floor((col - scrollOffset) % bufferWidth);
+			if (srcX < 0) srcX += bufferWidth; // ensure positive index
+			display[row * displaySize.width + col] = buffer[row * bufferWidth + srcX];
+		}
+	}
 }
 
 function insertPixelArtIntoDisplay(display, art) {
-    for (let row = 0; row < art.length; row++) {
-        for (let col = 0; col < art[row].length; col++) {
-            let index = (row * displaySize.width + (displaySize.width * (paddingY - 1))) + displaySize.width + col + parseInt(paddingX);
 
-            if (index < displaySize.height * displaySize.width) {
-                display[index] = art[row][col];
+    if (!art) return;
+    if (typeof art === "string") {
+        try {
+            art = JSON.parse(art);
+        } catch (e) {
+            return;
+        }
+    }
+    if (art && typeof art === "object" && !Array.isArray(art)) {
+        if (art.data) art = art.data;
+        else if (art.frames) art = art.frames;
+    }
+    let currentFrameGrid = art;
+    if (Array.isArray(art) && Array.isArray(art[0]) && Array.isArray(art[0][0])) {
+        let fps = (typeof pixelArtFPS !== 'undefined') ? parseFloat(pixelArtFPS) : 5;
+        let frameIndex = Math.floor((new Date().getTime() / (1000 / fps)) % art.length);
+        currentFrameGrid = art[frameIndex];
+    }
+    let offsetX = 0;
+    if (typeof scroll_direction !== 'undefined' && scroll_direction !== "Off") {
+        const speed = (typeof scroll_speed !== 'undefined') ? parseInt(scroll_speed) : 10;
+        const time = new Date().getTime() / 1000; 
+        let move = Math.floor(time * speed * 0.4);
+        offsetX = (scroll_direction === "Left") ? -move : move;
+    }
+
+    for (let row = 0; row < currentFrameGrid.length; row++) {
+        let rowData = currentFrameGrid[row];
+        let isFlatRGB = Array.isArray(rowData) &&
+                        rowData.length > 50 &&
+                        (rowData.length % 3 === 0);
+
+        let gridW = isFlatRGB ? rowData.length / 3 : rowData.length;
+
+        if (isFlatRGB) {
+
+            for (let i = 0; i < rowData.length; i += 3) {
+
+                let r = rowData[i];
+                let g = rowData[i + 1];
+                let b = rowData[i + 2];
+
+                if (r === 0 && g === 0 && b === 0) continue;
+
+                let col = i / 3;
+
+                let scrolledCol =
+                    ((col + offsetX) % gridW + gridW) % gridW;
+
+                let targetC = scrolledCol + parseInt(paddingX || 0);
+                let targetR = row + parseInt(paddingY || 0);
+
+                let index = targetR * displaySize.width + targetC;
+
+                if (
+                    targetR >= 0 && targetR < displaySize.height &&
+                    targetC >= 0 && targetC < displaySize.width
+                ) {
+                    display[index] = [r, g, b];
+                }
+            }
+
+        } else {
+
+            for (let col = 0; col < rowData.length; col++) {
+
+                let pixel = rowData[col];
+
+                let scrolledCol =
+                    ((col + offsetX) % rowData.length + rowData.length) % rowData.length;
+
+                let targetC = scrolledCol + parseInt(paddingX || 0);
+                let targetR = row + parseInt(paddingY || 0);
+
+                let index = targetR * displaySize.width + targetC;
+
+                if (
+                    targetR >= 0 && targetR < displaySize.height &&
+                    targetC >= 0 && targetC < displaySize.width
+                ) {
+
+                    display[index] =
+                        (typeof pixel === "string" && pixel[0] === "#")
+                            ? [
+                                parseInt(pixel.substr(1, 2), 16),
+                                parseInt(pixel.substr(3, 2), 16),
+                                parseInt(pixel.substr(5, 2), 16)
+                              ]
+                            : pixel;
+                }
             }
         }
     }
 }
 
 function getSpacing(digit, fontSize, time) {
-    if (time) {
-        if (fontSize === 'Medium') {
-            switch (digit) {
-                case ':': case ';': case '.': return 2;
-                case ' ': return 1;
-                default: return 5;
-            }
-        } else if (fontSize === 'Large') {
-            switch (digit) {
-                case ':': case ';': case '.': return 3;
-                case ' ': return 2;
-                default: return 6;
-            }
-        } else {
-            switch (digit) {
-                case ':': case ';': case '.': return 2;
-                case ' ': return 1;
-                default: return 4;
-            }
-        }
-    } else {
-        if (fontSize === 'Medium') {
-            switch (digit) {
-                case ' ': return 1;
-                case '!': case '|': case ':': case "'": case '.': return 2;
-                case '`': case '(': case ')': case '[': case ']': case ';': case ',': case '1': return 3;
-                case 'a': case 'c': case 'I': case 'i': case 'j': case 'L': case 'l': case 'r':
-                case 'Y': case '$': case '^': case '*': case '-': case '=': case '+': case '{':
-                case '}': case '\\': case '"': case '<': case '>': case '/': case '?': case '°': return 4;
-                case 'T': case 'W': case '@': case '#': case '%': case '&': return 6;
-                default: return 5;
-            }
-        } else if (fontSize === 'Large') {
-            switch (digit) {
-                case '|': return 2;
-                case 'i': case 'l': case '`': case "(": case ')': case ';': case ':': case "'": case ',': case '.': case ' ': return 3;
-                case 'I': case '!': case '[': case ']': case '1': case '°': return 4;
-                case 'f': case 'h': case 'j': case 'k': case 'n': case 't': case 'u': case 'x':
-                case 'y': case 'Z': case 'z': case '~': case '$': case '{': case '}': case '<': case '>': return 5;
-                default: return 6;
-            }
-        } else {
-            switch (digit) {
-                case ' ': return 1;
-                case 'i': case 'l': case '!': case '|': case ':': case '.': return 2;
-                case 'j': case 'r': case '1': case '`': case '(': case ')': case '[': case ']':
-                case ';': case "'": case ',': return 3;
-                case '~': return 5;
-                default: return 4;
-            }
-        }
-    }
+	if (time) {
+		if (fontSize === 'Medium') {
+			switch (digit) {
+				case ':': case ';': case '.': return 2;
+				case ' ': return 1;
+				default: return 5;
+			}
+		} else if (fontSize === 'Large') {
+			switch (digit) {
+				case ':': case ';': case '.': return 3;
+				case ' ': return 2;
+				default: return 6;
+			}
+		} else {
+			switch (digit) {
+				case ':': case ';': case '.': return 2;
+				case ' ': return 1;
+				default: return 4;
+			}
+		}
+	} else {
+		if (fontSize === 'Medium') {
+			switch (digit) {
+				case ' ': return 1;
+				case '!': case '|': case ':': case "'": case '.': return 2;
+				case '`': case '(': case ')': case '[': case ']': case ';': case ',': case '1': return 3;
+				case 'a': case 'c': case 'I': case 'i': case 'j': case 'L': case 'l': case 'r':
+				case 'Y': case '$': case '^': case '*': case '-': case '=': case '+': case '{':
+				case '}': case '\\': case '"': case '<': case '>': case '/': case '?': case '°': return 4;
+				case 'T': case 'W': case '@': case '#': case '%': case '&': return 6;
+				default: return 5;
+			}
+		} else if (fontSize === 'Large') {
+			switch (digit) {
+				case '|': return 2;
+				case 'i': case 'l': case '`': case "(": case ')': case ';': case ':': case "'": case ',': case '.': case ' ': return 3;
+				case 'I': case '!': case '[': case ']': case '1': case '°': return 4;
+				case 'f': case 'h': case 'j': case 'k': case 'n': case 't': case 'u': case 'x':
+				case 'y': case 'Z': case 'z': case '~': case '$': case '{': case '}': case '<': case '>': return 5;
+				default: return 6;
+			}
+		} else {
+			switch (digit) {
+				case ' ': return 1;
+				case 'i': case 'l': case '!': case '|': case ':': case '.': return 2;
+				case 'j': case 'r': case '1': case '`': case '(': case ')': case '[': case ']':
+				case ';': case "'": case ',': return 3;
+				case '~': return 5;
+				default: return 4;
+			}
+		}
+	}
 }
-
 function renderTextBuffer(text, fontSize, baseRow, time) {
-    let glyphs = [];
-    let totalWidth = 0;
+	let glyphs = [];
+	let totalWidth = 0;
 
-    for (const ch of text) {
-        let glyph;
-        switch (fontSize) {
-            case 'Large':
-                glyph = time ? LARGE_DIGITS[ch] : LARGE_LETTERS[ch];
-                break;
-            case 'Small':
-                glyph = time ? SMALL_DIGITS[ch] : SMALL_LETTERS[ch];
-                break;
-            default:
-                glyph = time ? DIGITS[ch] : LETTERS[ch];
-                break;
-        }
+	for (const ch of text) {
+		let glyph;
+		switch (fontSize) {
+			case 'Chinese':
+				glyph = time ? ZH_FONT_DIGITS[ch] : ZH_FONT_LETTERS[ch];
+				break;
+			case 'Large':
+				glyph = time ? LARGE_DIGITS[ch] : LARGE_LETTERS[ch];
+				break;
+			case 'Small':
+				glyph = time ? SMALL_DIGITS[ch] : SMALL_LETTERS[ch];
+				break;
+			default:
+				glyph = time ? DIGITS[ch] : LETTERS[ch];
+				break;
+		}
 
-        let spacing = getSpacing(ch, fontSize, time);
+		let spacing = getSpacing(ch, fontSize, time);
 
-        if (glyph) {
-            glyphs.push({ glyph, offset: totalWidth });
-        }
-        totalWidth += spacing; // always advance, even for spaces
-    }
+		if (glyph) glyphs.push({ glyph, offset: totalWidth });
+		totalWidth += spacing; // always advance, even for spaces
+	}
 
-    let bufferWidth = totalWidth;
-    let bufferHeight = displaySize.height;
-    let buffer = new Array(bufferWidth * bufferHeight).fill(0); 
+	let bufferWidth = totalWidth;
+	let bufferHeight = displaySize.height;
+	let buffer = new Array(bufferWidth * bufferHeight).fill(invert_color ? 1 : 0);
+	// <-- fill background according to invert_color
 
-    for (const { glyph, offset } of glyphs) {
-        for (let row = 0; row < glyph.length; row++) {
-            for (let col = 0; col < glyph[row].length; col++) {
-                let x = offset + col;
-                let y = baseRow + row;
-                if (y >= 0 && y < bufferHeight && x >= 0 && x < bufferWidth) {
-            
-                    buffer[y * bufferWidth + x] = glyph[row][col] ? 1 : 0;
-                }
-            }
-        }
-    }
+	for (const { glyph, offset } of glyphs) {
+		for (let row = 0; row < glyph.length; row++) {
+			for (let col = 0; col < glyph[row].length; col++) {
+				let x = offset + col;
+				let y = baseRow + row;
+				if (y >= 0 && y < bufferHeight && x >= 0 && x < bufferWidth) {
+					buffer[y * bufferWidth + x] = invert_color ? (glyph[row][col] ? 0 : 1) : (glyph[row][col] ? 1 : 0);
+				}
+			}
+		}
+	}
 
-    return { buffer, bufferWidth };
+	return { buffer, bufferWidth };
 }
 
 class WLEDDevice {
@@ -490,132 +579,144 @@ class WLEDDevice {
 		device.addChannel(this.name, this.deviceledcount);
 	}
 
-	SendColorPackets(shutdown = false) {
-		const componentChannel = device.channel(this.name);
-		let ChannelLedCount = componentChannel.ledCount > this.deviceledcount ? this.deviceledcount : componentChannel.ledCount;
+SendColorPackets(shutdown = false) {
+	const componentChannel = device.channel(this.name);
+	let ChannelLedCount = componentChannel.ledCount > this.deviceledcount ? this.deviceledcount : componentChannel.ledCount;
 
-		let RGBData = [];
+	let RGBData = [];
 
-		if (shutdown) {
-			if (rgbcw_mode == true) {
-				RGBData = insertZeroes(device.createColorArray(colorBlack, ChannelLedCount, "Inline"));
-			} else {
-				RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
-			}
-		} else if (LightingMode === "Forced") {
-			if (rgbcw_mode == true) {
-				RGBData = insertZeroes(device.createColorArray(forcedColor, ChannelLedCount, "Inline"));
-			} else {
-				RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
-			}
-		} else if (componentChannel.shouldPulseColors()) {
-			ChannelLedCount = this.deviceledcount;
-			const pulseColor = device.getChannelPulseColor(this.name);
-
-			if (rgbcw_mode == true) {
-				RGBData = insertZeroes(device.createColorArray(pulseColor, ChannelLedCount, "Inline"));
-			} else {
-				RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
-			}
+	if (shutdown) {
+		if (rgbcw_mode == true) {
+			RGBData = insertZeroes(device.createColorArray(colorBlack, ChannelLedCount, "Inline"));
 		} else {
-			if (rgbcw_mode == true) {
-				RGBData = insertZeroes(componentChannel.getColors("Inline"));
-			} else {
-				RGBData = componentChannel.getColors("Inline");
-			}
+			RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
 		}
-
-		if (typeof overlayEnabled !== 'undefined' && overlayEnabled && display != undefined && display_mode != 'Components') {
-			let Snake_display_local = rearrangeDisplayForSnakeLayout(display);
-
-			let overlayHex = (typeof controller !== 'undefined' && controller && typeof controller.overlayColor !== 'undefined' && controller.overlayColor)
-				? controller.overlayColor
-				: (typeof overlayColor !== 'undefined' ? overlayColor : "#FFFFFF");
-
-			let overlayRgb;
-			if (typeof hexToRgb === 'function') {
-				overlayRgb = hexToRgb(overlayHex);
-			} else {
-				let h = (overlayHex || "#FFFFFF").replace(/^#/, '').trim();
-				if (h.length === 3) h = h.split('').map(function(c) { return c + c; }).join('');
-				if (h.length !== 6) {
-					overlayRgb = { r: 255, g: 255, b: 255 };
-				} else {
-					overlayRgb = {
-						r: parseInt(h.substr(0, 2), 16) || 0,
-						g: parseInt(h.substr(2, 2), 16) || 0,
-						b: parseInt(h.substr(4, 2), 16) || 0
-					};
-				}
-			}
-
-			let alpha = (typeof overlayAlpha !== 'undefined' ? overlayAlpha : 100) / 100;
-
-			for (let led_index = 0; led_index < Snake_display_local.length && led_index * 3 + 2 < RGBData.length; led_index++) {
-				let val = Snake_display_local[led_index];
-				
-				if (val !== 0 && val !== 0.3 && val !== 0.5 && val !== 0.7) {
-					
-					RGBData[led_index * 3]     = (RGBData[led_index * 3]     * (1 - alpha)) + (overlayRgb.r * alpha);
-					RGBData[led_index * 3 + 1] = (RGBData[led_index * 3 + 1] * (1 - alpha)) + (overlayRgb.g * alpha);
-					RGBData[led_index * 3 + 2] = (RGBData[led_index * 3 + 2] * (1 - alpha)) + (overlayRgb.b * alpha);
-				}
-			}
+	} else if (LightingMode === "Forced") {
+		if (rgbcw_mode == true) {
+			RGBData = insertZeroes(device.createColorArray(forcedColor, ChannelLedCount, "Inline"));
+		} else {
+			RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
 		}
+	} else if (componentChannel.shouldPulseColors()) {
+		ChannelLedCount = this.deviceledcount;
+		const pulseColor = device.getChannelPulseColor(this.name);
 
-		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
-
-
-		if (display_mode != 'Components') {
-			if (display != undefined) {
-				displayClock();
-				let Snake_display = rearrangeDisplayForSnakeLayout(display);
-				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
-					switch (Snake_display[led_index]) {
-						case 0:
-						
-							if (!(typeof overlayEnabled !== 'undefined' && overlayEnabled)) {
-								RGBData[led_index * 3] = 0;
-								RGBData[led_index * 3 + 1] = 0;
-								RGBData[led_index * 3 + 2] = 0;
-							}
-							break;
-						case 0.3:
-							let fcRGB = hexToRgb(forcedColor);
-							RGBData[led_index * 3] = fcRGB.r;
-							RGBData[led_index * 3 + 1] = fcRGB.g;
-							RGBData[led_index * 3 + 2] = fcRGB.b;
-							break;
-						case 0.5:
-							let scaleFactor = translucent1 / 100;
-							let darken = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor);
-							RGBData[led_index * 3] = darken[0];
-							RGBData[led_index * 3 + 1] = darken[1];
-							RGBData[led_index * 3 + 2] = darken[2];
-							break;
-						case 0.7:
-							let scaleFactor2 = translucent2 / 100;
-							let darken2 = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor2);
-							RGBData[led_index * 3] = darken2[0];
-							RGBData[led_index * 3 + 1] = darken2[1];
-							RGBData[led_index * 3 + 2] = darken2[2];
-							break;
-					}
-				}
-			}
+		if (rgbcw_mode == true) {
+			RGBData = insertZeroes(device.createColorArray(pulseColor, ChannelLedCount, "Inline"));
+		} else {
+			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
 		}
-
-		let times = rgbcw_mode == true ? 5 : 3;
-
-		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
-			const startIdx = CurrPacket * MaxLedsInPacket;
-			const highByte = ((startIdx >> 8) & 0xFF);
-			const lowByte = (startIdx & 0xFF);
-			let packet = [0x04, 0x02, highByte, lowByte];
-			packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * times));
-			udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
+	} else {
+		if (rgbcw_mode == true) {
+			RGBData = insertZeroes(componentChannel.getColors("Inline"));
+		} else {
+			RGBData = componentChannel.getColors("Inline");
 		}
 	}
+
+	const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
+
+	if (display_mode != 'Components') {
+		if (display != undefined) {
+
+			displayClock();
+
+			let Snake_display = rearrangeDisplayForSnakeLayout(display);
+			const isPixelArt = display_mode === 'Pixel Art';
+
+			let invertedTextRGB = hexToRgb(inverted_text_color || "#FFFFFF");
+
+			for (let led_index = 0; led_index < Snake_display.length; led_index++) {
+
+				let pixelValue = Snake_display[led_index];
+				if (isPixelArt && invert_color) {
+					if (pixelValue === 1) pixelValue = 0;
+					else if (pixelValue === 0) pixelValue = 1;
+				}
+
+				switch (pixelValue) {
+
+	case 0:
+		if (invert_color) {
+			if (invert_text_color_enabled) {
+				RGBData[led_index * 3] = invertedTextRGB.r;
+				RGBData[led_index * 3 + 1] = invertedTextRGB.g;
+				RGBData[led_index * 3 + 2] = invertedTextRGB.b;
+			} else {
+				RGBData[led_index * 3] = 0;
+				RGBData[led_index * 3 + 1] = 0;
+				RGBData[led_index * 3 + 2] = 0;
+			}
+		} else {
+			RGBData[led_index * 3] = 0;
+			RGBData[led_index * 3 + 1] = 0;
+			RGBData[led_index * 3 + 2] = 0;
+		}
+		break;
+
+	case 0.3:
+		let fcRGB = hexToRgb(forcedColor);
+		RGBData[led_index * 3] = fcRGB.r;
+		RGBData[led_index * 3 + 1] = fcRGB.g;
+		RGBData[led_index * 3 + 2] = fcRGB.b;
+		break;
+
+	case 0.5:
+		let scaleFactor = translucent1 / 100;
+		let darken = lowerBrightnessRGB(
+			RGBData[led_index * 3],
+			RGBData[led_index * 3 + 1],
+			RGBData[led_index * 3 + 2],
+			scaleFactor
+		);
+		RGBData[led_index * 3] = darken[0];
+		RGBData[led_index * 3 + 1] = darken[1];
+		RGBData[led_index * 3 + 2] = darken[2];
+		break;
+
+	case 0.7:
+		let scaleFactor2 = translucent2 / 100;
+		let darken2 = lowerBrightnessRGB(
+			RGBData[led_index * 3],
+			RGBData[led_index * 3 + 1],
+			RGBData[led_index * 3 + 2],
+			scaleFactor2
+		);
+		RGBData[led_index * 3] = darken2[0];
+		RGBData[led_index * 3 + 1] = darken2[1];
+		RGBData[led_index * 3 + 2] = darken2[2];
+		break;
+
+	default:
+		if (typeof pixelValue === "string" && pixelValue[0] === "#") {
+			let c = hexToRgb(pixelValue);
+			RGBData[led_index * 3] = c.r;
+			RGBData[led_index * 3 + 1] = c.g;
+			RGBData[led_index * 3 + 2] = c.b;
+		}
+		else if (Array.isArray(pixelValue)) {
+			RGBData[led_index * 3] = pixelValue[0];
+			RGBData[led_index * 3 + 1] = pixelValue[1];
+			RGBData[led_index * 3 + 2] = pixelValue[2];
+		}
+		break;
+}
+			}
+		}
+	}
+
+	let times = rgbcw_mode == true ? 5 : 3;
+
+	for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
+		const startIdx = CurrPacket * MaxLedsInPacket;
+		const highByte = ((startIdx >> 8) & 0xFF);
+		const lowByte = (startIdx & 0xFF);
+
+		let packet = [0x04, 0x02, highByte, lowByte];
+		packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * times));
+		udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
+	}
+}
 }
 
 export function Initialize() {
@@ -637,6 +738,7 @@ export function Initialize() {
 			device.log(ex.message);
 		}
 	}
+
 }
 
 export function Render() {
@@ -647,7 +749,6 @@ export function Shutdown(suspend) {
 	WLED.SendColorPackets(true);
 	WLED.changeDeviceState(turnOffOnShutdown);
 }
-
 
 export function ImageUrl() {
 	return "https://raw.githubusercontent.com/SRGBmods/public/main/images/wled/998_led_nodemcu.png";
@@ -815,103 +916,103 @@ export function DiscoveryService() {
 }
 
 class WLEDBridge {
-    constructor(value) {
-        this.readyToAnnounce = false;
-        this.announced = false;
-        this.hostname = value.hostname;
-        this.mac = value.mac;
-        this.name = value.name;
-        this.id = value.mac;
-        this.port = value.port;
-        this.arch = "";
-        this.deviceledcount = 0;
-        this.firmwareversion = 0;
-        this.linked = service.getSetting(this.mac, "ip");
-        this.ip = "";
-        this.connected = false;
-        this.forced = value.forced;
-        this.defaultOn = false;
-        this.defaultBri = 128;
-        this.signalstrength = 0;
-        this.lastUpdate = Date.now();
-        this.firstUpdate = true;
-        this.offline = false;
+	constructor(value) {
+		this.readyToAnnounce = false;
+		this.announced = false;
+		this.hostname = value.hostname;
+		this.mac = value.mac;
+		this.name = value.name;
+		this.id = value.mac;
+		this.port = value.port;
+		this.arch = "";
+		this.deviceledcount = 0;
+		this.firmwareversion = 0;
+		this.linked = service.getSetting(this.mac, "ip");
+		this.ip = "";
+		this.connected = false;
+		this.forced = value.forced;
+		this.defaultOn = false;
+		this.defaultBri = 128;
+		this.signalstrength = 0;
+		this.lastUpdate = Date.now();
+		this.firstUpdate = true;
+		this.offline = false;
 
-        service.log("Constructed: " + this.name);
+		service.log("Constructed: " + this.name);
 
-        if (!this.forced) {
-            this.getDeviceIP();
-        } else {
-            this.ip = this.hostname;
-            this.getDeviceInfo();
-        }
-    }
+		if (!this.forced) {
+			this.getDeviceIP();
+		} else {
+			this.ip = this.hostname;
+			this.getDeviceInfo();
+		}
+	}
 
-    updateWithValue(value) {
-        this.forced = value.forced;
-        this.hostname = value.hostname;
-        this.mac = value.mac;
-        this.name = value.name;
-        this.port = value.port;
-        this.id = value.mac;
-        this.ip = this.forced ? value.hostname : value.ip;
+	updateWithValue(value) {
+		this.forced = value.forced;
+		this.hostname = value.hostname;
+		this.mac = value.mac;
+		this.name = value.name;
+		this.port = value.port;
+		this.id = value.mac;
+		this.ip = this.forced ? value.hostname : value.ip;
 
-        if (this.forced) {
-            this.saveForceDiscovery();
-        }
+		if (this.forced) {
+			this.saveForceDiscovery();
+		}
 
-        service.log("Updated: " + this.mac);
-        service.updateController(this);
-        this.getDeviceInfo();
-    }
+		service.log("Updated: " + this.mac);
+		service.updateController(this);
+		this.getDeviceInfo();
+	}
 
-    update() {
-        if (this.waitingforlink) {
-            this.waitingforlink = false;
-            this.connected = this.linked === this.ip;
-            this.readyToAnnounce = true;
-            service.updateController(this);
-        }
+	update() {
+		if (this.waitingforlink) {
+			this.waitingforlink = false;
+			this.connected = this.linked === this.ip;
+			this.readyToAnnounce = true;
+			service.updateController(this);
+		}
 
-        this.createDevice();
+		this.createDevice();
 
-        const currentTime = Date.now();
+		const currentTime = Date.now();
 
-        if (currentTime - this.lastUpdate >= (Math.floor(Math.random() * 10000) + 50000)) {
-            this.lastUpdate = currentTime;
-            this.getDeviceInfo();
-        }
-    }
+		if (currentTime - this.lastUpdate >= (Math.floor(Math.random() * 10000) + 50000)) {
+			this.lastUpdate = currentTime;
+			this.getDeviceInfo();
+		}
+	}
 
-    createDevice() {
-        if (this.readyToAnnounce && !this.announced) {
-            if (!this.connected) {
-                this.saveController();
-                service.log("Adding Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
-            } else {
-                service.updateController(this);
-                service.announceController(this);
-                service.log("Announcing existing Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
-            }
+	createDevice() {
+		if (this.readyToAnnounce && !this.announced) {
+			if (!this.connected) {
+				this.saveController();
+				service.log("Adding Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
+			} else {
+				service.updateController(this);
+				service.announceController(this);
+				service.log("Announcing existing Controller: " + this.name + " - IP: " + this.ip + " - UDP Port: " + this.streamingPort);
+			}
 
-            this.announced = true;
+			this.announced = true;
 
-            if (this.connected) {
-                DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
-            }
+			if (this.connected) {
+				DeviceState.Change(this.ip, this.defaultOn, this.defaultBri, false, true, true);
+			}
 
-            service.updateController(this);
-        }
-    }
+			service.updateController(this);
+		}
+	}
 
-    saveController() {
-        service.saveSetting(this.mac, "name", this.name);
-        service.saveSetting(this.mac, "ip", this.ip);
-        service.updateController(this);
-        service.announceController(this);
-        this.connected = true;
-    }
-	
+	saveController() {
+		service.saveSetting(this.mac, "name", this.name);
+		service.saveSetting(this.mac, "ip", this.ip);
+		service.updateController(this);
+		service.announceController(this);
+		this.connected = true;
+	}
+
 	getDeviceInfo() {
 		const instance = this;
 		service.log(`Requesting complete Device Information...`);
