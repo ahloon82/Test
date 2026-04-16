@@ -14,6 +14,7 @@ export function DefaultComponentBrand() { return "CompGen"; }
 controller:readonly
 discovery: readonly
 turnOffOnShutdown:readonly
+rgbcw_mode:readonly
 LightingMode:readonly
 forcedColor:readonly
 translucent1:readonly
@@ -23,42 +24,43 @@ fontSize:readonly
 custom_text:readonly
 time_format:readonly
 invert_color:readonly
-scroll_direction:readonly
-scroll_speed:readonly
-pixel_art:readonly
-paddingX:readonly
-paddingY:readonly
-rgbcw_mode:readonly
+invert_text_color:readonly
 lhmjson:readonly
 lhm_format:readonly
 lhm_update:readonly
+scroll_direction:readonly
+scroll_speed:readonly
+pixel_art:readonly
+pixel_art_fps:readonly
+paddingX:readonly
+paddingY:readonly
 */
 export function ControllableParameters() {
-    return [
-        { "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", "description": "决定设备的 RGB 来源。'画布 (Canvas)' 将从当前特效取色，而 '强制 (Forced)' 将覆盖并显示特定颜色。", "values": ["Canvas", "Forced"], "default": "Canvas" },
-        { "property": "forcedColor", "group": "settings", "label": "强制颜色", "description": "开启 '强制' 灯光模式时使用的颜色。", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
-        { "property": "turnOffOnShutdown", "group": "settings", "label": "关闭时关闭WLED设备", "type": "boolean", "description": "在 SignalRGB 退出或电脑关机时软关闭 WLED 设备。", "default": "false" },
-        { "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW模式", "type": "boolean", "description": "如果你使用的是来自 Athom 的 WLED 彩色灯泡，请开启此选项。", "default": "false" },
-        { "property": "display_mode", "group": "settings", "label": "显示模式", "type": "combobox", "description": "选择你希望此设备显示的内容。", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
-        { "property": "fontSize", "group": "settings", "label": "字体大小", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用的模式。", "values": ["Small", "Medium", "Large"], "default": "Medium" },
-        { "property": "custom_text", "group": "settings", "label": "自定义文本", "type": "textfield", "description": "当 '显示模式' 设置为 '自定义文本' 时使用此项。", "default": "WLED" },
-        { "property": "time_format", "group": "settings", "label": "时间格式", "type": "textfield", "description": "输入你想要显示的时间格式。例如：'hh:mm tt' 或 'HH:mm:ss'（24小时制）。", "default": "hh:mm tt" },
-        { "property": "invert_color",  "group": "settings","label": "反转文字颜色", "type": "boolean", "description": "这将反转文字颜色。", "default": "false" },
-        { "property": "inverted_text_color",  "group": "settings","label": "反转模式：文字颜色", "type": "color", "description": "启用 '反转文字' 时用于文字的颜色。", "default": "#FFFFFF" },
-        { "property": "invert_text_color_enabled", "group": "settings", "label": "反转模式：自定义文字颜色", "type": "boolean", "default": false },
-        { "property": "lhmjson",  "group": "settings","label": "硬件监控地址", "type": "textfield", "description": "当 '显示模式' 设置为 'Libre Hardware Monitor' 时使用此项。", "default": "http://127.0.0.1:8085/" },
-        { "property": "lhm_format",  "group": "settings","label": "硬件监控显示内容", "type": "textfield", "description": "显示选定的硬件监控传感器数据，这需要 Libre Hardware Monitor 在后台运行。", "default": "cpu_load cpu_temp" },
-        { "property": "lhm_update",  "group": "settings","label": "硬件监控刷新间隔(ms)", "description": "下次刷新的暂停时间。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
-        { "property": "scroll_direction", "group": "settings", "label": "滚动方向", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用此项。", "values": ["Off", "Left", "Right"], "default": "Off" },
-        { "property": "scroll_speed", "group": "settings", "label": "滚动速度", "description": "当 '滚动方向' 启用时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
-        { "property": "pixel_art",  "group": "settings","label": "像素画", "type": "textfield", "description": "创建你自己的像素画或从 https://pixelart.nolliergb.com/ 浏览社区作品。", "default": "[...]" },
-        { "property": "pixelArtFPS", "group": "settings", "label": "像素画帧率 (GIF)", "type": "number", "min": 1, "max": 50, "default": 5 },
-        { "property": "translucent1", "group": "settings", "label": "透明度等级1", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
-        { "property": "translucent2",  "group": "settings","label": "透明度等级2", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-        { "property": "paddingX", "group": "settings", "label": "横向边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
-        { "property": "paddingY", "group": "settings", "label": "纵向边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-    ];
+	return [
+		{ "property": "LightingMode", "group": "settings", "label": "Lighting Mode", "type": "combobox", description: "Determines where the device's RGB comes from. Canvas will pull from the active Effect, while Forced will override it to a specific color", "values": ["Canvas", "Forced"], "default": "Canvas" },
+		{ "property": "forcedColor", "group": "settings", "label": "Forced Color", description: "The color used when 'Forced' Lighting Mode is enabled", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
+		{ "property": "turnOffOnShutdown", "group": "settings", "label": "Turn WLED device OFF on Shutdown", "type": "boolean", description: "This will Soft Off WLED on SignalRGB exiting or PC shutting down", "default": "false" },
+		{ "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW Mode", "type": "boolean", description: "Turn on this option if you have a WLED Color Bulb from Athom.", "default": "false" },
+		{ "property": "display_mode", "label": "Matrix Display Mode", "type": "combobox", description: "Choose what you wanted this Matrix device to do, requires WLED 2D mapping.", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
+		{ "property": "fontSize", "label": "Font Size", "type": "combobox", description: "Font size for 'Time', 'Libre Hardware Monitor' or 'Custom Text'.", "values": ["Small", "Medium", "Large", "Chinese"], "default": "Medium" },
+		{ "property": "custom_text", "label": "Custom Text", "type": "textfield", description: "This used when 'Display Mode' is set to 'Custom Text'", "default": "WLED" },
+		{ "property": "time_format", "label": "Date Time Format", "type": "textfield", description: "This used when 'Display Mode' is set to 'Time', enter the time format you wish to display. For example: 'hh:mm tt' or 'HH:mm:ss' for 24 hour clock.", "default": "hh:mm tt" },
+		{ "property": "invert_color", "label": "Invert Text", "type": "boolean", description: "This will Invert color of 'Time', 'Custom Text', 'Pixel Art' and 'Libre Hardware Monitor'.", "default": "false" },
+		{ "property": "invert_text_color", "label": "Text Color when inverted", "type": "color", "description": "The color used for text when 'Invert Text' is enabled.", "default": "#000" },
+		{ "property": "lhmjson", "label": "Libre Hardware Monitor Web Server", "type": "textfield", description: "This used when 'Display Mode' is set to 'Libre Hardware Monitor'", "default": "http://127.0.0.1:8085/" },
+		{ "property": "lhm_format", "label": "Libre Hardware Monitor Format", "type": "textfield", description: "Display a collection of hardware monitoring sensors, this requires Libre Hardware Monitor running in the background.", "default": "cpu_load cpu_temp" },
+		{ "property": "lhm_update", "label": "Libre Hardware Monitor Update Interval (ms)", description: "How long to pause for next refresh.", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
+		{ "property": "scroll_direction", "label": "Scroll Direction", "type": "combobox", description: "This used on all 'Display Mode' except for 'Components'.", "values": ["Off", "Left", "Right"], "default": "Off" },
+		{ "property": "scroll_speed", "label": "Scroll Speed", description: "This used when 'Scroll Direction' is Enabled.", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
+		{ "property": "pixel_art", "label": "Pixel Art", "type": "textfield", description: "Create your own Pixel Art or browse community made from https://pixelart.nolliergb.com/.", "default": "[ [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] ]" },
+		{ "property": "pixel_art_fps", "label": "Pixel Art FPS", "type": "number", description: "FPS for Layered Pixel Art.", "min": 1, "max": 60, "default": 10 },
+		{ "property": "translucent1", "label": "Translucent 1 Level", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
+		{ "property": "translucent2", "label": "Translucent 2 Level", description: "This used when 'Display Mode' is set to 'Pixel Art'", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
+		{ "property": "paddingX", "label": "Padding X", "type": "textfield", description: "Extra X spaces added to align data output.", "default": 0, "filter": /^\d+$/ },
+		{ "property": "paddingY", "label": "Padding Y", "type": "textfield", description: "Extra Y spaces added to align data output.", "default": 1, "filter": /^\d+$/ },
+	];
 }
+
 let WLED;
 let display;
 let displaySize = { width: 0, height: 0 };
@@ -72,7 +74,6 @@ let scrollOffset = 0;
 let lastLHMFetch = { time: 0, result: 'Loading...' };
 const ZH_FONT_DIGITS = Object.assign({}, ZH_FONT, LARGE_DIGITS);
 const ZH_FONT_LETTERS = Object.assign({}, ZH_FONT, LARGE_LETTERS);
-
 
 var PIXELART = [];
 var COMPONENT_MAPPING = [];
@@ -360,105 +361,83 @@ function displayClock() {
 }
 
 function insertPixelArtIntoDisplay(display, art) {
+	if (!art) return;
+	if (typeof art === "string") {
+		try {
+			art = JSON.parse(art);
+		} catch (e) {
+			return;
+		}
+	}
+	if (art && typeof art === "object" && !Array.isArray(art)) {
+		if (art.data) art = art.data;
+		else if (art.frames) art = art.frames;
+	}
+	let currentFrameGrid = art;
+	if (Array.isArray(art) && Array.isArray(art[0]) && Array.isArray(art[0][0])) {
+		let fps = (typeof pixel_art_fps !== 'undefined') ? parseFloat(pixel_art_fps) : 5;
+		let frameIndex = Math.floor((new Date().getTime() / (1000 / fps)) % art.length);
+		currentFrameGrid = art[frameIndex];
+	}
+	let offsetX = 0;
+	if (typeof scroll_direction !== 'undefined' && scroll_direction !== "Off") {
+		const speed = (typeof scroll_speed !== 'undefined') ? parseInt(scroll_speed) : 10;
+		const time = new Date().getTime() / 1000;
+		let move = Math.floor(time * speed * 0.4);
+		offsetX = (scroll_direction === "Left") ? -move : move;
+	}
 
-    if (!art) return;
-    if (typeof art === "string") {
-        try {
-            art = JSON.parse(art);
-        } catch (e) {
-            return;
-        }
-    }
-    if (art && typeof art === "object" && !Array.isArray(art)) {
-        if (art.data) art = art.data;
-        else if (art.frames) art = art.frames;
-    }
-    let currentFrameGrid = art;
-    if (Array.isArray(art) && Array.isArray(art[0]) && Array.isArray(art[0][0])) {
-        let fps = (typeof pixelArtFPS !== 'undefined') ? parseFloat(pixelArtFPS) : 5;
-        let frameIndex = Math.floor((new Date().getTime() / (1000 / fps)) % art.length);
-        currentFrameGrid = art[frameIndex];
-    }
-    let offsetX = 0;
-    if (typeof scroll_direction !== 'undefined' && scroll_direction !== "Off") {
-        const speed = (typeof scroll_speed !== 'undefined') ? parseInt(scroll_speed) : 10;
-        const time = new Date().getTime() / 1000; 
-        let move = Math.floor(time * speed * 0.4);
-        offsetX = (scroll_direction === "Left") ? -move : move;
-    }
+	for (let row = 0; row < currentFrameGrid.length; row++) {
+		let rowData = currentFrameGrid[row];
+		let isFlatRGB = Array.isArray(rowData) && rowData.length > 50 && (rowData.length % 3 === 0);
+		let gridW = isFlatRGB ? rowData.length / 3 : rowData.length;
 
-    for (let row = 0; row < currentFrameGrid.length; row++) {
-        let rowData = currentFrameGrid[row];
-        let isFlatRGB = Array.isArray(rowData) &&
-                        rowData.length > 50 &&
-                        (rowData.length % 3 === 0);
+		if (isFlatRGB) {
+			for (let i = 0; i < rowData.length; i += 3) {
+				let r = rowData[i];
+				let g = rowData[i + 1];
+				let b = rowData[i + 2];
+				if (r === 0 && g === 0 && b === 0) continue;
 
-        let gridW = isFlatRGB ? rowData.length / 3 : rowData.length;
+				let col = i / 3;
+				let scrolledCol = ((col + offsetX) % gridW + gridW) % gridW;
+				let targetC = scrolledCol + parseInt(paddingX || 0);
+				let targetR = row + parseInt(paddingY || 0);
+				let index = targetR * displaySize.width + targetC;
+				if (targetR >= 0 && targetR < displaySize.height && targetC >= 0 && targetC < displaySize.width) display[index] = [r, g, b];
+			}
+		} else {
+			for (let col = 0; col < rowData.length; col++) {
+				let pixel = rowData[col];
+				let scrolledCol = ((col + offsetX) % rowData.length + rowData.length) % rowData.length;
+				let targetC = scrolledCol + parseInt(paddingX || 0);
+				let targetR = row + parseInt(paddingY || 0);
+				let index = targetR * displaySize.width + targetC;
 
-        if (isFlatRGB) {
-
-            for (let i = 0; i < rowData.length; i += 3) {
-
-                let r = rowData[i];
-                let g = rowData[i + 1];
-                let b = rowData[i + 2];
-
-                if (r === 0 && g === 0 && b === 0) continue;
-
-                let col = i / 3;
-
-                let scrolledCol =
-                    ((col + offsetX) % gridW + gridW) % gridW;
-
-                let targetC = scrolledCol + parseInt(paddingX || 0);
-                let targetR = row + parseInt(paddingY || 0);
-
-                let index = targetR * displaySize.width + targetC;
-
-                if (
-                    targetR >= 0 && targetR < displaySize.height &&
-                    targetC >= 0 && targetC < displaySize.width
-                ) {
-                    display[index] = [r, g, b];
-                }
-            }
-
-        } else {
-
-            for (let col = 0; col < rowData.length; col++) {
-
-                let pixel = rowData[col];
-
-                let scrolledCol =
-                    ((col + offsetX) % rowData.length + rowData.length) % rowData.length;
-
-                let targetC = scrolledCol + parseInt(paddingX || 0);
-                let targetR = row + parseInt(paddingY || 0);
-
-                let index = targetR * displaySize.width + targetC;
-
-                if (
-                    targetR >= 0 && targetR < displaySize.height &&
-                    targetC >= 0 && targetC < displaySize.width
-                ) {
-
-                    display[index] =
-                        (typeof pixel === "string" && pixel[0] === "#")
-                            ? [
-                                parseInt(pixel.substr(1, 2), 16),
-                                parseInt(pixel.substr(3, 2), 16),
-                                parseInt(pixel.substr(5, 2), 16)
-                              ]
-                            : pixel;
-                }
-            }
-        }
-    }
+				if (targetR >= 0 && targetR < displaySize.height && targetC >= 0 && targetC < displaySize.width) {
+					display[index] = (typeof pixel === "string" && pixel[0] === "#") ? [parseInt(pixel.substr(1, 2), 16), parseInt(pixel.substr(3, 2), 16), parseInt(pixel.substr(5, 2), 16)] : pixel;
+				}
+			}
+		}
+	}
 }
 
 function getSpacing(digit, fontSize, time) {
 	if (time) {
-		if (fontSize === 'Medium') {
+		if (fontSize === 'Chinese') {
+			if (isChineseChar(digit)) {
+				return 9;
+			} else {
+				switch (digit) {
+					case '|': return 2;
+					case 'i': case 'l': case '`': case "(": case ')': case ';': case ':': case "'": case ',': case '.': case ' ': return 3;
+					case 'I': case '!': case '[': case ']': case '1': case '°': return 4;
+					case 'f': case 'h': case 'j': case 'k': case 'n': case 't': case 'u': case 'x':
+					case 'y': case 'Z': case 'z': case '~': case '$': case '{': case '}': case '<': case '>': return 5;
+					default: return 6;
+				}
+			}
+		} else if (fontSize === 'Medium') {
 			switch (digit) {
 				case ':': case ';': case '.': return 2;
 				case ' ': return 1;
@@ -478,7 +457,20 @@ function getSpacing(digit, fontSize, time) {
 			}
 		}
 	} else {
-		if (fontSize === 'Medium') {
+		if (fontSize === 'Chinese') {
+			if (isChineseChar(digit)) {
+				return 9;
+			} else {
+				switch (digit) {
+					case '|': return 2;
+					case 'i': case 'l': case '`': case "(": case ')': case ';': case ':': case "'": case ',': case '.': case ' ': return 3;
+					case 'I': case '!': case '[': case ']': case '1': case '°': return 4;
+					case 'f': case 'h': case 'j': case 'k': case 'n': case 't': case 'u': case 'x':
+					case 'y': case 'Z': case 'z': case '~': case '$': case '{': case '}': case '<': case '>': return 5;
+					default: return 6;
+				}
+			}
+		} else if (fontSize === 'Medium') {
 			switch (digit) {
 				case ' ': return 1;
 				case '!': case '|': case ':': case "'": case '.': return 2;
@@ -510,6 +502,7 @@ function getSpacing(digit, fontSize, time) {
 		}
 	}
 }
+
 function renderTextBuffer(text, fontSize, baseRow, time) {
 	let glyphs = [];
 	let totalWidth = 0;
@@ -579,144 +572,120 @@ class WLEDDevice {
 		device.addChannel(this.name, this.deviceledcount);
 	}
 
-SendColorPackets(shutdown = false) {
-	const componentChannel = device.channel(this.name);
-	let ChannelLedCount = componentChannel.ledCount > this.deviceledcount ? this.deviceledcount : componentChannel.ledCount;
+	SendColorPackets(shutdown = false) {
+		const componentChannel = device.channel(this.name);
+		let ChannelLedCount = componentChannel.ledCount > this.deviceledcount ? this.deviceledcount : componentChannel.ledCount;
 
-	let RGBData = [];
+		let RGBData = [];
 
-	if (shutdown) {
-		if (rgbcw_mode == true) {
-			RGBData = insertZeroes(device.createColorArray(colorBlack, ChannelLedCount, "Inline"));
-		} else {
-			RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
-		}
-	} else if (LightingMode === "Forced") {
-		if (rgbcw_mode == true) {
-			RGBData = insertZeroes(device.createColorArray(forcedColor, ChannelLedCount, "Inline"));
-		} else {
-			RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
-		}
-	} else if (componentChannel.shouldPulseColors()) {
-		ChannelLedCount = this.deviceledcount;
-		const pulseColor = device.getChannelPulseColor(this.name);
-
-		if (rgbcw_mode == true) {
-			RGBData = insertZeroes(device.createColorArray(pulseColor, ChannelLedCount, "Inline"));
-		} else {
-			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
-		}
-	} else {
-		if (rgbcw_mode == true) {
-			RGBData = insertZeroes(componentChannel.getColors("Inline"));
-		} else {
-			RGBData = componentChannel.getColors("Inline");
-		}
-	}
-
-	const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
-
-	if (display_mode != 'Components') {
-		if (display != undefined) {
-
-			displayClock();
-
-			let Snake_display = rearrangeDisplayForSnakeLayout(display);
-			const isPixelArt = display_mode === 'Pixel Art';
-
-			let invertedTextRGB = hexToRgb(inverted_text_color || "#FFFFFF");
-
-			for (let led_index = 0; led_index < Snake_display.length; led_index++) {
-
-				let pixelValue = Snake_display[led_index];
-				if (isPixelArt && invert_color) {
-					if (pixelValue === 1) pixelValue = 0;
-					else if (pixelValue === 0) pixelValue = 1;
-				}
-
-				switch (pixelValue) {
-
-	case 0:
-		if (invert_color) {
-			if (invert_text_color_enabled) {
-				RGBData[led_index * 3] = invertedTextRGB.r;
-				RGBData[led_index * 3 + 1] = invertedTextRGB.g;
-				RGBData[led_index * 3 + 2] = invertedTextRGB.b;
+		if (shutdown) {
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(device.createColorArray(colorBlack, ChannelLedCount, "Inline"));
 			} else {
-				RGBData[led_index * 3] = 0;
-				RGBData[led_index * 3 + 1] = 0;
-				RGBData[led_index * 3 + 2] = 0;
+				RGBData = device.createColorArray(colorBlack, ChannelLedCount, "Inline");
+			}
+		} else if (LightingMode === "Forced") {
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(device.createColorArray(forcedColor, ChannelLedCount, "Inline"));
+			} else {
+				RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
+			}
+		} else if (componentChannel.shouldPulseColors()) {
+			ChannelLedCount = this.deviceledcount;
+			const pulseColor = device.getChannelPulseColor(this.name);
+
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(device.createColorArray(pulseColor, ChannelLedCount, "Inline"));
+			} else {
+				RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
 			}
 		} else {
-			RGBData[led_index * 3] = 0;
-			RGBData[led_index * 3 + 1] = 0;
-			RGBData[led_index * 3 + 2] = 0;
-		}
-		break;
-
-	case 0.3:
-		let fcRGB = hexToRgb(forcedColor);
-		RGBData[led_index * 3] = fcRGB.r;
-		RGBData[led_index * 3 + 1] = fcRGB.g;
-		RGBData[led_index * 3 + 2] = fcRGB.b;
-		break;
-
-	case 0.5:
-		let scaleFactor = translucent1 / 100;
-		let darken = lowerBrightnessRGB(
-			RGBData[led_index * 3],
-			RGBData[led_index * 3 + 1],
-			RGBData[led_index * 3 + 2],
-			scaleFactor
-		);
-		RGBData[led_index * 3] = darken[0];
-		RGBData[led_index * 3 + 1] = darken[1];
-		RGBData[led_index * 3 + 2] = darken[2];
-		break;
-
-	case 0.7:
-		let scaleFactor2 = translucent2 / 100;
-		let darken2 = lowerBrightnessRGB(
-			RGBData[led_index * 3],
-			RGBData[led_index * 3 + 1],
-			RGBData[led_index * 3 + 2],
-			scaleFactor2
-		);
-		RGBData[led_index * 3] = darken2[0];
-		RGBData[led_index * 3 + 1] = darken2[1];
-		RGBData[led_index * 3 + 2] = darken2[2];
-		break;
-
-	default:
-		if (typeof pixelValue === "string" && pixelValue[0] === "#") {
-			let c = hexToRgb(pixelValue);
-			RGBData[led_index * 3] = c.r;
-			RGBData[led_index * 3 + 1] = c.g;
-			RGBData[led_index * 3 + 2] = c.b;
-		}
-		else if (Array.isArray(pixelValue)) {
-			RGBData[led_index * 3] = pixelValue[0];
-			RGBData[led_index * 3 + 1] = pixelValue[1];
-			RGBData[led_index * 3 + 2] = pixelValue[2];
-		}
-		break;
-}
+			if (rgbcw_mode == true) {
+				RGBData = insertZeroes(componentChannel.getColors("Inline"));
+			} else {
+				RGBData = componentChannel.getColors("Inline");
 			}
 		}
-	}
 
-	let times = rgbcw_mode == true ? 5 : 3;
+		const NumPackets = Math.ceil(ChannelLedCount / MaxLedsInPacket);
 
-	for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
-		const startIdx = CurrPacket * MaxLedsInPacket;
-		const highByte = ((startIdx >> 8) & 0xFF);
-		const lowByte = (startIdx & 0xFF);
+		if (display_mode != 'Components') {
+			if (display != undefined) {
+				displayClock();
+				let Snake_display = rearrangeDisplayForSnakeLayout(display);
+				const isPixelArt = display_mode === 'Pixel Art';
+				let invertedTextRGB = hexToRgb(invert_text_color || "#FFFFFF");
 
-		let packet = [0x04, 0x02, highByte, lowByte];
-		packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * times));
-		udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
+				for (let led_index = 0; led_index < Snake_display.length; led_index++) {
+					let pixelValue = Snake_display[led_index];
+					if (isPixelArt && invert_color) {
+						if (pixelValue === 1) pixelValue = 0;
+						else if (pixelValue === 0) pixelValue = 1;
+					}
+
+					switch (pixelValue) {
+						case 0:
+							if (invert_color) {
+								RGBData[led_index * 3] = invertedTextRGB.r;
+								RGBData[led_index * 3 + 1] = invertedTextRGB.g;
+								RGBData[led_index * 3 + 2] = invertedTextRGB.b;
+							} else {
+								RGBData[led_index * 3] = 0;
+								RGBData[led_index * 3 + 1] = 0;
+								RGBData[led_index * 3 + 2] = 0;
+							}
+							break;
+						case 0.3:
+							let fcRGB = hexToRgb(forcedColor);
+							RGBData[led_index * 3] = fcRGB.r;
+							RGBData[led_index * 3 + 1] = fcRGB.g;
+							RGBData[led_index * 3 + 2] = fcRGB.b;
+							break;
+						case 0.5:
+							let scaleFactor = translucent1 / 100;
+							let darken = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor);
+							RGBData[led_index * 3] = darken[0];
+							RGBData[led_index * 3 + 1] = darken[1];
+							RGBData[led_index * 3 + 2] = darken[2];
+							break;
+						case 0.7:
+							let scaleFactor2 = translucent2 / 100;
+							let darken2 = lowerBrightnessRGB(RGBData[led_index * 3], RGBData[led_index * 3 + 1], RGBData[led_index * 3 + 2], scaleFactor2);
+							RGBData[led_index * 3] = darken2[0];
+							RGBData[led_index * 3 + 1] = darken2[1];
+							RGBData[led_index * 3 + 2] = darken2[2];
+							break;
+						default:
+							if (typeof pixelValue === "string" && pixelValue[0] === "#") {
+								let c = hexToRgb(pixelValue);
+								RGBData[led_index * 3] = c.r;
+								RGBData[led_index * 3 + 1] = c.g;
+								RGBData[led_index * 3 + 2] = c.b;
+							} else if (Array.isArray(pixelValue)) {
+								RGBData[led_index * 3] = pixelValue[0];
+								RGBData[led_index * 3 + 1] = pixelValue[1];
+								RGBData[led_index * 3 + 2] = pixelValue[2];
+							}
+					}
+				}
+			}
+		}
+
+		let times = rgbcw_mode == true ? 5 : 3;
+
+		for (let CurrPacket = 0; CurrPacket < NumPackets; CurrPacket++) {
+			const startIdx = CurrPacket * MaxLedsInPacket;
+			const highByte = ((startIdx >> 8) & 0xFF);
+			const lowByte = (startIdx & 0xFF);
+			let packet = [0x04, 0x02, highByte, lowByte];
+			packet = packet.concat(RGBData.splice(0, MaxLedsInPacket * times));
+			udp.send(this.ip, this.streamingPort, packet, BIG_ENDIAN);
+		}
 	}
 }
+
+function isChineseChar(char) {
+	return /[\u4E00-\u9FFF]/.test(char);
 }
 
 export function Initialize() {
@@ -739,6 +708,7 @@ export function Initialize() {
 		}
 	}
 
+	device.setFrameRateTarget(60);
 }
 
 export function Render() {
