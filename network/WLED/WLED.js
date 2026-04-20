@@ -49,9 +49,9 @@ export function ControllableParameters() {
         { "property": "lhmjson",  "group": "settings","label": "硬件监控地址", "type": "textfield", "description": "当 '显示模式' 设置为 'Libre Hardware Monitor' 时使用此项。", "default": "http://127.0.0.1:8085/" },
         { "property": "lhm_format",  "group": "settings","label": "硬件监控显示内容", "type": "textfield", "description": "显示选定的硬件监控传感器数据，这需要 Libre Hardware Monitor 在后台运行。", "default": "cpu_load cpu_temp" },
         { "property": "lhm_update",  "group": "settings","label": "硬件监控刷新间隔(ms)", "description": "下次刷新的暂停时间。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
-        { "property": "scroll_direction", "group": "settings", "label": "滚动方向", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用此项。", "values": ["Off", "Left", "Right"], "default": "Off" },
+        { "property": "scroll_direction", "group": "settings", "label": "滚动方向", "type": "combobox", "description": "设置文字或像素画的滚动方式。", "values": ["Off", "Left", "Right", "Up", "Down", "Ping-Pong","Slot-Machine"], "default": "Off" },
         { "property": "scroll_speed", "group": "settings", "label": "滚动速度", "description": "当 '滚动方向' 启用时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
-        { "property": "pixel_art",  "group": "settings","label": "像素画", "type": "textfield", "description": "创建你自己的像素画或从 https://pixelart.nolliergb.com/ 浏览社区作品。", "default": "[...]" },
+        { "property": "pixel_art",  "group": "settings","label": "像素画", "type": "textfield", "default": "[...]" },
         { "property": "pixelArtFPS", "group": "settings", "label": "像素画帧率 (GIF)", "type": "number", "min": 1, "max": 50, "default": 5 },
         { "property": "translucent1", "group": "settings", "label": "透明度等级1", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
         { "property": "translucent2",  "group": "settings","label": "透明度等级2", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
@@ -69,6 +69,7 @@ const colorBlack = "#000000";
 let lastForcedUpdate = 0;
 let jobRunning = false;
 let scrollOffset = 0;
+let scrollOffsetY = 0;
 let lastLHMFetch = { time: 0, result: 'Loading...' };
 const ZH_FONT_DIGITS = Object.assign({}, ZH_FONT, LARGE_DIGITS);
 const ZH_FONT_LETTERS = Object.assign({}, ZH_FONT, LARGE_LETTERS);
@@ -303,70 +304,69 @@ function lowerBrightnessRGB(R, G, B, factor) {
 }
 
 function displayClock() {
-	// Fill background based on invert_color
-	display.fill(invert_color ? 1 : 0);
-	const now = new Date();
+    display.fill(invert_color ? 1 : 0);
+    const now = new Date();
 
-	let text;
-	switch (display_mode) {
-		case 'Pixel Art':
-			text = 'Pixel Art';
-			insertPixelArtIntoDisplay(display, PIXELART);
-			return;
-		case 'Custom Text':
-			text = custom_text;
-			break;
-		case 'Libre Hardware Monitor':
-			text = formatLHM(lhm_format);
-			break;
-		default:
-			if (now.getSeconds() % 2 !== 0) {
-				text = replaceEx(formatDateTime(time_format), { ':': ';' });
-			} else {
-				text = formatDateTime(time_format);
-			}
-	}
+    let text;
+    switch (display_mode) {
+        case 'Pixel Art': insertPixelArtIntoDisplay(display, PIXELART); return;
+        case 'Custom Text': text = custom_text; break;
+        case 'Libre Hardware Monitor': text = formatLHM(lhm_format); break;
+        default: text = (now.getSeconds() % 2 !== 0) ? replaceEx(formatDateTime(time_format), { ':': ';' }) : formatDateTime(time_format);
+    }
+    let { buffer, bufferWidth } = renderTextBuffer(text + " ".repeat(Math.floor(displaySize.width / 2)), fontSize, parseInt(paddingY), display_mode == 'Time');
+    let bufferHeight = displaySize.height;
+    const time = new Date().getTime() / 1000;
+    const speed = (scroll_speed / 100);
+    if (scroll_direction === "Left" || scroll_direction === "Right") {
+        scrollOffsetY = 0; 
+    } else if (scroll_direction === "Up" || scroll_direction === "Down") {
+        scrollOffset = 0;
+    } else if (scroll_direction === "Slot-Machine" || scroll_direction === "Off") {
+        scrollOffset = 0;
+        scrollOffsetY = 0;
+    }
+    if (scroll_direction === "Left") scrollOffset -= speed;
+    else if (scroll_direction === "Right") scrollOffset += speed;
+    else if (scroll_direction === "Up") scrollOffsetY -= speed;
+    else if (scroll_direction === "Down") scrollOffsetY += speed;
+    else if (scroll_direction === "Ping-Pong") {
+        let move = time * (scroll_speed * 0.4);
+        const max = Math.min(10, Math.max(0, bufferWidth - displaySize.width));
+        scrollOffset = max > 0 ? -(max - Math.abs((move % (max * 2)) - max)) : 0;
+        scrollOffsetY = 0; 
+    }
+    for (let col = 0; col < displaySize.width; col++) {
+        let currentSlotY = scrollOffsetY;
+        let currentSlotX = scrollOffset; 
+        if (scroll_direction === "Slot-Machine") {
+            let cycle = time % 10; 
+            let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
+            let stopTime = 3 + reel;
+            if (cycle < stopTime) {
+                let brake = (stopTime - cycle) / stopTime;
+                currentSlotY = (cycle * 100 * (reel + 1) * brake) % bufferHeight;
+            } else {
+                currentSlotY = 0; 
+            }
+            currentSlotX = 0; 
+        }
+        let srcX = Math.floor((col - currentSlotX) % bufferWidth);
+        if (srcX < 0) srcX += bufferWidth;
 
-	let baseRow = parseInt(paddingY);
-	let textWithGap = text + " ".repeat(Math.floor(displaySize.width / 2));
-	let { buffer, bufferWidth } = renderTextBuffer(textWithGap, fontSize, baseRow, display_mode == 'Time');
-
-	// --- Scroll offset update ---
-	if (scroll_direction === "Left") {
-		scrollOffset -= (scroll_speed / 100);   // move text leftward
-	} else if (scroll_direction === "Right") {
-		scrollOffset += (scroll_speed / 100);   // move text rightward
-	}
-
-	// --- Wrap offset seamlessly ---
-	const totalSpan = bufferWidth + displaySize.width;
-	if (scrollOffset <= -bufferWidth) {
-		scrollOffset += bufferWidth; // wrap seamlessly
-	}
-	if (scrollOffset >= bufferWidth) {
-		scrollOffset -= bufferWidth; // wrap seamlessly
-	}
-
-	// --- Copy visible slice (tile buffer) ---
-	for (let row = 0; row < displaySize.height; row++) {
-		for (let col = 0; col < displaySize.width; col++) {
-			// repeat buffer by using modulo
-			let srcX = Math.floor((col - scrollOffset) % bufferWidth);
-			if (srcX < 0) srcX += bufferWidth; // ensure positive index
-			display[row * displaySize.width + col] = buffer[row * bufferWidth + srcX];
-		}
-	}
+        for (let row = 0; row < displaySize.height; row++) {
+            let srcY = Math.floor((row - currentSlotY) % bufferHeight);
+            if (srcY < 0) srcY += bufferHeight;
+            display[row * displaySize.width + col] = buffer[srcY * bufferWidth + srcX];
+        }
+    }
 }
 
-function insertPixelArtIntoDisplay(display, art) {
 
+function insertPixelArtIntoDisplay(display, art) {
     if (!art) return;
     if (typeof art === "string") {
-        try {
-            art = JSON.parse(art);
-        } catch (e) {
-            return;
-        }
+        try { art = JSON.parse(art); } catch (e) { return; }
     }
     if (art && typeof art === "object" && !Array.isArray(art)) {
         if (art.data) art = art.data;
@@ -378,77 +378,84 @@ function insertPixelArtIntoDisplay(display, art) {
         let frameIndex = Math.floor((new Date().getTime() / (1000 / fps)) % art.length);
         currentFrameGrid = art[frameIndex];
     }
+
     let offsetX = 0;
+    let offsetY = 0;
+    let isPP = (typeof scroll_direction !== 'undefined' && scroll_direction === "Ping-Pong");
+
     if (typeof scroll_direction !== 'undefined' && scroll_direction !== "Off") {
         const speed = (typeof scroll_speed !== 'undefined') ? parseInt(scroll_speed) : 10;
-        const time = new Date().getTime() / 1000; 
-        let move = Math.floor(time * speed * 0.4);
-        offsetX = (scroll_direction === "Left") ? -move : move;
+        const time = new Date().getTime() / 1000;
+        let move = time * speed * 0.4;
+
+        if (scroll_direction === "Left") offsetX = -Math.floor(move);
+        else if (scroll_direction === "Right") offsetX = Math.floor(move);
+        else if (scroll_direction === "Up") offsetY = -Math.floor(move);
+        else if (scroll_direction === "Down") offsetY = Math.floor(move);
+        else if (isPP) {
+            let row = currentFrameGrid[0] || [];
+            let imgW = (Array.isArray(row) && row.length > 50 && (row.length % 3 === 0)) ? row.length / 3 : row.length;
+            let maxScroll = imgW - displaySize.width;
+            if (maxScroll > 0) {
+                let phase = move % (maxScroll * 2);
+                offsetX = (phase <= maxScroll) ? -phase : -(maxScroll - (phase - maxScroll));
+            }
+        }
     }
 
     for (let row = 0; row < currentFrameGrid.length; row++) {
         let rowData = currentFrameGrid[row];
-        let isFlatRGB = Array.isArray(rowData) &&
-                        rowData.length > 50 &&
-                        (rowData.length % 3 === 0);
+        if (!rowData) continue;
+        let isFlat = Array.isArray(rowData) && rowData.length > 50 && (rowData.length % 3 === 0);
+        let gridW = isFlat ? rowData.length / 3 : rowData.length;
 
-        let gridW = isFlatRGB ? rowData.length / 3 : rowData.length;
-
-        if (isFlatRGB) {
-
+        if (isFlat) {
             for (let i = 0; i < rowData.length; i += 3) {
-
-                let r = rowData[i];
-                let g = rowData[i + 1];
-                let b = rowData[i + 2];
-
+                let r = rowData[i], g = rowData[i+1], b = rowData[i+2];
                 if (r === 0 && g === 0 && b === 0) continue;
-
                 let col = i / 3;
+                let finalX = col + offsetX;
+                let finalY = row + offsetY;
+                if (scroll_direction === "Slot-Machine") {
+                    const time = new Date().getTime() / 1000;
+                    let cycle = time % 10;
+                    let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
+                    let stopTime = 3 + reel;
+                    let slotY = (cycle < stopTime) ? (cycle * (parseInt(scroll_speed) * 4) * (reel + 1) * Math.pow((stopTime - cycle) / stopTime, 2)) : 0;
+                    finalY = row - slotY;
+                    finalX = col;
+                }
 
-                let scrolledCol =
-                    ((col + offsetX) % gridW + gridW) % gridW;
-
-                let targetC = scrolledCol + parseInt(paddingX || 0);
-                let targetR = row + parseInt(paddingY || 0);
-
-                let index = targetR * displaySize.width + targetC;
-
-                if (
-                    targetR >= 0 && targetR < displaySize.height &&
-                    targetC >= 0 && targetC < displaySize.width
-                ) {
-                    display[index] = [r, g, b];
+                finalX = isPP ? finalX : (finalX % gridW + gridW) % gridW;
+                let finalY_mod = (finalY % currentFrameGrid.length + currentFrameGrid.length) % currentFrameGrid.length;
+                let tx = Math.floor(finalX + (parseInt(paddingX) || 0));
+                let ty = Math.floor(finalY_mod + (parseInt(paddingY) || 0));
+                if (ty >= 0 && ty < displaySize.height && tx >= 0 && tx < displaySize.width) {
+                    display[ty * displaySize.width + tx] = [r, g, b];
                 }
             }
-
         } else {
-
             for (let col = 0; col < rowData.length; col++) {
-
                 let pixel = rowData[col];
+                let finalX = col + offsetX;
+                let finalY = row + offsetY;
+                if (scroll_direction === "Slot-Machine") {
+                    const time = new Date().getTime() / 1000;
+                    let cycle = time % 10;
+                    let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
+                    let stopTime = 3 + reel;
+                    let slotY = (cycle < stopTime) ? (cycle * (parseInt(scroll_speed) * 4) * (reel + 1) * Math.pow((stopTime - cycle) / stopTime, 2)) : 0;
+                    finalY = row - slotY;
+                    finalX = col;
+                }
 
-                let scrolledCol =
-                    ((col + offsetX) % rowData.length + rowData.length) % rowData.length;
-
-                let targetC = scrolledCol + parseInt(paddingX || 0);
-                let targetR = row + parseInt(paddingY || 0);
-
-                let index = targetR * displaySize.width + targetC;
-
-                if (
-                    targetR >= 0 && targetR < displaySize.height &&
-                    targetC >= 0 && targetC < displaySize.width
-                ) {
-
-                    display[index] =
-                        (typeof pixel === "string" && pixel[0] === "#")
-                            ? [
-                                parseInt(pixel.substr(1, 2), 16),
-                                parseInt(pixel.substr(3, 2), 16),
-                                parseInt(pixel.substr(5, 2), 16)
-                              ]
-                            : pixel;
+                finalX = isPP ? finalX : (finalX % gridW + gridW) % gridW;
+                let finalY_mod = (finalY % currentFrameGrid.length + currentFrameGrid.length) % currentFrameGrid.length;
+                let tx = Math.floor(finalX + (parseInt(paddingX) || 0));
+                let ty = Math.floor(finalY_mod + (parseInt(paddingY) || 0));
+                if (ty >= 0 && ty < displaySize.height && tx >= 0 && tx < displaySize.width) {
+                    display[ty * displaySize.width + tx] = (typeof pixel === "string" && pixel[0] === "#") ? 
+                        [parseInt(pixel.substr(1, 2), 16), parseInt(pixel.substr(3, 2), 16), parseInt(pixel.substr(5, 2), 16)] : pixel;
                 }
             }
         }
