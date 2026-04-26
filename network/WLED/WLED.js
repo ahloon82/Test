@@ -351,8 +351,8 @@ function displayClock() {
             }
             currentSlotX = 0; 
         }
-        let srcX = Math.floor((col - currentSlotX) % bufferWidth);
-        if (srcX < 0) srcX += bufferWidth;
+        let srcX = Math.floor((col - currentSlotX - (parseInt(paddingX) || 0)) % bufferWidth);
+if (srcX < 0) srcX += bufferWidth;
 
         for (let row = 0; row < displaySize.height; row++) {
             let srcY = Math.floor((row - currentSlotY) % bufferHeight);
