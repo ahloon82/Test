@@ -34,30 +34,30 @@ lhm_format:readonly
 lhm_update:readonly
 */
 export function ControllableParameters() {
-    return [
-        { "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", "description": "决定设备的 RGB 来源。'画布 (Canvas)' 将从当前特效取色，而 '强制 (Forced)' 将覆盖并显示特定颜色。", "values": ["Canvas", "Forced"], "default": "Canvas" },
-        { "property": "forcedColor", "group": "settings", "label": "强制颜色", "description": "开启 '强制' 灯光模式时使用的颜色。", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
-        { "property": "turnOffOnShutdown", "group": "settings", "label": "关闭时关闭WLED设备", "type": "boolean", "description": "在 SignalRGB 退出或电脑关机时软关闭 WLED 设备。", "default": "false" },
-        { "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW模式", "type": "boolean", "description": "如果你使用的是来自 Athom 的 WLED 彩色灯泡，请开启此选项。", "default": "false" },
-        { "property": "display_mode", "group": "settings", "label": "显示模式", "type": "combobox", "description": "选择你希望此设备显示的内容。", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
-        { "property": "fontSize", "group": "settings", "label": "字体大小", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用的模式。", "values": ["Small", "Medium", "Large","Chinese",], "default": "Medium" },
-        { "property": "custom_text", "group": "settings", "label": "自定义文本", "type": "textfield", "description": "当 '显示模式' 设置为 '自定义文本' 时使用此项。", "default": "WLED" },
-        { "property": "time_format", "group": "settings", "label": "时间格式", "type": "textfield", "description": "输入你想要显示的时间格式。例如：'hh:mm tt' 或 'HH:mm:ss'（24小时制）。", "default": "hh:mm tt" },
-        { "property": "invert_color",  "group": "settings","label": "反转文字颜色", "type": "boolean", "description": "这将反转文字颜色。", "default": "false" },
-        { "property": "inverted_text_color",  "group": "settings","label": "反转模式：文字颜色", "type": "color", "description": "启用 '反转文字' 时用于文字的颜色。", "default": "#FFFFFF" },
-        { "property": "invert_text_color_enabled", "group": "settings", "label": "反转模式：自定义文字颜色", "type": "boolean", "default": false },
-        { "property": "lhmjson",  "group": "settings","label": "硬件监控地址", "type": "textfield", "description": "当 '显示模式' 设置为 'Libre Hardware Monitor' 时使用此项。", "default": "http://127.0.0.1:8085/" },
-        { "property": "lhm_format",  "group": "settings","label": "硬件监控显示内容", "type": "textfield", "description": "显示选定的硬件监控传感器数据，这需要 Libre Hardware Monitor 在后台运行。", "default": "cpu_load cpu_temp" },
-        { "property": "lhm_update",  "group": "settings","label": "硬件监控刷新间隔(ms)", "description": "下次刷新的暂停时间。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
-        { "property": "scroll_direction", "group": "settings", "label": "滚动方向", "type": "combobox", "description": "设置文字或像素画的滚动方式。", "values": ["Off", "Left", "Right", "Up", "Down", "Ping-Pong","Slot-Machine"], "default": "Off" },
-        { "property": "scroll_speed", "group": "settings", "label": "滚动速度", "description": "当 '滚动方向' 启用时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
-        { "property": "pixel_art",  "group": "settings","label": "像素画", "type": "textfield", "default": "[...]" },
-        { "property": "pixelArtFPS", "group": "settings", "label": "像素画帧率 (GIF)", "type": "number", "min": 1, "max": 50, "default": 5 },
-        { "property": "translucent1", "group": "settings", "label": "透明度等级1", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
-        { "property": "translucent2",  "group": "settings","label": "透明度等级2", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
-        { "property": "paddingX", "group": "settings", "label": "横向边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
-        { "property": "paddingY", "group": "settings", "label": "纵向边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
-    ];
+	return [
+		{ "property": "LightingMode", "group": "settings", "label": "灯光模式", "type": "combobox", "description": "决定设备的 RGB 来源。'画布 (Canvas)' 将从当前特效取色，而 '强制 (Forced)' 将覆盖并显示特定颜色。", "values": ["Canvas", "Forced"], "default": "Canvas" },
+		{ "property": "forcedColor", "group": "settings", "label": "强制颜色", "description": "开启 '强制' 灯光模式时使用的颜色。", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
+		{ "property": "turnOffOnShutdown", "group": "settings", "label": "关闭时关闭WLED设备", "type": "boolean", "description": "在 SignalRGB 退出或电脑关机时软关闭 WLED 设备。", "default": "false" },
+		{ "property": "rgbcw_mode", "group": "Lighting", "label": "RGBCW模式", "type": "boolean", "description": "如果你使用的是来自 Athom 的 WLED 彩色灯泡，请开启此选项。", "default": "false" },
+		{ "property": "display_mode", "group": "settings", "label": "显示模式", "type": "combobox", "description": "选择你希望此设备显示的内容。", "values": ["Components", "Time", "Custom Text", "Pixel Art", "Libre Hardware Monitor"], "default": "Components" },
+		{ "property": "fontSize", "group": "settings", "label": "字体大小", "type": "combobox", "description": "当 '显示模式' 设置为 '时间' 或 '自定义文本' 时使用的模式。", "values": ["Small", "Medium", "Large","Chinese",], "default": "Medium" },
+		{ "property": "custom_text", "group": "settings", "label": "自定义文本", "type": "textfield", "description": "当 '显示模式' 设置为 '自定义文本' 时使用此项。", "default": "WLED" },
+		{ "property": "time_format", "group": "settings", "label": "时间格式", "type": "textfield", "description": "输入你想要显示的时间格式。例如：'hh:mm tt' 或 'HH:mm:ss'（24小时制）。", "default": "hh:mm tt" },
+		{ "property": "invert_color",  "group": "settings","label": "反转文字颜色", "type": "boolean", "description": "这将反转文字颜色。", "default": "false" },
+		{ "property": "inverted_text_color",  "group": "settings","label": "反转模式：文字颜色", "type": "color", "description": "启用 '反转文字' 时用于文字的颜色。", "default": "#FFFFFF" },
+		{ "property": "invert_text_color_enabled", "group": "settings", "label": "反转模式：自定义文字颜色", "type": "boolean", "default": false },
+		{ "property": "lhmjson",  "group": "settings","label": "硬件监控地址", "type": "textfield", "description": "当 '显示模式' 设置为 'Libre Hardware Monitor' 时使用此项。", "default": "http://127.0.0.1:8085/" },
+		{ "property": "lhm_format",  "group": "settings","label": "硬件监控显示内容", "type": "textfield", "description": "显示选定的硬件监控传感器数据，这需要 Libre Hardware Monitor 在后台运行。", "default": "cpu_load cpu_temp" },
+		{ "property": "lhm_update",  "group": "settings","label": "硬件监控刷新间隔(ms)", "description": "下次刷新的暂停时间。", "step": "1", "type": "number", "min": "500", "max": "10000", "default": "3000" },
+		{ "property": "scroll_direction", "group": "settings", "label": "滚动方向", "type": "combobox", "description": "设置文字或像素画的滚动方式。", "values": ["Off", "Left", "Right", "Up", "Down", "Ping-Pong","Slot-Machine"], "default": "Off" },
+		{ "property": "scroll_speed", "group": "settings", "label": "滚动速度", "description": "当 '滚动方向' 启用时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "50" },
+		{ "property": "pixel_art",  "group": "settings","label": "像素画", "type": "textfield", "default": "[...]" },
+		{ "property": "pixelArtFPS", "group": "settings", "label": "像素画帧率 (GIF)", "type": "number", "min": 1, "max": 50, "default": 5 },
+		{ "property": "translucent1", "group": "settings", "label": "透明度等级1", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "30" },
+		{ "property": "translucent2",  "group": "settings","label": "透明度等级2", "description": "当 '显示模式' 设置为 '像素画' 时使用此项。", "step": "1", "type": "number", "min": "1", "max": "100", "default": "80" },
+		{ "property": "paddingX", "group": "settings", "label": "横向边距", "type": "textfield", "default": 0, "filter": /^\d+$/ },
+		{ "property": "paddingY", "group": "settings", "label": "纵向边距", "type": "textfield", "default": 1, "filter": /^\d+$/ },
+	];
 }
 let WLED;
 let display;
@@ -70,6 +70,7 @@ let lastForcedUpdate = 0;
 let jobRunning = false;
 let scrollOffset = 0;
 let scrollOffsetY = 0;
+let pingPongDirection = -1; 
 let lastLHMFetch = { time: 0, result: 'Loading...' };
 const ZH_FONT_DIGITS = Object.assign({}, ZH_FONT, LARGE_DIGITS);
 const ZH_FONT_LETTERS = Object.assign({}, ZH_FONT, LARGE_LETTERS);
@@ -304,162 +305,198 @@ function lowerBrightnessRGB(R, G, B, factor) {
 }
 
 function displayClock() {
-    display.fill(invert_color ? 1 : 0);
-    const now = new Date();
+	display.fill(invert_color ? 1 : 0);
+	const now = new Date();
 
-    let text;
-    switch (display_mode) {
-        case 'Pixel Art': insertPixelArtIntoDisplay(display, PIXELART); return;
-        case 'Custom Text': text = custom_text; break;
-        case 'Libre Hardware Monitor': text = formatLHM(lhm_format); break;
-        default: text = (now.getSeconds() % 2 !== 0) ? replaceEx(formatDateTime(time_format), { ':': ';' }) : formatDateTime(time_format);
-    }
-    let { buffer, bufferWidth } = renderTextBuffer(text + " ".repeat(Math.floor(displaySize.width / 2)), fontSize, parseInt(paddingY), display_mode == 'Time');
-    let bufferHeight = displaySize.height;
-    const time = new Date().getTime() / 1000;
-    const speed = (scroll_speed / 100);
-    if (scroll_direction === "Left" || scroll_direction === "Right") {
-        scrollOffsetY = 0; 
-    } else if (scroll_direction === "Up" || scroll_direction === "Down") {
-        scrollOffset = 0;
-    } else if (scroll_direction === "Slot-Machine" || scroll_direction === "Off") {
-        scrollOffset = 0;
-        scrollOffsetY = 0;
-    }
-    if (scroll_direction === "Left") scrollOffset -= speed;
-    else if (scroll_direction === "Right") scrollOffset += speed;
-    else if (scroll_direction === "Up") scrollOffsetY -= speed;
-    else if (scroll_direction === "Down") scrollOffsetY += speed;
-    else if (scroll_direction === "Ping-Pong") {
-        let move = time * (scroll_speed * 0.4);
-        const max = Math.min(10, Math.max(0, bufferWidth - displaySize.width));
-        scrollOffset = max > 0 ? -(max - Math.abs((move % (max * 2)) - max)) : 0;
-        scrollOffsetY = 0; 
-    }
-    for (let col = 0; col < displaySize.width; col++) {
-        let currentSlotY = scrollOffsetY;
-        let currentSlotX = scrollOffset; 
-        if (scroll_direction === "Slot-Machine") {
-            let cycle = time % 10; 
-            let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
-            let stopTime = 3 + reel;
-            if (cycle < stopTime) {
-                let brake = (stopTime - cycle) / stopTime;
-                currentSlotY = (cycle * 100 * (reel + 1) * brake) % bufferHeight;
-            } else {
-                currentSlotY = 0; 
-            }
-            currentSlotX = 0; 
-        }
-        let srcX = Math.floor((col - currentSlotX - (parseInt(paddingX) || 0)) % bufferWidth);
-if (srcX < 0) srcX += bufferWidth;
+	let text;
+	if (display_mode === 'Pixel Art') {
+		insertPixelArtIntoDisplay(display, PIXELART);
+		return;
+	} else if (display_mode === 'Custom Text') {
+		text = custom_text;
+	} else if (display_mode === 'Libre Hardware Monitor') {
+		text = formatLHM(lhm_format);
+	} else {
+		if (now.getSeconds() % 2 !== 0) {
+			text = replaceEx(formatDateTime(time_format), { ':': ';' });
+		} else {
+			text = formatDateTime(time_format);
+		}
+	}
 
-        for (let row = 0; row < displaySize.height; row++) {
-            let srcY = Math.floor((row - currentSlotY) % bufferHeight);
-            if (srcY < 0) srcY += bufferHeight;
-            display[row * displaySize.width + col] = buffer[srcY * bufferWidth + srcX];
-        }
-    }
+	let baseRow = parseInt(paddingY) || 0;
+	let offsetX = parseInt(paddingX) || 0;
+
+	let textWithGap = scroll_direction === "Ping-Pong" ? " " + text + " " : text + " ".repeat(Math.floor(displaySize.width / 2));
+	let { buffer, bufferWidth } = renderTextBuffer(textWithGap, fontSize, baseRow, display_mode == 'Time');
+	
+	let bufferHeight = displaySize.height;
+	const speed = (scroll_speed / 100);
+	const time = new Date().getTime() / 1000;
+
+	if (scroll_direction === "Left") {
+		scrollOffset -= speed;
+		scrollOffsetY = 0;
+		if (scrollOffset <= -bufferWidth) scrollOffset += bufferWidth;
+	} else if (scroll_direction === "Right") {
+		scrollOffset += speed;
+		scrollOffsetY = 0;
+		if (scrollOffset >= bufferWidth) scrollOffset -= bufferWidth;
+	} else if (scroll_direction === "Up") {
+		scrollOffsetY -= speed;
+		scrollOffset = 0;
+		if (scrollOffsetY <= -bufferHeight) scrollOffsetY += bufferHeight;
+	} else if (scroll_direction === "Down") {
+		scrollOffsetY += speed;
+		scrollOffset = 0;
+		if (scrollOffsetY >= bufferHeight) scrollOffsetY += bufferHeight;
+	} else if (scroll_direction === "Ping-Pong") {
+		let minOffset = displaySize.width - bufferWidth;
+		if (minOffset > 0) minOffset = 0; 
+
+		scrollOffset += speed * pingPongDirection;
+		scrollOffsetY = 0;
+
+		if (scrollOffset <= minOffset) {
+			scrollOffset = minOffset;
+			pingPongDirection = 1;
+		} else if (scrollOffset >= 0) {
+			scrollOffset = 0;
+			pingPongDirection = -1;
+		}
+	} else {
+		if (scroll_direction !== "Slot-Machine") {
+			scrollOffset = 0;
+			scrollOffsetY = 0;
+		}
+	}
+
+	for (let col = 0; col < displaySize.width; col++) {
+		let currentSlotY = scrollOffsetY;
+		let currentSlotX = scrollOffset; 
+
+		if (scroll_direction === "Slot-Machine") {
+			let cycle = time % 10; 
+			let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
+			let stopTime = 3 + reel;
+			if (cycle < stopTime) {
+				let brake = (stopTime - cycle) / stopTime;
+				currentSlotY = (cycle * 100 * (reel + 1) * brake) % bufferHeight;
+			} else {
+				currentSlotY = 0; 
+			}
+			currentSlotX = 0; 
+		}
+
+		let srcX = Math.floor((col - currentSlotX - offsetX) % bufferWidth);
+		if (srcX < 0) srcX += bufferWidth;
+
+		for (let row = 0; row < displaySize.height; row++) {
+			let srcY = Math.floor((row - currentSlotY) % bufferHeight);
+			if (srcY < 0) srcY += bufferHeight;
+			
+			display[row * displaySize.width + col] = buffer[srcY * bufferWidth + srcX];
+		}
+	}
 }
 
-
 function insertPixelArtIntoDisplay(display, art) {
-    if (!art) return;
-    if (typeof art === "string") {
-        try { art = JSON.parse(art); } catch (e) { return; }
-    }
-    if (art && typeof art === "object" && !Array.isArray(art)) {
-        if (art.data) art = art.data;
-        else if (art.frames) art = art.frames;
-    }
-    let currentFrameGrid = art;
-    if (Array.isArray(art) && Array.isArray(art[0]) && Array.isArray(art[0][0])) {
-        let fps = (typeof pixelArtFPS !== 'undefined') ? parseFloat(pixelArtFPS) : 5;
-        let frameIndex = Math.floor((new Date().getTime() / (1000 / fps)) % art.length);
-        currentFrameGrid = art[frameIndex];
-    }
+	if (!art) return;
+	if (typeof art === "string") {
+		try { art = JSON.parse(art); } catch (e) { return; }
+	}
+	if (art && typeof art === "object" && !Array.isArray(art)) {
+		if (art.data) art = art.data;
+		else if (art.frames) art = art.frames;
+	}
+	let currentFrameGrid = art;
+	if (Array.isArray(art) && Array.isArray(art[0]) && Array.isArray(art[0][0])) {
+		let fps = (typeof pixelArtFPS !== 'undefined') ? parseFloat(pixelArtFPS) : 5;
+		let frameIndex = Math.floor((new Date().getTime() / (1000 / fps)) % art.length);
+		currentFrameGrid = art[frameIndex];
+	}
 
-    let offsetX = 0;
-    let offsetY = 0;
-    let isPP = (typeof scroll_direction !== 'undefined' && scroll_direction === "Ping-Pong");
+	let offsetX = 0;
+	let offsetY = 0;
+	let isPP = (typeof scroll_direction !== 'undefined' && scroll_direction === "Ping-Pong");
 
-    if (typeof scroll_direction !== 'undefined' && scroll_direction !== "Off") {
-        const speed = (typeof scroll_speed !== 'undefined') ? parseInt(scroll_speed) : 10;
-        const time = new Date().getTime() / 1000;
-        let move = time * speed * 0.4;
+	if (typeof scroll_direction !== 'undefined' && scroll_direction !== "Off") {
+		const speed = (typeof scroll_speed !== 'undefined') ? parseInt(scroll_speed) : 10;
+		const time = new Date().getTime() / 1000;
+		let move = time * speed * 0.4;
 
-        if (scroll_direction === "Left") offsetX = -Math.floor(move);
-        else if (scroll_direction === "Right") offsetX = Math.floor(move);
-        else if (scroll_direction === "Up") offsetY = -Math.floor(move);
-        else if (scroll_direction === "Down") offsetY = Math.floor(move);
-        else if (isPP) {
-            let row = currentFrameGrid[0] || [];
-            let imgW = (Array.isArray(row) && row.length > 50 && (row.length % 3 === 0)) ? row.length / 3 : row.length;
-            let maxScroll = imgW - displaySize.width;
-            if (maxScroll > 0) {
-                let phase = move % (maxScroll * 2);
-                offsetX = (phase <= maxScroll) ? -phase : -(maxScroll - (phase - maxScroll));
-            }
-        }
-    }
+		if (scroll_direction === "Left") offsetX = -Math.floor(move);
+		else if (scroll_direction === "Right") offsetX = Math.floor(move);
+		else if (scroll_direction === "Up") offsetY = -Math.floor(move);
+		else if (scroll_direction === "Down") offsetY = Math.floor(move);
+		else if (isPP) {
+			let row = currentFrameGrid[0] || [];
+			let imgW = (Array.isArray(row) && row.length > 50 && (row.length % 3 === 0)) ? row.length / 3 : row.length;
+			let maxScroll = imgW - displaySize.width;
+			if (maxScroll > 0) {
+				let phase = move % (maxScroll * 2);
+				offsetX = (phase <= maxScroll) ? -phase : -(maxScroll - (phase - maxScroll));
+			}
+		}
+	}
 
-    for (let row = 0; row < currentFrameGrid.length; row++) {
-        let rowData = currentFrameGrid[row];
-        if (!rowData) continue;
-        let isFlat = Array.isArray(rowData) && rowData.length > 50 && (rowData.length % 3 === 0);
-        let gridW = isFlat ? rowData.length / 3 : rowData.length;
+	for (let row = 0; row < currentFrameGrid.length; row++) {
+		let rowData = currentFrameGrid[row];
+		if (!rowData) continue;
+		let isFlat = Array.isArray(rowData) && rowData.length > 50 && (rowData.length % 3 === 0);
+		let gridW = isFlat ? rowData.length / 3 : rowData.length;
 
-        if (isFlat) {
-            for (let i = 0; i < rowData.length; i += 3) {
-                let r = rowData[i], g = rowData[i+1], b = rowData[i+2];
-                if (r === 0 && g === 0 && b === 0) continue;
-                let col = i / 3;
-                let finalX = col + offsetX;
-                let finalY = row + offsetY;
-                if (scroll_direction === "Slot-Machine") {
-                    const time = new Date().getTime() / 1000;
-                    let cycle = time % 10;
-                    let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
-                    let stopTime = 3 + reel;
-                    let slotY = (cycle < stopTime) ? (cycle * (parseInt(scroll_speed) * 4) * (reel + 1) * Math.pow((stopTime - cycle) / stopTime, 2)) : 0;
-                    finalY = row - slotY;
-                    finalX = col;
-                }
+		if (isFlat) {
+			for (let i = 0; i < rowData.length; i += 3) {
+				let r = rowData[i], g = rowData[i+1], b = rowData[i+2];
+				if (r === 0 && g === 0 && b === 0) continue;
+				let col = i / 3;
+				let finalX = col + offsetX;
+				let finalY = row + offsetY;
+				if (scroll_direction === "Slot-Machine") {
+					const time = new Date().getTime() / 1000;
+					let cycle = time % 10;
+					let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
+					let stopTime = 3 + reel;
+					let slotY = (cycle < stopTime) ? (cycle * (parseInt(scroll_speed) * 4) * (reel + 1) * Math.pow((stopTime - cycle) / stopTime, 2)) : 0;
+					finalY = row - slotY;
+					finalX = col;
+				}
 
-                finalX = isPP ? finalX : (finalX % gridW + gridW) % gridW;
-                let finalY_mod = (finalY % currentFrameGrid.length + currentFrameGrid.length) % currentFrameGrid.length;
-                let tx = Math.floor(finalX + (parseInt(paddingX) || 0));
-                let ty = Math.floor(finalY_mod + (parseInt(paddingY) || 0));
-                if (ty >= 0 && ty < displaySize.height && tx >= 0 && tx < displaySize.width) {
-                    display[ty * displaySize.width + tx] = [r, g, b];
-                }
-            }
-        } else {
-            for (let col = 0; col < rowData.length; col++) {
-                let pixel = rowData[col];
-                let finalX = col + offsetX;
-                let finalY = row + offsetY;
-                if (scroll_direction === "Slot-Machine") {
-                    const time = new Date().getTime() / 1000;
-                    let cycle = time % 10;
-                    let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
-                    let stopTime = 3 + reel;
-                    let slotY = (cycle < stopTime) ? (cycle * (parseInt(scroll_speed) * 4) * (reel + 1) * Math.pow((stopTime - cycle) / stopTime, 2)) : 0;
-                    finalY = row - slotY;
-                    finalX = col;
-                }
+				finalX = isPP ? finalX : (finalX % gridW + gridW) % gridW;
+				let finalY_mod = (finalY % currentFrameGrid.length + currentFrameGrid.length) % currentFrameGrid.length;
+				let tx = Math.floor(finalX + (parseInt(paddingX) || 0));
+				let ty = Math.floor(finalY_mod + (parseInt(paddingY) || 0));
+				if (ty >= 0 && ty < displaySize.height && tx >= 0 && tx < displaySize.width) {
+					display[ty * displaySize.width + tx] = [r, g, b];
+				}
+			}
+		} else {
+			for (let col = 0; col < rowData.length; col++) {
+				let pixel = rowData[col];
+				let finalX = col + offsetX;
+				let finalY = row + offsetY;
+				if (scroll_direction === "Slot-Machine") {
+					const time = new Date().getTime() / 1000;
+					let cycle = time % 10;
+					let reel = col < 11 ? 0 : (col < 21 ? 1 : 2);
+					let stopTime = 3 + reel;
+					let slotY = (cycle < stopTime) ? (cycle * (parseInt(scroll_speed) * 4) * (reel + 1) * Math.pow((stopTime - cycle) / stopTime, 2)) : 0;
+					finalY = row - slotY;
+					finalX = col;
+				}
 
-                finalX = isPP ? finalX : (finalX % gridW + gridW) % gridW;
-                let finalY_mod = (finalY % currentFrameGrid.length + currentFrameGrid.length) % currentFrameGrid.length;
-                let tx = Math.floor(finalX + (parseInt(paddingX) || 0));
-                let ty = Math.floor(finalY_mod + (parseInt(paddingY) || 0));
-                if (ty >= 0 && ty < displaySize.height && tx >= 0 && tx < displaySize.width) {
-                    display[ty * displaySize.width + tx] = (typeof pixel === "string" && pixel[0] === "#") ? 
-                        [parseInt(pixel.substr(1, 2), 16), parseInt(pixel.substr(3, 2), 16), parseInt(pixel.substr(5, 2), 16)] : pixel;
-                }
-            }
-        }
-    }
+				finalX = isPP ? finalX : (finalX % gridW + gridW) % gridW;
+				let finalY_mod = (finalY % currentFrameGrid.length + currentFrameGrid.length) % currentFrameGrid.length;
+				let tx = Math.floor(finalX + (parseInt(paddingX) || 0));
+				let ty = Math.floor(finalY_mod + (parseInt(paddingY) || 0));
+				if (ty >= 0 && ty < displaySize.height && tx >= 0 && tx < displaySize.width) {
+					display[ty * displaySize.width + tx] = (typeof pixel === "string" && pixel[0] === "#") ? 
+						[parseInt(pixel.substr(1, 2), 16), parseInt(pixel.substr(3, 2), 16), parseInt(pixel.substr(5, 2), 16)] : pixel;
+				}
+			}
+		}
+	}
 }
 
 function getSpacing(digit, fontSize, time) {
